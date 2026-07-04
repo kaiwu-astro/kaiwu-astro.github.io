@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kai Wu</title>
+    <link rel="shortcut icon" href="./assets/images/avatar.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<main>
+    <aside class="sidebar" data-sidebar>
+        <div class="sidebar-info">
+            <figure class="avatar-box">
+                <img src="./assets/images/avatar.svg" alt="Kai Wu" width="80">
+            </figure>
+
+            <div class="info-content">
+                <h1 class="name" title="Kai Wu">Kai <b>Wu</b></h1>
+                <p class="title">Computational Astrophysicist</p>
+            </div>
+
+            <button class="info_more-btn" data-sidebar-btn>
+                <ion-icon class="sidebar-chevron" name="chevron-up"></ion-icon>
+            </button>
+        </div>
+
+        <div class="sidebar-info_more">
+            <div class="separator"></div>
+
+            <ul class="contacts-list">
+                <li class="contact-item">
+                    <div class="icon-box">
+                        <ion-icon name="mail-outline"></ion-icon>
+                    </div>
+                    <div class="contact-info">
+                        <p class="contact-title">Email</p>
+                        <a href="mailto:kai.wu@uni-heidelberg.de" class="contact-link" target="_blank" rel="noopener noreferrer">kai.wu@uni-heidelberg.de</a>
+                    </div>
+                </li>
+
+                <li class="contact-item">
+                    <div class="icon-box">
+                        <ion-icon name="location-outline"></ion-icon>
+                    </div>
+                    <div class="contact-info">
+                        <p class="contact-title">Location</p>
+                        <address>Heidelberg University, Germany</address>
+                    </div>
+                </li>
+
+                <li class="contact-item">
+                    <div class="icon-box">
+                        <ion-icon name="document-text-outline"></ion-icon>
+                    </div>
+                    <div class="contact-info">
+                        <p class="contact-title">Curriculum Vitae</p>
+                        <a href="KaiWU_CV.pdf" class="contact-link" target="_blank" rel="noopener noreferrer">
+                            <ion-icon class="inline-icon-align" name="download-outline"></ion-icon>
+                            Click to download</a>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="separator"></div>
+
+            <ul class="social-list">
+                <li class="social-item">
+                    <a href="https://orcid.org/0000-0003-0349-0079" class="social-link" title="ORCID" target="_blank" rel="noopener noreferrer">
+                        <ion-icon src="./assets/images/logo-orcid.svg" title="ORCID"></ion-icon>
+                    </a>
+                </li>
+
+                <li class="social-item">
+                    <a href="https://scholar.google.com/citations?user=zspJ42IAAAAJ" class="social-link" title="Google Scholar" target="_blank" rel="noopener noreferrer">
+                        <ion-icon name="school-outline"></ion-icon>
+                    </a>
+                </li>
+
+                <li class="social-item">
+                    <a href="https://github.com/kaiwu-astro" class="social-link" title="GitHub" target="_blank" rel="noopener noreferrer">
+                        <ion-icon name="logo-github"></ion-icon>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <nav class="navbar">
+            <ul class="navbar-list">
+                <li class="navbar-item">
+                    <button class="navbar-link active" data-pagelink="about" data-nav-link>About</button>
+                </li>
+                <li class="navbar-item">
+                    <button class="navbar-link" data-pagelink="workedu" data-nav-link>Career</button>
+                </li>
+                <li class="navbar-item">
+                    <button class="navbar-link" data-pagelink="scicar" data-nav-link>Scientific work</button>
+                </li>
+                <li class="navbar-item">
+                    <button class="navbar-link" data-pagelink="contact" data-nav-link>Contact</button>
+                </li>
+            </ul>
+        </nav>
+
+        <article class="about active" data-page="about">
+            <header>
+                <h2 class="h2 article-title">About me</h2>
+            </header>
+
+            <section class="about-text">
+                <p>
+                    I am a postdoctoral researcher at the Astronomisches Rechen-Institut, Zentrum für Astronomie, Heidelberg University. I use direct N-body simulations and high-performance computing to study star clusters, planetary systems, debris discs, and compact stellar systems over long timescales.
+                </p>
+                <p>
+                    My current work covers the DRAGON simulation series, planetary systems in star clusters, and NBODY6++GPU development. Most of it comes back to one question: what changes when planets, discs, stars, and compact objects evolve inside a crowded stellar system?
+                </p>
+            </section>
+
+            <section class="service">
+                <h3 class="h3 service-title">What I'm doing</h3>
+
+                <ul class="service-list">
+                    <li class="service-item">
+                        <div class="service-icon-box">
+                            <ion-icon name="sparkles-outline"></ion-icon>
+                        </div>
+                        <div class="service-content-box">
+                            <h4 class="h4 service-item-title">Star cluster dynamics</h4>
+                            <p class="service-item-text">Direct N-body modelling of globular clusters, nuclear star clusters, and open clusters.</p>
+                        </div>
+                    </li>
+
+                    <li class="service-item">
+                        <div class="service-icon-box">
+                            <ion-icon name="planet-outline"></ion-icon>
+                        </div>
+                        <div class="service-content-box">
+                            <h4 class="h4 service-item-title">Planetary systems</h4>
+                            <p class="service-item-text">Dynamical stability of planets, debris discs, comets, and host-star orbits in dense stellar environments.</p>
+                        </div>
+                    </li>
+
+                    <li class="service-item">
+                        <div class="service-icon-box">
+                            <ion-icon name="terminal-outline"></ion-icon>
+                        </div>
+                        <div class="service-content-box">
+                            <h4 class="h4 service-item-title">High performance computing</h4>
+                            <p class="service-item-text">GPU-accelerated astrophysical simulations, large simulation analysis, and reproducible research workflows.</p>
+                        </div>
+                    </li>
+
+                    <li class="service-item">
+                        <div class="service-icon-box">
+                            <ion-icon name="git-branch-outline"></ion-icon>
+                        </div>
+                        <div class="service-content-box">
+                            <h4 class="h4 service-item-title">Scientific software</h4>
+                            <p class="service-item-text">Open-source development and code administration for NBODY6++GPU and related simulation tools.</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </article>
+
+        <article class="resume" data-page="workedu">
+            <header>
+                <h2 class="h2 article-title">Career</h2>
+            </header>
+
+            <section class="timeline">
+                <div class="title-wrapper">
+                    <div class="icon-box">
+                        <ion-icon name="briefcase-outline"></ion-icon>
+                    </div>
+                    <h3 class="h3">Work experience</h3>
+                </div>
+
+                <ol class="timeline-list">
+                    <li class="timeline-item">
+                        <h4 class="h4 timeline-item-title">Postdoctoral Researcher</h4>
+                        <span>Astronomisches Rechen-Institut, Zentrum für Astronomie, Heidelberg University</span>
+                        <p class="timeline-text">
+                            <strong>Heidelberg, Germany</strong> (2024 - Dec. 2026)<br>
+                            Work with apl. Prof. Rainer Spurzem on computational stellar dynamics and million-body N-body simulations.
+                        </p>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="timeline">
+                <div class="title-wrapper">
+                    <div class="icon-box">
+                        <ion-icon name="school-outline"></ion-icon>
+                    </div>
+                    <h3 class="h3">Education</h3>
+                </div>
+
+                <ol class="timeline-list">
+                    <li class="timeline-item">
+                        <h4 class="h4 timeline-item-title">PhD in Mathematical Sciences</h4>
+                        <span>University of Liverpool</span>
+                        <p class="timeline-text">
+                            <strong>Liverpool, UK</strong> (2019 - 2024)<br>
+                            Full-scholarship PhD student in the Department of Mathematical Sciences, School of Physical Sciences; off-site at XJTLU.<br>
+                            Supervisor: Prof. M. B. N. Kouwenhoven.
+                        </p>
+                    </li>
+
+                    <li class="timeline-item">
+                        <h4 class="h4 timeline-item-title">Bachelor of Science in Physics</h4>
+                        <span>Nankai University, Boling Program</span>
+                        <p class="timeline-text">
+                            <strong>Tianjin, China</strong> (2015 - 2019)<br>
+                            The Boling Program is part of the Everest Plan of the Chinese Ministry of Education.
+                        </p>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="timeline">
+                <div class="title-wrapper">
+                    <div class="icon-box">
+                        <ion-icon name="code-slash-outline"></ion-icon>
+                    </div>
+                    <h3 class="h3">Skills</h3>
+                </div>
+
+                <ol class="timeline-list">
+                    <li class="timeline-item">
+                        <h4 class="h4 timeline-item-title">Programming for research</h4>
+                        <p class="timeline-text">
+                            Python, SciPy, NumPy, Pandas, Matplotlib, Seaborn, Plotly, multiprocessing, Linux, Bash, Docker, C/C++, Fortran, and LaTeX.
+                        </p>
+                    </li>
+
+                    <li class="timeline-item">
+                        <h4 class="h4 timeline-item-title">Supercomputing and simulation data</h4>
+                        <p class="timeline-text">
+                            Four years of supercomputing experience across GPU and CPU systems, including JUWELS, LUMI, Dongfang, Silkroad, and Heidelberg's Kepler cluster; analysis of 30+ TB simulation datasets.
+                        </p>
+                    </li>
+
+                    <li class="timeline-item">
+                        <h4 class="h4 timeline-item-title">Open-source project management</h4>
+                        <p class="timeline-text">
+                            Code administrator of the NBODY6++GPU repository since 2022, supporting version control, CI/CD test workflows, pull requests, issues, and documentation.
+                        </p>
+                    </li>
+                </ol>
+            </section>
+        </article>
+
+        <article class="portfolio" data-page="scicar">
+            <header>
+                <h2 class="h2 article-title">Scientific work</h2>
+            </header>
+
+            <section class="projects">
+                <ul class="filter-list">
+                    <li class="filter-item"><button class="active" data-filter-btn>All</button></li>
+                    <li class="filter-item"><button data-filter-btn>Papers</button></li>
+                    <li class="filter-item"><button data-filter-btn>Teaching</button></li>
+                    <li class="filter-item"><button data-filter-btn>Talks</button></li>
+                    <li class="filter-item"><button data-filter-btn>Conferences</button></li>
+                    <li class="filter-item"><button data-filter-btn>Activities</button></li>
+                </ul>
+
+                <div class="filter-select-box">
+                    <button class="filter-select" data-select>
+                        <div class="select-value" data-selecct-value>Select category</div>
+                        <div class="select-icon"><ion-icon name="chevron-down"></ion-icon></div>
+                    </button>
+
+                    <ul class="select-list">
+                        <li class="select-item"><button data-select-item>All</button></li>
+                        <li class="select-item"><button data-select-item>Papers</button></li>
+                        <li class="select-item"><button data-select-item>Teaching</button></li>
+                        <li class="select-item"><button data-select-item>Talks</button></li>
+                        <li class="select-item"><button data-select-item>Conferences</button></li>
+                        <li class="select-item"><button data-select-item>Activities</button></li>
+                    </ul>
+                </div>
+
+                <ul class="project-list">
+                    <li class="project-item active" data-filter-item data-category="papers">
+                        <section class="timeline">
+                            <div class="title-wrapper">
+                                <div class="icon-box"><ion-icon name="document-text-outline"></ion-icon></div>
+                                <h3 class="h3">Papers</h3>
+                            </div>
+
+                            <ol class="timeline-list">
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">DRAGON-III simulation - I. Multi-messenger observations in the computer and comparison with observed astrophysical objects</h4>
+                                    <span>Kai Wu, Francesco Flammini Dotti, Marcelo C. Vergara, Vahid Amiri, and Rainer Spurzem</span>
+                                    <p class="timeline-text">In preparation.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">Linking the survivability of planets in star clusters with the orbits of their host stars</h4>
+                                    <span>Kai Wu, M. B. N. Kouwenhoven, Rainer Spurzem, and Francesco Flammini Dotti</span>
+                                    <p class="timeline-text">In preparation.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <a href="https://doi.org/10.1051/0004-6361/202558659" class="inherit-link" target="_blank" rel="noopener noreferrer">
+                                        <h4 class="h4 timeline-item-title">Direct N-body simulations of rotating and extremely massive Population III star clusters</h4>
+                                        <span>Astronomy and Astrophysics, 2026, 709, A142</span>
+                                        <p class="timeline-text">Kai Wu, Ataru Tanikawa, Francesco Flammini Dotti, Marcelo C. Vergara, Boyuan Liu, Albrecht W. H. Kamlah, Manuel Arca Sedda, Nadine Neumayer, and Rainer Spurzem.</p>
+                                    </a>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">DRAGON-III simulations: modelling million-body globular and nuclear star clusters over cosmic time</h4>
+                                    <span>Accepted in Proceedings IAU Symposium 398</span>
+                                    <p class="timeline-text">Kai Wu, Philip Cho, Rainer Spurzem, Long Wang, Francesco Flammini Dotti, and Vahid Amiri.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <a href="https://doi.org/10.1093/mnras/stae2067" class="inherit-link" target="_blank" rel="noopener noreferrer">
+                                        <h4 class="h4 timeline-item-title">Influence of planets on debris discs in star clusters - II. The impact of stellar densities</h4>
+                                        <span>Monthly Notices of the Royal Astronomical Society, 2024, 533(4)</span>
+                                        <p class="timeline-text">Kai Wu, M. B. N. Kouwenhoven, Rainer Spurzem, and Francesco Flammini Dotti.</p>
+                                    </a>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <a href="https://doi.org/10.1093/mnras/stad1673" class="inherit-link" target="_blank" rel="noopener noreferrer">
+                                        <h4 class="h4 timeline-item-title">Influence of planets on debris discs in star clusters - I. The 50 au Jupiter</h4>
+                                        <span>Monthly Notices of the Royal Astronomical Society, 2023, 523(4)</span>
+                                        <p class="timeline-text">Kai Wu, M. B. N. Kouwenhoven, Rainer Spurzem, and Xiaoying Pang.</p>
+                                    </a>
+                                </li>
+
+                                <button class="show-all-btn" data-toggle-timeline>
+                                    <ion-icon class="inline-icon" name="chevron-down-outline"></ion-icon>
+                                    Show all
+                                </button>
+                            </ol>
+                        </section>
+                    </li>
+
+                    <li class="project-item active" data-filter-item data-category="teaching">
+                        <section class="timeline">
+                            <div class="title-wrapper">
+                                <div class="icon-box"><ion-icon name="people-outline"></ion-icon></div>
+                                <h3 class="h3">Teaching</h3>
+                            </div>
+
+                            <ol class="timeline-list">
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">Associate Fellowship in the Higher Education Academy</h4>
+                                    <span>Advance HE</span>
+                                    <p class="timeline-text">Teaching qualification aligned with the UK Professional Standards Framework (2024).</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">International high school course, part-time lecturer</h4>
+                                    <span>Suzhou Research Institute of Xi'an Jiaotong University</span>
+                                    <p class="timeline-text">105-hour IB calculus lecture course, January - July 2022.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">Teaching assistant, undergraduate physics and mathematics</h4>
+                                    <span>Xi'an Jiaotong-Liverpool University</span>
+                                    <p class="timeline-text">Best Teaching Assistant Award 2023; modules in physics experiments, calculus, advanced linear algebra, and statistical methods.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">N-body simulation lecture</h4>
+                                    <span>Shanghai Astronomical Observatory, Chinese Academy of Sciences</span>
+                                    <p class="timeline-text">30-hour doctoral course on simulating star clusters with NBODY6++GPU, August 2023.</p>
+                                </li>
+
+                                <button class="show-all-btn" data-toggle-timeline>
+                                    <ion-icon class="inline-icon" name="chevron-down-outline"></ion-icon>
+                                    Show all
+                                </button>
+                            </ol>
+                        </section>
+                    </li>
+
+                    <li class="project-item active" data-filter-item data-category="talks">
+                        <section class="timeline">
+                            <div class="title-wrapper">
+                                <div class="icon-box"><ion-icon name="mic-outline"></ion-icon></div>
+                                <h3 class="h3">Invited talks and seminars</h3>
+                            </div>
+
+                            <ol class="timeline-list">
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">Dynamics of debris disks in star clusters</h4>
+                                    <span>Chen Xian's group meeting, KIAA-PKU</span>
+                                    <p class="timeline-text">July 2023.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">An in-depth introduction to numerical cluster simulation</h4>
+                                    <span>Shanghai Astronomical Observatory</span>
+                                    <p class="timeline-text">July 2023.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">Use Git and GitHub for NBODY6++GPU collaboration</h4>
+                                    <span>Rainer Spurzem's group meeting</span>
+                                    <p class="timeline-text">April 2022.</p>
+                                </li>
+                            </ol>
+                        </section>
+                    </li>
+
+                    <li class="project-item active" data-filter-item data-category="conferences">
+                        <section class="timeline">
+                            <div class="title-wrapper">
+                                <div class="icon-box"><ion-icon name="globe-outline"></ion-icon></div>
+                                <h3 class="h3">Conferences</h3>
+                            </div>
+
+                            <ol class="timeline-list">
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">Annual Meeting of the German Astronomical Society 2025</h4>
+                                    <span>Goerlitz, Germany</span>
+                                    <p class="timeline-text">Two talks: DRAGON-III simulations and dynamical stability of debris discs with planets in star clusters.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">European Astronomical Society Annual Meeting 2025</h4>
+                                    <span>Cork, Ireland</span>
+                                    <p class="timeline-text">Talk on dynamical stability of debris discs with planets in star clusters.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">IAU Symposium 398 and MODEST-25</h4>
+                                    <span>Seoul, Korea</span>
+                                    <p class="timeline-text">Talk on modelling million-body globular and nuclear star clusters over cosmic time.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">Gas Accretion in Planet Formation</h4>
+                                    <span>MPIA, Germany</span>
+                                    <p class="timeline-text">Talk on the role of star clusters in shaping protoplanetary disks and debris disk evolution.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">12th Kazakhstan-China-Korea Workshop</h4>
+                                    <span>Astana, Kazakhstan</span>
+                                    <p class="timeline-text">Talk on dynamical stability of debris disks with planets in star clusters.</p>
+                                </li>
+
+                                <button class="show-all-btn" data-toggle-timeline>
+                                    <ion-icon class="inline-icon" name="chevron-down-outline"></ion-icon>
+                                    Show all
+                                </button>
+                            </ol>
+                        </section>
+                    </li>
+
+                    <li class="project-item active" data-filter-item data-category="activities">
+                        <section class="timeline">
+                            <div class="title-wrapper">
+                                <div class="icon-box"><ion-icon name="star-outline"></ion-icon></div>
+                                <h3 class="h3">Professional activities</h3>
+                            </div>
+
+                            <ol class="timeline-list">
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">Reviewer</h4>
+                                    <span>Astronomy and Astrophysics; Planetary and Space Science</span>
+                                    <p class="timeline-text">Peer-review activity from 2025 onward.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">Member</h4>
+                                    <span>Silk Road Project; COST Action CA22133, the birth of solar systems</span>
+                                    <p class="timeline-text">Collaborative work on star cluster dynamics and the early evolution of planetary systems.</p>
+                                </li>
+
+                                <li class="timeline-item">
+                                    <h4 class="h4 timeline-item-title">Academic visits</h4>
+                                    <span>NAOC, KIAA-PKU, FIAS, Heidelberg University, CITA, STScI, and other institutes</span>
+                                    <p class="timeline-text">Research visits across China, Germany, Canada, Singapore, and the United States.</p>
+                                </li>
+                            </ol>
+                        </section>
+                    </li>
+                </ul>
+            </section>
+        </article>
+
+        <article class="contact" data-page="contact">
+            <header>
+                <h2 class="h2 article-title">Contact</h2>
+            </header>
+
+            <p class="about-text">
+                Reach me at Heidelberg University or by email at
+                <a href="mailto:kai.wu@uni-heidelberg.de" class="contact-window-link" target="_blank" rel="noopener noreferrer">kai.wu@uni-heidelberg.de</a>.
+            </p>
+
+            <section class="mapbox" data-mapbox>
+                <figure>
+                    <iframe src="https://www.google.com/maps?q=Astronomisches%20Rechen-Institut%2C%20Heidelberg%20University&output=embed" width="400" height="300" loading="lazy"></iframe>
+                </figure>
+            </section>
+        </article>
+    </div>
+</main>
+
+<script src="./assets/js/script.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>
