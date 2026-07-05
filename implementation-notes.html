@@ -15,6 +15,9 @@
     <li>CV 文件将采用版本化文件名，当前版本使用 KaiWu_CV_0705.pdf；旧文件是否保留取决于站点链接兼容性和仓库维护成本。</li>
     <li>新增的 Impressum 和 Privacy 页面是低成本公开说明，不构成法律意见；如需严格合规，应由熟悉德国 DDG/DSGVO 的专业人士审阅。</li>
     <li>GitHub Actions 只做静态回归检查，不引入外链检查器，避免 CI 因外部网络波动误报。</li>
+    <li>复查 Cloudflare 后发现：`about.wukai.work` 当前 CNAME 为 DNS-only，未走 Cloudflare 代理，因此 Email Obfuscation、Redirect Rules、Cache Rules、Response Header Transform Rules 等 Cloudflare 功能不会对该站点生效。</li>
+    <li>当前 Cloudflare API token 可以读取 `wukai.work` DNS，但读取 SSL/TLS、Always Use HTTPS、Email Obfuscation、Brotli、Page Rules 和 Rulesets 时返回 403 权限错误；因此本轮不能直接通过 API 落地这些 Cloudflare 配置。</li>
+    <li>HSTS `includeSubDomains`、HSTS preload 和激进 Bot/WAF 挑战规则可能影响其他 `wukai.work` 子域名或学术搜索/预览爬虫，本轮不擅自启用，需在确认所有相关子域名和 crawler 影响后再做。</li>
   </ul>
 </body>
 </html>
