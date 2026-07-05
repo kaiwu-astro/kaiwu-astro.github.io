@@ -1,0 +1,29 @@
+name: Site checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required files
+        run: |
+          test -f index.html
+          test -f robots.txt
+          test -f sitemap.xml
+          test -f KaiWu_CV_0705.pdf
+          test -f assets/images/social-card.png
+
+      - name: Check XML and JavaScript syntax
+        run: |
+          python3 -m xml.etree.ElementTree sitemap.xml
+          python3 -m xml.etree.ElementTree assets/images/icons.svg
+          node --check assets/js/script.js
+
+      - name: Check blocked third-party dependencies
+        run: |
+          ! grep -RInE 'fonts\.googleapis\.com|fonts\.gstatic\.com|unpkg\.com|google\.com/maps|maps\.google\.com|Google Analytics|ion-icon|data-email|KaiWU_CV' index.html privacy.html impressum.html assets/css/style.css assets/js/script.js sitemap.xml robots.txt
