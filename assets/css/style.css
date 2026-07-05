@@ -71,7 +71,7 @@
      */
 
     /* font-family */
-    --ff-poppins: 'Poppins', sans-serif;
+    --ff-poppins: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 
     /* font-size */
     --fs-1: 24px;
@@ -131,18 +131,25 @@ li {
     all: inherit;
 }
 
-img, ion-icon, a, button, time, span {
+img, .site-icon, a, button, time, span {
     display: block;
 }
 
-ion-icon.inline-icon {
-    display: inline-block;
-    vertical-align: middle; /* or middle, baseline */
+.site-icon {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    flex-shrink: 0;
 }
 
-ion-icon.inline-icon-align {
+.site-icon.inline-icon {
     display: inline-block;
-    vertical-align: alphabetic; /* or middle, baseline */
+    vertical-align: middle;
+}
+
+.site-icon.inline-icon-align {
+    display: inline-block;
+    vertical-align: alphabetic;
 }
 
 /* Hide all items after the first three */
@@ -249,10 +256,14 @@ article {
     height: 48px;
     border-radius: 12px;
     font-size: 40px;
-    --ionicon-stroke-width: 25px;
     margin: auto;
     margin-bottom: 0;
     margin-top: 5px;
+}
+
+.service-icon-box .site-icon {
+    width: 40px;
+    height: 40px;
 }
 
 .icon-box::before {
@@ -264,8 +275,9 @@ article {
     z-index: -1;
 }
 
-.icon-box ion-icon {
-    --ionicon-stroke-width: 35px;
+.icon-box .site-icon {
+    width: 16px;
+    height: 16px;
 }
 
 article {
@@ -539,9 +551,23 @@ main {
     font-size: 18px;
 }
 
+.social-item .site-icon,
+.social-item .brand-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.social-item .brand-icon {
+    opacity: 0.82;
+}
+
 
 .social-item .social-link:hover {
     color: var(--light-gray);
+}
+
+.social-item .social-link:hover .brand-icon {
+    opacity: 1;
 }
 
 .contact-window-link {
@@ -814,10 +840,6 @@ main {
 .modal-close-btn:hover,
 .modal-close-btn:focus {
     opacity: 1;
-}
-
-.modal-close-btn ion-icon {
-    --ionicon-stroke-width: 50px;
 }
 
 .modal-avatar-box {
@@ -1155,10 +1177,6 @@ main {
     opacity: 1;
 }
 
-.project-item-icon-box ion-icon {
-    --ionicon-stroke-width: 50px;
-}
-
 .project-img img {
     width: 100%;
     height: 100%;
@@ -1287,25 +1305,33 @@ main {
   #CONTACT
 \*-----------------------------------*/
 
-.mapbox {
-    position: relative;
-    height: 250px;
-    width: 100%;
-    border-radius: 16px;
-    margin-bottom: 30px;
+.location-box {
+    margin-top: 20px;
+}
+
+.location-card {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
     border: 1px solid var(--jet);
-    overflow: hidden;
+    border-radius: 16px;
+    padding: 18px;
+    background: var(--bg-gradient-jet);
+    color: var(--light-gray);
+    font-size: var(--fs-6);
+    line-height: 1.6;
 }
 
-.mapbox figure {
-    height: 100%;
+.location-card .site-icon {
+    width: 30px;
+    height: 30px;
+    color: var(--orange-yellow-crayola);
 }
 
-.mapbox iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    filter: grayscale(1) invert(1);
+.location-card a {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--orange-yellow-crayola);
 }
 
 .contact-form {
@@ -1385,7 +1411,7 @@ textarea.form-input::-webkit-resizer {
     transition: var(--transition-1);
 }
 
-.form-btn ion-icon {
+.form-btn .site-icon {
     font-size: 16px;
 }
 
@@ -1714,14 +1740,6 @@ textarea.form-input::-webkit-resizer {
     }
 
 
-    /**
-     * #CONTACT
-     */
-    .mapbox {
-        height: 380px;
-        border-radius: 18px;
-    }
-
     .input-wrapper {
         gap: 30px;
         margin-bottom: 30px;
@@ -1740,7 +1758,7 @@ textarea.form-input::-webkit-resizer {
         padding: 16px 20px;
     }
 
-    .form-btn ion-icon {
+    .form-btn .site-icon {
         font-size: 18px;
     }
 

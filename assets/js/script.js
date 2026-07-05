@@ -1,24 +1,13 @@
 'use strict';
 
-const emailLinks = document.querySelectorAll("[data-email-link]");
-
-emailLinks.forEach(link => {
-    const user = link.dataset.emailUser;
-    const domain = (link.dataset.emailDomain || "").split("|").join(".");
-    const note = link.dataset.emailNote || "";
-
-    if (!user || !domain) return;
-
-    const email = `${user}@${domain}`;
-    link.textContent = `${email}${note}`;
-    link.href = `mailto:${email}`;
-    link.setAttribute("aria-label", `Email ${email}`);
-});
-
-
 // element toggle function
 const elementToggleFunc = function (elem) {
     elem.classList.toggle("active");
+}
+
+const setIcon = function (icon, name) {
+    const use = icon.querySelector("use");
+    if (use) use.setAttribute("href", `./assets/images/icons.svg#icon-${name}`);
 }
 
 
@@ -33,10 +22,7 @@ sidebarBtn.addEventListener("click", function () {
     elementToggleFunc(sidebar);
 
     const isActive = sidebar.classList.contains("active");
-    sidebarChevron.setAttribute(
-        "name",
-        isActive ? "chevron-up-outline" : "chevron-down-outline"
-    );
+    setIcon(sidebarChevron, isActive ? "chevron-up" : "chevron-down");
 });
 
 
@@ -165,7 +151,7 @@ timelineGroups.forEach(group => {
 
     // Initial button state
     button.innerHTML = `
-    <ion-icon class="inline-icon" name="chevron-down-outline"></ion-icon>
+    <svg class="site-icon inline-icon" aria-hidden="true"><use href="./assets/images/icons.svg#icon-chevron-down"></use></svg>
     Show all
   `;
 
@@ -174,11 +160,11 @@ timelineGroups.forEach(group => {
 
         this.innerHTML = expanded
             ? `
-        <ion-icon class="inline-icon" name="chevron-up-outline"></ion-icon>
+        <svg class="site-icon inline-icon" aria-hidden="true"><use href="./assets/images/icons.svg#icon-chevron-up"></use></svg>
         Show less
       `
             : `
-        <ion-icon class="inline-icon" name="chevron-down-outline"></ion-icon>
+        <svg class="site-icon inline-icon" aria-hidden="true"><use href="./assets/images/icons.svg#icon-chevron-down"></use></svg>
         Show all
       `;
     });
