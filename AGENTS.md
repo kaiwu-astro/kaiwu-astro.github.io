@@ -92,4 +92,4 @@ Cloudflare 目标配置应保持精简：`about.wukai.work` CNAME 指向 `kaiwu-
 
 ## 安全与配置提示
 
-不要提交私人草稿、未公开文档、凭据或本地配置文件。仓库里只放用于公开展示的资源。替换简历时使用新的版本化文件名，并同步更新 `index.html`、`sitemap.xml` 和需要的 Cloudflare `/cv` 重定向目标。
+不要提交私人草稿、未公开文档、凭据, 本地配置文件, 维护日志。仓库里只放用于公开展示的资源。替换简历时使用新的版本化文件名，并同步更新 `index.html`、`sitemap.xml` 和需要的 Cloudflare `/cv` 重定向目标。
