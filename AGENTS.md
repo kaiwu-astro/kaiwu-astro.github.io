@@ -11,7 +11,6 @@
 - `privacy.html` 和 `impressum.html` 是公开隐私说明和法律说明页面。
 - `KaiWu_CV_0705.pdf` 是站点中提供下载的当前简历文件；替换简历时使用新的版本化文件名，避免浏览器或 CDN 缓存旧文件。
 - `sitemap.xml` 是静态文件，里面的 `<lastmod>` 不会自动更新。
-- `cloudflare-config.md` 记录 Cloudflare 侧的目标配置、风险边界和 API 权限要求，不得写入任何 token、account ID 或其他凭据。
 - `.github/workflows/site-checks.yml` 运行轻量静态检查，防止关键文件缺失或被禁止的第三方依赖回归。
 
 仓库没有独立的源码目录、构建目录或生成产物目录。新增资源请放在 `assets/` 下，并使用相对路径，保证 GitHub Pages 可正常访问。
@@ -88,6 +87,8 @@ Build personal academic website
 修改任何已收录到 `sitemap.xml` 的公开页面、CV 文件或其他公开 URL 时，必须同步更新对应条目的 `<lastmod>` 日期。新增或删除公开页面、版本化 CV 或重要公开资源时，也要同步增删 `sitemap.xml` 条目。
 
 处理 Cloudflare 配置时，先确认 `about.wukai.work` 是否为 proxied 状态，以及当前 API token 是否具备 Zone Settings、Rulesets/Page Rules 和必要 DNS 权限。Cloudflare Email Obfuscation、Redirect Rules、Cache Rules、Response Header Transform Rules 等只有在流量经过 Cloudflare 代理时才会对站点生效。不要在没有明确验证的情况下启用 wildcard DNS、HSTS preload、`includeSubDomains` HSTS 或激进 Bot/WAF 挑战规则；如需暂缓，记录到 `implementation-notes.html`。
+
+Cloudflare 目标配置应保持精简：`about.wukai.work` CNAME 指向 `kaiwu-astro.github.io`，不要添加 `*.wukai.work` wildcard；保留 GitHub Pages 域名验证 TXT 记录；SSL/TLS 使用 `Full (strict)`；启用 Always Use HTTPS、Automatic HTTPS Rewrites、Email Address Obfuscation 和 Brotli；禁用 Rocket Loader；配置 `/cv` 到当前版本化 CV PDF 的重定向；仅在资源文件名适合长期缓存时，才给 `/assets/*` 设置较长浏览器缓存；安全响应头可使用 `X-Content-Type-Options: nosniff`、`Referrer-Policy: strict-origin-when-cross-origin`、`Permissions-Policy: camera=(), microphone=(), geolocation=()` 和与当前本地资源匹配的保守 CSP。通过 API 操作时，token 至少需要对应 zone 的 Zone Settings 读写、Rulesets 或 Page Rules 读写，以及必要时 DNS 读写权限。应用任何 Cloudflare 改动后，必须验证 `https://about.wukai.work/`、`https://about.wukai.work/cv`、当前 CV PDF、`sitemap.xml` 和线上响应头。
 
 ## 安全与配置提示
 
