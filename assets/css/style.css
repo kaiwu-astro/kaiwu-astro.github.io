@@ -1334,6 +1334,41 @@ main {
     color: var(--orange-yellow-crayola);
 }
 
+.legal-links {
+    display: flex;
+    gap: 16px;
+    margin-top: 22px;
+    font-size: var(--fs-7);
+}
+
+.legal-links a,
+.legal-back-link {
+    color: var(--orange-yellow-crayola);
+}
+
+.legal-page main {
+    max-width: 820px;
+    margin-inline: auto;
+}
+
+.legal-article {
+    display: block;
+}
+
+.legal-text {
+    margin-top: 18px;
+}
+
+.legal-text a {
+    display: inline;
+}
+
+.legal-back-link {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: var(--fs-6);
+}
+
 .contact-form {
     margin-bottom: 10px;
 }

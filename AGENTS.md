@@ -8,6 +8,7 @@
 - `assets/css/style.css` 负责页面布局、响应式规则和主题样式。
 - `assets/js/script.js` 负责少量前端交互。
 - `assets/images/` 存放 SVG 标志和站点头像。
+- `privacy.html` 和 `impressum.html` 是公开隐私说明和法律说明页面。
 - `KaiWu_CV_0705.pdf` 是站点中提供下载的当前简历文件；替换简历时使用新的版本化文件名，避免浏览器或 CDN 缓存旧文件。
 
 仓库没有独立的源码目录、构建目录或生成产物目录。新增资源请放在 `assets/` 下，并使用相对路径，保证 GitHub Pages 可正常访问。
