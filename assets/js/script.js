@@ -1,5 +1,20 @@
 'use strict';
 
+const emailLinks = document.querySelectorAll("[data-email-link]");
+
+emailLinks.forEach(link => {
+    const user = link.dataset.emailUser;
+    const domain = (link.dataset.emailDomain || "").split("|").join(".");
+    const note = link.dataset.emailNote || "";
+
+    if (!user || !domain) return;
+
+    const email = `${user}@${domain}`;
+    link.textContent = `${email}${note}`;
+    link.href = `mailto:${email}`;
+    link.setAttribute("aria-label", `Email ${email}`);
+});
+
 
 // element toggle function
 const elementToggleFunc = function (elem) {
