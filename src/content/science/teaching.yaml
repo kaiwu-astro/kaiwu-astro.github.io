@@ -1,0 +1,21 @@
+title: Teaching
+icon: people
+category: teaching
+filterLabel: Teaching
+items:
+  - title: Associate Fellowship in the Higher Education Academy
+    subtitle: Advance HE
+    text:
+      - Teaching qualification aligned with the UK Professional Standards Framework (2024).
+  - title: International high school course, part-time lecturer
+    subtitle: Suzhou Research Institute of Xi'an Jiaotong University
+    text:
+      - 105-hour IB calculus lecture course, January - July 2022.
+  - title: Teaching assistant, undergraduate physics and mathematics
+    subtitle: Xi'an Jiaotong-Liverpool University
+    text:
+      - Best Teaching Assistant Award 2023; modules in physics experiments, calculus, advanced linear algebra, and statistical methods.
+  - title: N-body simulation lecture
+    subtitle: Shanghai Astronomical Observatory, Chinese Academy of Sciences
+    text:
+      - 30-hour doctoral course on simulating star clusters with NBODY6++GPU, August 2023.

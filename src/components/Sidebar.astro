@@ -1,0 +1,93 @@
+---
+import Icon from "./Icon.astro";
+
+interface Social {
+  label: string;
+  href: string;
+  icon?: string;
+}
+
+interface Props {
+  profile: {
+    name: string;
+    title: string;
+    location: string;
+    emails: string[];
+    cvFile: string;
+    socials: Social[];
+  };
+}
+
+const { profile } = Astro.props;
+const [firstName, lastName] = profile.name.split(" ");
+---
+
+<aside class="sidebar active" data-sidebar>
+  <div class="sidebar-info">
+    <figure class="avatar-box">
+      <img src="/assets/images/profile-photo.jpg" alt={profile.name} width="80">
+    </figure>
+
+    <div class="info-content">
+      <h1 class="name" title={profile.name}>{firstName} <b>{lastName}</b></h1>
+      <p class="title">{profile.title}</p>
+    </div>
+
+    <button class="info_more-btn" data-sidebar-btn aria-label="Toggle contact details">
+      <Icon name="chevron-up" class="sidebar-chevron" />
+    </button>
+  </div>
+
+  <div class="sidebar-info_more">
+    <div class="separator"></div>
+
+    <ul class="contacts-list">
+      <li class="contact-item">
+        <div class="icon-box"><Icon name="mail" /></div>
+        <div class="contact-info">
+          <p class="contact-title">Email</p>
+          {profile.emails.map((email) => <a href={`mailto:${email}`} class="contact-link">{email}</a>)}
+        </div>
+      </li>
+
+      <li class="contact-item">
+        <div class="icon-box"><Icon name="location" /></div>
+        <div class="contact-info">
+          <p class="contact-title">Location</p>
+          <address>{profile.location}</address>
+        </div>
+      </li>
+
+      <li class="contact-item">
+        <div class="icon-box"><Icon name="document" /></div>
+        <div class="contact-info">
+          <p class="contact-title">Curriculum Vitae</p>
+          <a href={`/${profile.cvFile}`} class="contact-link" target="_blank" rel="noopener noreferrer">
+            <Icon name="download" class="inline-icon-align" />
+            Click to download
+          </a>
+        </div>
+      </li>
+    </ul>
+
+    <div class="separator"></div>
+
+    <ul class="social-list">
+      {profile.socials.map((social) => (
+        <li class="social-item">
+          <a
+            href={social.href}
+            class:list={["social-link", social.icon === "github" && "social-link-github"]}
+            title={social.label}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {social.icon === "orcid"
+              ? <img src="/assets/images/logo-orcid.svg" alt="ORCID" class="brand-icon">
+              : <Icon name={social.icon ?? "link"} />}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</aside>

@@ -1,0 +1,17 @@
+title: Professional activities
+icon: star
+category: activities
+filterLabel: Activities
+items:
+  - title: Reviewer
+    subtitle: Astronomy and Astrophysics; Planetary and Space Science
+    text:
+      - Peer-review activity from 2025 onward.
+  - title: Member
+    subtitle: Silk Road Project; COST Action CA22133, the birth of solar systems
+    text:
+      - Collaborative work on star cluster dynamics and the early evolution of planetary systems.
+  - title: Academic visits
+    subtitle: NAOC, KIAA-PKU, FIAS, Heidelberg University, CITA, STScI, and other institutes
+    text:
+      - Research visits across China, Germany, Canada, Singapore, and the United States.

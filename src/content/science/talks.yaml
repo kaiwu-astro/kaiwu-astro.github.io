@@ -1,0 +1,17 @@
+title: Invited talks and seminars
+icon: mic
+category: talks
+filterLabel: Talks
+items:
+  - title: Dynamics of debris disks in star clusters
+    subtitle: Chen Xian's group meeting, KIAA-PKU
+    text:
+      - July 2023.
+  - title: An in-depth introduction to numerical cluster simulation
+    subtitle: Shanghai Astronomical Observatory
+    text:
+      - July 2023.
+  - title: Use Git and GitHub for NBODY6++GPU collaboration
+    subtitle: Rainer Spurzem's group meeting
+    text:
+      - April 2022.

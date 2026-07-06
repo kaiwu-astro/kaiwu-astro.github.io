@@ -1,0 +1,15 @@
+title: Skills
+icon: code
+items:
+  - title: Programming for research
+    text:
+      - |-
+        Python, SciPy, NumPy, Pandas, Matplotlib, Seaborn, Plotly, multiprocessing, Linux, Bash, Docker, C/C++, Fortran, and LaTeX.
+  - title: Supercomputing and simulation data
+    text:
+      - |-
+        Four years of supercomputing experience across GPU and CPU systems, including JUWELS, LUMI, Dongfang, Silkroad, and Heidelberg's Kepler cluster; analysis of 30+ TB simulation datasets.
+  - title: Open-source project management
+    text:
+      - |-
+        Code administrator of the NBODY6++GPU repository since 2022, supporting version control, CI/CD test workflows, pull requests, issues, and documentation.

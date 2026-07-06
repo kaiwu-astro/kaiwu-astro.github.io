@@ -1,0 +1,28 @@
+---
+import Timeline from "./Timeline.astro";
+
+interface Props {
+  groups: Array<{
+    id: string;
+    data: {
+      title: string;
+      icon: string;
+      items: Array<{
+        title: string;
+        subtitle?: string;
+        text: string[];
+        href?: string;
+      }>;
+    };
+  }>;
+}
+
+const { groups } = Astro.props;
+---
+
+<section class="resume page-section" id="career" data-section>
+  <header>
+    <h2 class="h2 article-title">Career</h2>
+  </header>
+  {groups.map((group) => <Timeline title={group.data.title} icon={group.data.icon} items={group.data.items} />)}
+</section>

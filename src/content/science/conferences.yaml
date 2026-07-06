@@ -1,0 +1,25 @@
+title: Conferences
+icon: globe
+category: conferences
+filterLabel: Conferences
+items:
+  - title: Annual Meeting of the German Astronomical Society 2025
+    subtitle: Goerlitz, Germany
+    text:
+      - "Two talks: DRAGON-III simulations and dynamical stability of debris discs with planets in star clusters."
+  - title: European Astronomical Society Annual Meeting 2025
+    subtitle: Cork, Ireland
+    text:
+      - Talk on dynamical stability of debris discs with planets in star clusters.
+  - title: IAU Symposium 398 and MODEST-25
+    subtitle: Seoul, Korea
+    text:
+      - Talk on modelling million-body globular and nuclear star clusters over cosmic time.
+  - title: Gas Accretion in Planet Formation
+    subtitle: MPIA, Germany
+    text:
+      - Talk on the role of star clusters in shaping protoplanetary disks and debris disk evolution.
+  - title: 12th Kazakhstan-China-Korea Workshop
+    subtitle: Astana, Kazakhstan
+    text:
+      - Talk on dynamical stability of debris disks with planets in star clusters.

@@ -1,0 +1,280 @@
+media:
+  input: public/assets/images
+  output: /assets/images
+
+content:
+  - name: site-profile
+    label: Site Profile
+    type: file
+    path: src/content/site/profile.yaml
+    format: yaml
+    fields:
+      - name: name
+        label: Name
+        type: string
+        required: true
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: affiliation
+        label: Affiliation
+        type: text
+        required: true
+      - name: location
+        label: Location
+        type: string
+        required: true
+      - name: emails
+        label: Email addresses
+        type: string
+        list: true
+        required: true
+      - name: cvFile
+        label: CV file name
+        type: string
+        description: Keep the PDF in public/ and enter its filename, for example KaiWu_CV_0705.pdf.
+        required: true
+      - name: canonical
+        label: Canonical URL
+        type: string
+        required: true
+      - name: description
+        label: Site description
+        type: text
+        required: true
+      - name: socialImage
+        label: Social image URL
+        type: string
+        required: true
+      - name: socials
+        label: Social links
+        component: social_link
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{label}"
+      - name: schemaKnowsAbout
+        label: Schema knows about
+        type: string
+        list: true
+
+  - name: homepage
+    label: Homepage
+    type: group
+    items:
+      - name: about
+        label: About
+        type: file
+        path: src/content/about/main.md
+        format: yaml-frontmatter
+        fields:
+          - name: title
+            label: Section title
+            type: string
+            required: true
+          - name: body
+            label: About text
+            type: rich-text
+      - name: services
+        label: What I'm Doing
+        type: file
+        path: src/content/services/main.yaml
+        format: yaml
+        fields:
+          - name: items
+            label: Services
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{title}"
+            fields:
+              - name: title
+                label: Title
+                type: string
+                required: true
+              - name: icon
+                label: Icon
+                type: string
+                required: true
+              - name: text
+                label: Text
+                type: text
+                required: true
+
+  - name: career
+    label: Career
+    type: collection
+    path: src/content/timeline
+    format: yaml
+    fields:
+      - name: title
+        label: Group title
+        type: string
+        required: true
+      - name: icon
+        label: Icon
+        type: string
+        required: true
+      - name: items
+        label: Items
+        component: timeline_item
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+
+  - name: scientific-work
+    label: Scientific Work
+    type: collection
+    path: src/content/science
+    format: yaml
+    fields:
+      - name: title
+        label: Group title
+        type: string
+        required: true
+      - name: icon
+        label: Icon
+        type: string
+        required: true
+      - name: category
+        label: Category
+        type: select
+        options:
+          values:
+            - papers
+            - teaching
+            - talks
+            - conferences
+            - activities
+        required: true
+      - name: filterLabel
+        label: Filter label
+        type: string
+        required: true
+      - name: items
+        label: Items
+        component: timeline_item
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+
+  - name: legal-pages
+    label: Legal Pages
+    type: collection
+    path: src/content/legal
+    format: yaml-frontmatter
+    operations:
+      create: false
+      delete: false
+    fields:
+      - name: title
+        label: Page title
+        type: string
+        required: true
+      - name: description
+        label: Meta description
+        type: text
+        required: true
+      - name: canonicalPath
+        label: Canonical path
+        type: string
+        required: true
+      - name: body
+        label: Page body
+        type: rich-text
+
+components:
+  social_link:
+    type: object
+    label: Social link
+    fields:
+      - name: label
+        label: Label
+        type: string
+        required: true
+      - name: href
+        label: URL
+        type: string
+        required: true
+      - name: icon
+        label: Icon
+        type: string
+
+  timeline_item:
+    type: object
+    label: Timeline item
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: subtitle
+        label: Subtitle
+        type: string
+      - name: text
+        label: Text paragraphs
+        type: text
+        list: true
+        required: true
+      - name: href
+        label: Link
+        type: string
+
+  timeline_group:
+    type: object
+    label: Timeline group
+    fields:
+      - name: title
+        label: Group title
+        type: string
+        required: true
+      - name: icon
+        label: Icon
+        type: string
+        required: true
+      - name: items
+        label: Items
+        component: timeline_item
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+
+  science_group:
+    type: object
+    label: Science group
+    fields:
+      - name: title
+        label: Group title
+        type: string
+        required: true
+      - name: icon
+        label: Icon
+        type: string
+        required: true
+      - name: category
+        label: Category
+        type: select
+        options:
+          values:
+            - papers
+            - teaching
+            - talks
+            - conferences
+            - activities
+        required: true
+      - name: filterLabel
+        label: Filter label
+        type: string
+        required: true
+      - name: items
+        label: Items
+        component: timeline_item
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"

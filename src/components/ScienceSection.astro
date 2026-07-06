@@ -1,0 +1,66 @@
+---
+import Timeline from "./Timeline.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+  groups: Array<{
+    id: string;
+    data: {
+      title: string;
+      icon: string;
+      category: string;
+      filterLabel: string;
+      recordLink?: {
+        label: string;
+        href: string;
+      };
+      items: Array<{
+        title: string;
+        subtitle?: string;
+        text: string[];
+        href?: string;
+      }>;
+    };
+  }>;
+}
+
+const { groups } = Astro.props;
+const filters = ["All", ...groups.map((group) => group.data.filterLabel)];
+---
+
+<section class="portfolio page-section" id="scientific-work" data-section>
+  <header>
+    <h2 class="h2 article-title">Scientific work</h2>
+  </header>
+
+  <section class="projects">
+    <ul class="filter-list">
+      {filters.map((filter, index) => (
+        <li class="filter-item">
+          <button class:list={{ active: index === 0 }} data-filter-btn type="button">{filter}</button>
+        </li>
+      ))}
+    </ul>
+
+    <div class="filter-select-box">
+      <button class="filter-select" data-select type="button">
+        <div class="select-value" data-select-value>Select category</div>
+        <div class="select-icon"><Icon name="chevron-down" /></div>
+      </button>
+
+      <ul class="select-list">
+        {filters.map((filter) => (
+          <li class="select-item"><button data-select-item type="button">{filter}</button></li>
+        ))}
+      </ul>
+    </div>
+
+    <ul class="project-list">
+      {groups.map((group) => (
+        <li class="project-item active" data-filter-item data-category={group.data.category}>
+          <Timeline title={group.data.title} icon={group.data.icon} recordLink={group.data.recordLink} items={group.data.items} />
+        </li>
+      ))}
+    </ul>
+  </section>
+</section>

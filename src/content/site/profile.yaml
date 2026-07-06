@@ -1,0 +1,28 @@
+name: Kai Wu
+title: Computational Astrophysicist
+affiliation: Astronomisches Rechen-Institut, Zentrum fuer Astronomie, Heidelberg University
+location: Heidelberg University, Germany
+emails:
+  - kaiwu.astro@gmail.com
+  - kai.wu@uni-heidelberg.de
+cvFile: KaiWu_CV_0705.pdf
+canonical: https://about.wukai.work/
+description: Kai Wu is a computational astrophysicist studying star clusters, planetary systems, debris discs, and compact stellar systems with direct N-body simulations.
+socialImage: https://about.wukai.work/assets/images/social-card.png
+socials:
+  - label: ORCID
+    href: https://orcid.org/0000-0003-0349-0079
+    icon: orcid
+  - label: Google Scholar
+    href: https://scholar.google.com/citations?user=zspJ42IAAAAJ
+    icon: school
+  - label: GitHub
+    href: https://github.com/kaiwu-astro
+    icon: github
+schemaKnowsAbout:
+  - Computational astrophysics
+  - Direct N-body simulations
+  - Star cluster dynamics
+  - Planetary systems
+  - Free-floating planets
+  - NBODY6++GPU

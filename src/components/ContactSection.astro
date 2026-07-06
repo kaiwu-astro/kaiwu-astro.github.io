@@ -1,0 +1,39 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  emails: string[];
+}
+
+const { emails } = Astro.props;
+const instituteAddress = "Mönchhofstraße 12-14, 69120 Heidelberg";
+const mapHref = "https://www.openstreetmap.org/way/42765516";
+---
+
+<section class="contact page-section" id="contact" data-section>
+  <header>
+    <h2 class="h2 article-title">Contact</h2>
+  </header>
+
+  <p class="about-text">
+    Reach me at Heidelberg University or by email:
+    <a href={`mailto:${emails[0]}`} class="contact-window-link">{emails[0]} (preferred)</a>;
+    <a href={`mailto:${emails[1]}`} class="contact-window-link">{emails[1]}</a>.
+  </p>
+
+  <section class="location-box">
+    <div class="location-card">
+      <Icon name="location" />
+      <div>
+        <p>Astronomisches Rechen-Institut, Heidelberg University</p>
+        <address>{instituteAddress}</address>
+        <a href={mapHref} target="_blank" rel="noopener noreferrer">Open location map</a>
+      </div>
+    </div>
+  </section>
+
+  <p class="legal-links">
+    <a href="/impressum.html">Impressum</a>
+    <a href="/privacy.html">Privacy</a>
+  </p>
+</section>

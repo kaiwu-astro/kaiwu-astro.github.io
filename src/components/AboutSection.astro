@@ -1,0 +1,43 @@
+---
+import Icon from "./Icon.astro";
+
+interface Service {
+  title: string;
+  icon: string;
+  text: string;
+}
+
+interface Props {
+  about: {
+    title: string;
+  };
+  services: Service[];
+}
+
+const { about, services } = Astro.props;
+---
+
+<section class="about page-section" id="about" data-section>
+  <header>
+    <h2 class="h2 article-title">{about.title}</h2>
+  </header>
+
+  <div class="about-text">
+    <slot />
+  </div>
+
+  <section class="service" aria-labelledby="service-title">
+    <h3 class="h3 service-title" id="service-title">What I'm doing</h3>
+    <ul class="service-list">
+      {services.map((service) => (
+        <li class="service-item">
+          <div class="service-icon-box"><Icon name={service.icon} /></div>
+          <div class="service-content-box">
+            <h4 class="h4 service-item-title">{service.title}</h4>
+            <p class="service-item-text">{service.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</section>

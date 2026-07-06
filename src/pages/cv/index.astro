@@ -1,0 +1,20 @@
+---
+import { getEntry } from "astro:content";
+
+const profile = (await getEntry("site", "profile"))!.data;
+const cvHref = `/${profile.cvFile}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content={`0; url=${cvHref}`}>
+    <meta name="robots" content="noindex">
+    <link rel="canonical" href={`https://about.wukai.work/${profile.cvFile}`}>
+    <title>CV | Kai Wu</title>
+  </head>
+  <body>
+    <p>Redirecting to <a href={cvHref}>Kai Wu's CV</a>.</p>
+  </body>
+</html>

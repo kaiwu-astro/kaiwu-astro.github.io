@@ -1,0 +1,67 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+  image?: string;
+  personSchema?: Record<string, unknown>;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalPath = "/",
+  image = "https://about.wukai.work/assets/images/social-card.png",
+  personSchema,
+  bodyClass = ""
+} = Astro.props;
+
+const canonical = new URL(canonicalPath, Astro.site ?? "https://about.wukai.work").toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <meta name="description" content={description}>
+    <link rel="canonical" href={canonical}>
+    <meta property="og:type" content={personSchema ? "profile" : "website"}>
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:url" content={canonical}>
+    <meta property="og:image" content={image}>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={image}>
+    <link rel="shortcut icon" href="/assets/images/avatar.svg" type="image/svg+xml">
+    <script is:inline>
+      try {
+        const storedTheme = localStorage.getItem("theme");
+        if (storedTheme === "light" || storedTheme === "dark") {
+          document.documentElement.dataset.theme = storedTheme;
+        }
+      } catch {
+        document.documentElement.removeAttribute("data-theme");
+      }
+    </script>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    {personSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />}
+  </head>
+  <body class={bodyClass}>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" aria-live="polite">
+      <svg class="site-icon theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">
+        <use href="/assets/images/icons.svg#icon-sun"></use>
+      </svg>
+      <svg class="site-icon theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">
+        <use href="/assets/images/icons.svg#icon-moon"></use>
+      </svg>
+    </button>
+    <slot />
+    <script is:inline src="/assets/js/script.js"></script>
+  </body>
+</html>

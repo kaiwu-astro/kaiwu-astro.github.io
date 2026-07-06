@@ -1,0 +1,56 @@
+---
+import Icon from "./Icon.astro";
+
+interface Item {
+  title: string;
+  subtitle?: string;
+  text: string[];
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  icon: string;
+  recordLink?: {
+    label: string;
+    href: string;
+  };
+  items: Item[];
+}
+
+const { title, icon, recordLink, items } = Astro.props;
+---
+
+<section class="timeline" data-timeline>
+  <div class="title-wrapper">
+    <div class="icon-box"><Icon name={icon} /></div>
+    <div>
+      <h3 class="h3">{title}</h3>
+      {recordLink && (
+        <p class="timeline-note">
+          <a href={recordLink.href} target="_blank" rel="noopener noreferrer">{recordLink.label}</a>
+        </p>
+      )}
+    </div>
+  </div>
+
+  <ol class="timeline-list">
+    {items.map((item) => (
+      <li class="timeline-item">
+        {item.href ? (
+          <a href={item.href} class="inherit-link" target="_blank" rel="noopener noreferrer">
+            <h4 class="h4 timeline-item-title">{item.title}</h4>
+            {item.subtitle && <span>{item.subtitle}</span>}
+            {item.text.map((paragraph) => <p class="timeline-text" set:html={paragraph} />)}
+          </a>
+        ) : (
+          <>
+            <h4 class="h4 timeline-item-title">{item.title}</h4>
+            {item.subtitle && <span>{item.subtitle}</span>}
+            {item.text.map((paragraph) => <p class="timeline-text" set:html={paragraph} />)}
+          </>
+        )}
+      </li>
+    ))}
+  </ol>
+</section>

@@ -1,0 +1,13 @@
+items:
+  - title: Star cluster dynamics
+    icon: sparkles
+    text: Direct N-body modelling of globular clusters, nuclear star clusters, and open clusters.
+  - title: Planetary systems
+    icon: planet
+    text: Dynamical stability of planets, debris discs, comets, and host-star orbits in dense stellar environments.
+  - title: High performance computing
+    icon: terminal
+    text: GPU-accelerated astrophysical simulations, large simulation analysis, and reproducible research workflows.
+  - title: Scientific software
+    icon: branch
+    text: Open-source development and code administration for NBODY6++GPU and related simulation tools.

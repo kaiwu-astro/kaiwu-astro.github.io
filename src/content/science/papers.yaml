@@ -1,0 +1,35 @@
+title: Papers
+icon: document
+category: papers
+filterLabel: Papers
+recordLink:
+  label: See a complete record at NASA ADS
+  href: https://ui.adsabs.harvard.edu/user/libraries/r6M69CAYQUWEcOfqPQ74_g
+items:
+  - title: DRAGON-III simulation - I. Multi-messenger observations in the computer and comparison with observed astrophysical objects
+    subtitle: Kai Wu, Francesco Flammini Dotti, Marcelo C. Vergara, Vahid Amiri, and Rainer Spurzem
+    text:
+      - In preparation.
+  - title: Linking the survivability of planets in star clusters with the orbits of their host stars
+    subtitle: Kai Wu, M. B. N. Kouwenhoven, Rainer Spurzem, and Francesco Flammini Dotti
+    text:
+      - In preparation.
+  - title: Direct N-body simulations of rotating and extremely massive Population III star clusters
+    subtitle: Astronomy and Astrophysics, 2026, 709, A142
+    href: https://doi.org/10.1051/0004-6361/202558659
+    text:
+      - Kai Wu, Ataru Tanikawa, Francesco Flammini Dotti, Marcelo C. Vergara, Boyuan Liu, Albrecht W. H. Kamlah, Manuel Arca Sedda, Nadine Neumayer, and Rainer Spurzem.
+  - title: "DRAGON-III simulations: modelling million-body globular and nuclear star clusters over cosmic time"
+    subtitle: Accepted in Proceedings IAU Symposium 398
+    text:
+      - Kai Wu, Philip Cho, Rainer Spurzem, Long Wang, Francesco Flammini Dotti, and Vahid Amiri.
+  - title: Influence of planets on debris discs in star clusters - II. The impact of stellar densities
+    subtitle: Monthly Notices of the Royal Astronomical Society, 2024, 533(4)
+    href: https://doi.org/10.1093/mnras/stae2067
+    text:
+      - Kai Wu, M. B. N. Kouwenhoven, Rainer Spurzem, and Francesco Flammini Dotti.
+  - title: Influence of planets on debris discs in star clusters - I. The 50 au Jupiter
+    subtitle: Monthly Notices of the Royal Astronomical Society, 2023, 523(4)
+    href: https://doi.org/10.1093/mnras/stad1673
+    text:
+      - Kai Wu, M. B. N. Kouwenhoven, Rainer Spurzem, and Xiaoying Pang.

@@ -1,0 +1,61 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Sidebar from "../components/Sidebar.astro";
+import AnchorNav from "../components/AnchorNav.astro";
+import AboutSection from "../components/AboutSection.astro";
+import CareerSection from "../components/CareerSection.astro";
+import ScienceSection from "../components/ScienceSection.astro";
+import ContactSection from "../components/ContactSection.astro";
+
+const profile = (await getEntry("site", "profile"))!.data;
+const about = (await getEntry("about", "main"))!;
+const { Content: AboutContent } = await render(about);
+const services = (await getEntry("services", "main"))!.data.items;
+
+const timelineOrder = ["work", "education", "skills"];
+const timelineGroups = (await getCollection("timeline")).sort(
+  (a, b) => timelineOrder.indexOf(a.id) - timelineOrder.indexOf(b.id)
+);
+
+const scienceOrder = ["papers", "teaching", "talks", "conferences", "activities"];
+const scienceGroups = (await getCollection("science")).sort(
+  (a, b) => scienceOrder.indexOf(a.id) - scienceOrder.indexOf(b.id)
+);
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  jobTitle: "Postdoctoral Researcher",
+  affiliation: {
+    "@type": "CollegeOrUniversity",
+    name: "Heidelberg University"
+  },
+  url: profile.canonical,
+  sameAs: profile.socials.map((social) => social.href),
+  knowsAbout: profile.schemaKnowsAbout
+};
+---
+
+<BaseLayout
+  title="Kai Wu | Computational Astrophysicist"
+  description={profile.description}
+  canonicalPath="/"
+  image={profile.socialImage}
+  personSchema={personSchema}
+>
+  <main>
+    <Sidebar profile={profile} />
+
+    <div class="main-content">
+      <AnchorNav />
+      <AboutSection about={about.data} services={services}>
+        <AboutContent />
+      </AboutSection>
+      <CareerSection groups={timelineGroups} />
+      <ScienceSection groups={scienceGroups} />
+      <ContactSection emails={profile.emails} />
+    </div>
+  </main>
+</BaseLayout>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" role="img" aria-labelledby="title desc">
+  <title id="title">Kai Wu avatar placeholder</title>
+  <desc id="desc">A dark square avatar placeholder with the initials KW.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#383838"/>
+      <stop offset="1" stop-color="#151515"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="56" fill="url(#bg)"/>
+  <circle cx="305" cy="82" r="44" fill="#ffdb70" opacity=".14"/>
+  <path d="M76 282c38-66 75-99 112-99 42 0 74 41 136 41" fill="none" stroke="#ffdb70" stroke-width="16" stroke-linecap="round" opacity=".72"/>
+  <text x="200" y="205" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-size="116" font-weight="600" fill="#fafafa">KW</text>
+</svg>
