@@ -1,0 +1,10 @@
+---
+interface Props {
+  label: string;
+  email: string;
+}
+
+const { label, email } = Astro.props;
+---
+
+<p>{label} <a href={`mailto:${email}`}>{email}</a>.</p>

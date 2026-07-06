@@ -1,13 +1,17 @@
 ---
 import { getEntry, render } from "astro:content";
+import LegalEmail from "../components/LegalEmail.astro";
 import LegalLayout from "../layouts/LegalLayout.astro";
 
 const legal = (await getEntry("legal", "privacy"))!;
+const profile = (await getEntry("site", "profile"))!;
 const { Content } = await render(legal);
+const primaryEmail = profile.data.emails[0];
 ---
 
 <LegalLayout title={legal.data.title} description={legal.data.description} canonicalPath={legal.data.canonicalPath}>
   <section class="about-text legal-text">
     <Content />
+    <LegalEmail label="For privacy questions, contact Kai Wu at" email={primaryEmail} />
   </section>
 </LegalLayout>
