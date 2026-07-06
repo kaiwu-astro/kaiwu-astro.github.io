@@ -2,6 +2,8 @@
 
 This site is an Astro static site. Editable content lives under `src/content/`, the Pages CMS configuration lives in `.pages.yml`, and static public files live under `public/`.
 
+The canonical repository is `/Users/wukai/source_codes/personal_website`. The previous Astro staging repository at `../astro_personal_website` was used only as a read-only source during the 2026-07-06 migration and should not be used for future development or pushes.
+
 ## Editing Workflow
 
 Use Pages CMS for routine content edits. Pages CMS reads `.pages.yml` from the repository root and presents form editors for the profile, homepage, career, scientific work, and legal pages. When Pages CMS saves a change, it writes the edited Markdown/YAML file back to the repository as a Git commit.
@@ -92,3 +94,59 @@ Static hosting files are in `public/`:
 - `sitemap.xml`
 
 Update `sitemap.xml` when public URLs or important last-modified dates change.
+
+## Deployment
+
+GitHub Pages should publish through GitHub Actions, not from the branch root. The workflow in `.github/workflows/site-checks.yml` runs:
+
+```bash
+npm ci
+npm run check
+npm run build
+npm run verify
+```
+
+On `main` pushes, the workflow uploads `dist/` with `actions/upload-pages-artifact` and deploys it with `actions/deploy-pages`.
+
+During the migration, old root-level static files may remain temporarily so the site does not break if Pages is still pointed at the branch root. After Pages is confirmed to publish from Actions and the deployed Astro site is verified, remove the old root-level copies: `index.html`, `privacy.html`, `impressum.html`, `assets/`, `cv/`, `KaiWu_CV_0705.pdf`, `robots.txt`, `sitemap.xml`, `CNAME`, and `.nojekyll`. Keep the corresponding files under `public/`.
+
+## Cache And Versioned Assets
+
+Cloudflare may cache `/assets/*` in browsers for one month. When CSS, JavaScript, SVG, or images under `public/assets/` change, rename the changed files with a version suffix such as `style-v20260706.css`, update every Astro/script reference, and update `scripts/verify-build.mjs`.
+
+Do not long-cache unversioned HTML or unversioned public resources. HTML browser cache should stay around 30 minutes. Versioned CV PDFs may use a one-month browser cache.
+
+## Email Protection
+
+Email addresses are maintained in `src/content/site/profile.yaml`. Pages that display email addresses should read from that profile data instead of duplicating addresses in Markdown.
+
+The deployed site relies on Cloudflare Email Address Obfuscation. After publishing, verify that the live HTML for `/`, `/privacy.html`, and `/impressum.html` does not expose raw email addresses or `mailto:` links and includes Cloudflare email protection markup.
+
+## Cloudflare Release Checklist
+
+Expected baseline:
+
+- `about.wukai.work` is a proxied CNAME to `kaiwu-astro.github.io`.
+- SSL/TLS is `Full (strict)`. If 525/526 appears, temporarily roll back to `Full` and record the reason.
+- Always Use HTTPS, Automatic HTTPS Rewrites, Brotli, and Email Address Obfuscation are enabled.
+- Rocket Loader is disabled.
+- HTML cache is 1800 seconds.
+- `/assets/*` and versioned `KaiWu_CV*.pdf` / `KaiWU_CV*.pdf` cache is 2592000 seconds.
+- `/cv` and `/cv/` redirect to the current versioned CV PDF, with Astro `/cv/` kept as a fallback.
+- Response headers include `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, and `Permissions-Policy: camera=(), microphone=(), geolocation=()`.
+
+Do not enable wildcard DNS, HSTS preload, `includeSubDomains` HSTS, or aggressive Bot/WAF challenges unless explicitly reviewed.
+
+After any Cloudflare or release change, verify:
+
+- `https://about.wukai.work/`
+- `https://about.wukai.work/privacy.html`
+- `https://about.wukai.work/impressum.html`
+- `https://about.wukai.work/cv`
+- `https://about.wukai.work/cv/`
+- the current CV PDF
+- `https://about.wukai.work/robots.txt`
+- `https://about.wukai.work/sitemap.xml`
+- cache headers for HTML, versioned assets, and the CV PDF
+- security headers
+- theme toggle and science filters
