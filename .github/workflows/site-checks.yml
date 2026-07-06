@@ -1,29 +1,60 @@
-name: Site checks
+name: Astro site checks
 
 on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  check:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check required files
-        run: |
-          test -f index.html
-          test -f robots.txt
-          test -f sitemap.xml
-          test -f KaiWu_CV_0705.pdf
-          test -f assets/images/social-card.png
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
 
-      - name: Check XML and JavaScript syntax
-        run: |
-          python3 -m xml.etree.ElementTree sitemap.xml
-          python3 -m xml.etree.ElementTree assets/images/icons.svg
-          node --check assets/js/script.js
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Check blocked third-party dependencies
-        run: |
-          ! grep -RInE 'fonts\.googleapis\.com|fonts\.gstatic\.com|unpkg\.com|google\.com/maps|maps\.google\.com|Google Analytics|ion-icon|data-email|KaiWU_CV' index.html privacy.html impressum.html assets/css/style.css assets/js/script.js sitemap.xml robots.txt
+      - name: Check Astro project
+        run: npm run check
+
+      - name: Build site
+        run: npm run build
+
+      - name: Verify build output
+        run: npm run verify
+
+      - name: Configure Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
