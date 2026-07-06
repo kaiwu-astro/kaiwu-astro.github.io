@@ -35,7 +35,7 @@ syncThemeToggle();
 
 const setIcon = (icon, name) => {
   const use = icon?.querySelector("use");
-  if (use) use.setAttribute("href", `/assets/images/icons.svg#icon-${name}`);
+  if (use) use.setAttribute("href", `/assets/images/icons-v20260706.svg#icon-${name}`);
 };
 
 const sidebar = qs("[data-sidebar]");

@@ -34,7 +34,7 @@ npm run preview -- --host 127.0.0.1
 
 Edit `src/content/site/profile.yaml` for the name, title, emails, location, CV filename, SEO description, social links, and schema.org `Person` data.
 
-Edit `src/content/about/main.md` for the About title and Markdown body. Edit `src/content/services/main.yaml` for the "What I'm doing" cards. Each service item needs a `title`, `icon`, and `text`. The `icon` value must match a symbol id in `public/assets/images/icons.svg` without the `icon-` prefix.
+Edit `src/content/about/main.md` for the About title and Markdown body. Edit `src/content/services/main.yaml` for the "What I'm doing" cards. Each service item needs a `title`, `icon`, and `text`. The `icon` value must match a symbol id in `public/assets/images/icons-v20260706.svg` without the `icon-` prefix.
 
 ## Career
 

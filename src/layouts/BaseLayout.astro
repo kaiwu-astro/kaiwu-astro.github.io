@@ -49,19 +49,19 @@ const canonical = new URL(canonicalPath, Astro.site ?? "https://about.wukai.work
         document.documentElement.removeAttribute("data-theme");
       }
     </script>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style-v20260706.css">
     {personSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />}
   </head>
   <body class={bodyClass}>
     <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" aria-live="polite">
       <svg class="site-icon theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">
-        <use href="/assets/images/icons.svg#icon-sun"></use>
+        <use href="/assets/images/icons-v20260706.svg#icon-sun"></use>
       </svg>
       <svg class="site-icon theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">
-        <use href="/assets/images/icons.svg#icon-moon"></use>
+        <use href="/assets/images/icons-v20260706.svg#icon-moon"></use>
       </svg>
     </button>
     <slot />
-    <script is:inline src="/assets/js/script.js"></script>
+    <script is:inline src="/assets/js/script-v20260706.js"></script>
   </body>
 </html>

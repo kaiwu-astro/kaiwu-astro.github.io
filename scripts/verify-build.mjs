@@ -13,10 +13,10 @@ const requiredFiles = [
   "sitemap.xml",
   "robots.txt",
   "CNAME",
-  "assets/css/style.css",
-  "assets/js/script.js",
+  "assets/css/style-v20260706.css",
+  "assets/js/script-v20260706.js",
   "assets/images/profile-photo.jpg",
-  "assets/images/icons.svg",
+  "assets/images/icons-v20260706.svg",
   "assets/images/avatar.svg"
 ];
 
@@ -53,8 +53,8 @@ if (!existsSync(dist)) {
   }
 
   const indexHtml = readFileSync(join(dist, "index.html"), "utf8");
-  const styleCss = readFileSync(join(dist, "assets/css/style.css"), "utf8");
-  const scriptJs = readFileSync(join(dist, "assets/js/script.js"), "utf8");
+  const styleCss = readFileSync(join(dist, "assets/css/style-v20260706.css"), "utf8");
+  const scriptJs = readFileSync(join(dist, "assets/js/script-v20260706.js"), "utf8");
   const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
   const cvPage = readFileSync(join(dist, "cv/index.html"), "utf8");
 
