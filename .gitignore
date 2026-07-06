@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+__pycache__/
+.DS_Store
+comments.md
+implementation-notes.html
