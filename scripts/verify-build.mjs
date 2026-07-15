@@ -13,6 +13,7 @@ const requiredFiles = [
   "sitemap.xml",
   "robots.txt",
   "CNAME",
+  "get_config.sh",
   "assets/css/style-v20260706.css",
   "assets/js/script-v20260706.js",
   "assets/images/profile-photo.jpg",
