@@ -9,7 +9,7 @@ const requiredFiles = [
   "impressum.html",
   "privacy.html",
   "cv/index.html",
-  "KaiWu_CV_0705.pdf",
+  "KaiWU_CV_20260718.pdf",
   "sitemap.xml",
   "robots.txt",
   "CNAME",
@@ -23,7 +23,7 @@ const requiredFiles = [
 
 const sitemapUrls = [
   "https://about.wukai.work/",
-  "https://about.wukai.work/KaiWu_CV_0705.pdf",
+  "https://about.wukai.work/KaiWU_CV_20260718.pdf",
   "https://about.wukai.work/cv/",
   "https://about.wukai.work/impressum.html",
   "https://about.wukai.work/privacy.html"
@@ -72,7 +72,7 @@ if (!existsSync(dist)) {
     if (!sitemap.includes(`<loc>${url}</loc>`)) fail(`sitemap missing ${url}`);
   }
 
-  if (!cvPage.includes("KaiWu_CV_0705.pdf")) fail("cv redirect page does not point to the PDF");
+  if (!cvPage.includes("KaiWU_CV_20260718.pdf")) fail("cv redirect page does not point to the PDF");
   if (!readFileSync(join(dist, "robots.txt"), "utf8").includes("Sitemap: https://about.wukai.work/sitemap.xml")) {
     fail("robots.txt missing sitemap URL");
   }

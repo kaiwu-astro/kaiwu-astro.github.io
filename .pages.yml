@@ -33,7 +33,7 @@ content:
       - name: cvFile
         label: CV file name
         type: string
-        description: Keep the PDF in public/ and enter its filename, for example KaiWu_CV_0705.pdf.
+        description: Keep the PDF in public/ and enter its versioned filename, for example KaiWU_CV_YYYYMMDD.pdf.
         required: true
       - name: canonical
         label: Canonical URL
