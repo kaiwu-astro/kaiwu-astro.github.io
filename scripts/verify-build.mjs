@@ -14,8 +14,8 @@ const requiredFiles = [
   "robots.txt",
   "CNAME",
   "get_config.sh",
-  "assets/css/style-v20260706.css",
-  "assets/js/script-v20260706.js",
+  "assets/css/style-v20260718.css",
+  "assets/js/script-v20260718.js",
   "assets/images/profile-photo.jpg",
   "assets/images/icons-v20260706.svg",
   "assets/images/avatar.svg"
@@ -54,14 +54,18 @@ if (!existsSync(dist)) {
   }
 
   const indexHtml = readFileSync(join(dist, "index.html"), "utf8");
-  const styleCss = readFileSync(join(dist, "assets/css/style-v20260706.css"), "utf8");
-  const scriptJs = readFileSync(join(dist, "assets/js/script-v20260706.js"), "utf8");
+  const styleCss = readFileSync(join(dist, "assets/css/style-v20260718.css"), "utf8");
+  const scriptJs = readFileSync(join(dist, "assets/js/script-v20260718.js"), "utf8");
   const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
   const cvPage = readFileSync(join(dist, "cv/index.html"), "utf8");
 
   for (const id of ["about", "career", "scientific-work", "contact"]) {
     if (!indexHtml.includes(`id="${id}"`)) fail(`homepage missing #${id}`);
     if (!indexHtml.includes(`href="#${id}"`)) fail(`homepage missing nav link for #${id}`);
+  }
+
+  if (!indexHtml.includes('<p class="chinese-name" lang="zh-Hans">吴开</p>')) {
+    fail("homepage missing the Chinese name");
   }
 
   for (const label of ["All", "Papers", "Teaching", "Talks", "Conferences", "Activities"]) {

@@ -49,7 +49,7 @@ const canonical = new URL(canonicalPath, Astro.site ?? "https://about.wukai.work
         document.documentElement.removeAttribute("data-theme");
       }
     </script>
-    <link rel="stylesheet" href="/assets/css/style-v20260706.css">
+    <link rel="stylesheet" href="/assets/css/style-v20260718.css">
     {personSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />}
   </head>
   <body class={bodyClass}>
@@ -62,6 +62,6 @@ const canonical = new URL(canonicalPath, Astro.site ?? "https://about.wukai.work
       </svg>
     </button>
     <slot />
-    <script is:inline src="/assets/js/script-v20260706.js"></script>
+    <script is:inline src="/assets/js/script-v20260718.js"></script>
   </body>
 </html>

@@ -50,6 +50,12 @@ sidebarBtn?.addEventListener("click", () => {
 const navLinks = qsa("[data-nav-link]");
 const sections = qsa("[data-section]");
 
+const activeSection = (id) => {
+  navLinks.forEach((link) => {
+    link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+  });
+};
+
 navLinks.forEach((link) => {
   link.addEventListener("click", (event) => {
     const targetId = link.getAttribute("href");
@@ -57,34 +63,45 @@ navLinks.forEach((link) => {
     if (!target) return;
 
     event.preventDefault();
+    activeSection(target.id);
     target.scrollIntoView({ behavior: "smooth", block: "start" });
     history.replaceState(null, "", targetId);
   });
 });
 
 if (sections.length && navLinks.length) {
-  const activeSection = (id) => {
-    navLinks.forEach((link) => {
-      link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
-    });
+  let updatePending = false;
+
+  const syncActiveSection = () => {
+    const activationLine = window.innerHeight * 0.35;
+    const atPageEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    let active = atPageEnd ? sections[sections.length - 1] : sections[0];
+
+    if (!atPageEnd) {
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top > activationLine) break;
+        active = section;
+      }
+    }
+
+    if (active?.id) {
+      activeSection(active.id);
+      if (window.location.hash !== `#${active.id}`) {
+        history.replaceState(null, "", `#${active.id}`);
+      }
+    }
+    updatePending = false;
   };
 
-  const observer = new IntersectionObserver((entries) => {
-    const visible = entries
-      .filter((entry) => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+  const requestActiveSectionSync = () => {
+    if (updatePending) return;
+    updatePending = true;
+    requestAnimationFrame(syncActiveSection);
+  };
 
-    if (!visible?.target?.id) return;
-    activeSection(visible.target.id);
-    if (window.location.hash !== `#${visible.target.id}`) {
-      history.replaceState(null, "", `#${visible.target.id}`);
-    }
-  }, {
-    rootMargin: "-35% 0px -50% 0px",
-    threshold: [0.05, 0.2, 0.5, 0.8]
-  });
-
-  sections.forEach((section) => observer.observe(section));
+  window.addEventListener("scroll", requestActiveSectionSync, { passive: true });
+  window.addEventListener("resize", requestActiveSectionSync);
+  requestActiveSectionSync();
 }
 
 const select = qs("[data-select]");
