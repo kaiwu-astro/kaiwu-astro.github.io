@@ -56,6 +56,7 @@ if (!existsSync(dist)) {
   const indexHtml = readFileSync(join(dist, "index.html"), "utf8");
   const styleCss = readFileSync(join(dist, "assets/css/style-v20260718.css"), "utf8");
   const scriptJs = readFileSync(join(dist, "assets/js/script-v20260718.js"), "utf8");
+  const getConfigScript = readFileSync(join(dist, "get_config.sh"), "utf8");
   const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
   const cvPage = readFileSync(join(dist, "cv/index.html"), "utf8");
 
@@ -79,6 +80,11 @@ if (!existsSync(dist)) {
   if (!cvPage.includes("KaiWU_CV_20260718.pdf")) fail("cv redirect page does not point to the PDF");
   if (!readFileSync(join(dist, "robots.txt"), "utf8").includes("Sitemap: https://about.wukai.work/sitemap.xml")) {
     fail("robots.txt missing sitemap URL");
+  }
+
+  if (!getConfigScript.startsWith("#!/bin/sh\n")) fail("get_config.sh is not a POSIX sh script");
+  if (/set -o pipefail|IFS=\$'/.test(getConfigScript)) {
+    fail("get_config.sh contains Bash-only shell syntax");
   }
 
   const combined = `${indexHtml}\n${styleCss}\n${scriptJs}`;

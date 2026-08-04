@@ -1,7 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # Install or refresh kai-configs at its recommended location.
-set -euo pipefail
-IFS=$'\n\t'
+set -eu
 umask 077
 
 repo_url='git@github.com:kaiwu-astro/kai-configs.git'
