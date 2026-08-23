@@ -1,0 +1,162 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Kai Wu Academic Profile API",
+    "version": "1.0.0",
+    "description": "Machine-readable metadata for Kai Wu's public academic profile.",
+    "license": {
+      "name": "Copyright Kai Wu; all rights reserved",
+      "url": "https://about.wukai.work/impressum.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://about.wukai.work"
+    }
+  ],
+  "security": [],
+  "paths": {
+    "/api/site.json": {
+      "get": {
+        "operationId": "getSiteProfile",
+        "summary": "Get public site metadata",
+        "responses": {
+          "200": {
+            "description": "Public academic profile metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteProfile"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SiteProfile": {
+        "type": "object",
+        "required": [
+          "schemaVersion",
+          "name",
+          "description",
+          "url",
+          "affiliation",
+          "topics",
+          "links"
+        ],
+        "properties": {
+          "schemaVersion": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "affiliation": {
+            "type": "string"
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "curriculumVitae",
+              "openapi",
+              "sitemap"
+            ],
+            "properties": {
+              "curriculumVitae": {
+                "type": "string",
+                "format": "uri"
+              },
+              "openapi": {
+                "type": "string",
+                "format": "uri"
+              },
+              "sitemap": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        }
+      },
+      "Problem": {
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "instance",
+          "code",
+          "message",
+          "hint"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri-reference"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri-reference"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "hint": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Problem": {
+        "description": "A machine-readable error response",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Public academic profile",
+    "url": "https://about.wukai.work/"
+  }
+}

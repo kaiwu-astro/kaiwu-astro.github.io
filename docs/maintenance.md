@@ -92,6 +92,34 @@ Static hosting files are in `public/`:
 - `CNAME`
 - `robots.txt`
 - `sitemap.xml`
+- `openapi.json`
+
+The generated `/api/site.json` endpoint reads from `src/content/site/profile.yaml`. Keep the OpenAPI document aligned with that endpoint and run `npm run verify` after changing either file.
+
+## Agent Access
+
+`robots.txt` explicitly permits the supported AI crawlers, but robots directives cannot override a Cloudflare challenge. In Cloudflare Security Settings, configure the Search, Agent, and Training AI bot policies as **Allow (do not block)** for this public academic site.
+
+Check Security Analytics before changing rules so the blocking service is known. If Super Bot Fight Mode, managed WAF rules, Browser Integrity Check, or a custom rule caused the challenge, add the following zone-level custom rule before blocking/challenge rules:
+
+```text
+(http.host eq "about.wukai.work" and (
+  http.user_agent contains "GPTBot" or
+  http.user_agent contains "ClaudeBot" or
+  http.user_agent contains "ChatGPT-User" or
+  http.user_agent contains "PerplexityBot" or
+  http.user_agent contains "Google-Extended" or
+  http.user_agent contains "Applebot-Extended" or
+  http.user_agent contains "DeepSeekBot" or
+  http.user_agent contains "ora-agent"
+))
+```
+
+Use the **Skip** action for all remaining custom rules, Super Bot Fight Mode, managed rules, Browser Integrity Check, and User Agent Blocking. Keep rate limiting active. Cloudflare Bot Fight Mode cannot be bypassed by a Skip rule; if Security Analytics identifies it as the blocker, turn Bot Fight Mode off and rely on scoped WAF/rate-limit rules instead.
+
+The source for structured API errors is `cloudflare/api-errors-worker.mjs`. Deploy it as a Cloudflare Worker route limited to `about.wukai.work/api/*`. The handler passes successful static API responses through and converts upstream HTML errors to `application/problem+json` with `code`, `message`, and `hint`. It deliberately does not run on normal HTML or asset routes.
+
+After the Worker and bot rules are deployed, run the user-agent checks in the release checklist for every listed crawler. Each homepage request must return HTTP 200 without `cf-mitigated: challenge`; `/api/site.json` must return JSON; and an unknown `/api/...` path must return a non-2xx `application/problem+json` response.
 
 Update `sitemap.xml` when public URLs or important last-modified dates change.
 
