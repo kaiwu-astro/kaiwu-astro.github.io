@@ -72,9 +72,35 @@ Replace the PDF in `public/`. If the filename changes:
 1. Put the new PDF in `public/`.
 2. Update `cvFile` in `src/content/site/profile.yaml`.
 3. Update `public/sitemap.xml`.
-4. Run the local commands above.
+4. Update the Cloudflare redirect target (see below).
+5. Run the local commands above.
 
-The public `/cv/` URL redirects to the file named by `cvFile`, so the redirect stays stable as long as `cvFile` matches the PDF filename.
+### Cloudflare CV Redirect
+
+The public CV aliases are served from two places, and the first one wins:
+
+- **Cloudflare Redirect Rule** — a zone rule in the `http_request_dynamic_redirect` phase sends `/cv` and `/cv/` to the versioned PDF. It runs at the edge, so it shadows the Astro page below.
+- **Astro `/cv/` fallback** — `src/pages/cv/index.astro` builds a meta-refresh page from `cvFile`. It only takes effect when the Cloudflare rule is missing or disabled.
+
+Because the edge rule shadows the fallback, changing `cvFile` alone is not enough. Until the Cloudflare target is updated, `/cv` and `/cv/` return a 302 to the previous, now-deleted PDF and resolve to a 404.
+
+The rule to edit:
+
+- Dashboard: `wukai.work` → Rules → Redirect Rules
+- Description: `Redirect stable CV aliases to the current versioned PDF`
+- `ref`: `redirect_about_cv_to_current_pdf`
+- Expression: `(http.host eq "about.wukai.work" and http.request.uri.path in {"/cv" "/cv/"})`
+- Action: 302 to the current versioned PDF
+
+Change only the target URL. Keep the expression, the status code, and `preserve_query_string` as they are. Leave the other rules in that ruleset alone.
+
+Editing through the API needs edit permission on zone rules (Zone → Config → Rules). A read-only grant can read the ruleset but fails the write with `request is not authorized`. Look the rule up by phase and `ref` rather than hardcoding ids:
+
+- `GET /zones?name=wukai.work` for the zone id
+- `GET /zones/{zone_id}/rulesets`, then take the entry whose `phase` is `http_request_dynamic_redirect`
+- `GET /zones/{zone_id}/rulesets/{ruleset_id}`, then take the rule whose `ref` is `redirect_about_cv_to_current_pdf`
+
+After updating, confirm that both `/cv` and `/cv/` end on the new PDF rather than on a 404.
 
 ## Legal Pages
 
