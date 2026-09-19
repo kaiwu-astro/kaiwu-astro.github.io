@@ -67,6 +67,16 @@ The display order is controlled in `src/pages/index.astro` by `scienceOrder`.
 
 ## Updating The CV
 
+The only editable CV source is `/Users/wukai/Library/Mobile Documents/com~apple~CloudDocs/LOST.DEAR/Career/CV/KaiWU_CV.docx`. After saving it in Word, run the deliberate local release command:
+
+```sh
+npm run publish:cv -- --publish
+```
+
+It asks local Microsoft Word to open the only editable DOCX in place, never saves changes to it, and writes only a fixed hidden PDF staging file alongside it. This avoids triggering per-temporary-directory Word permissions. The script verifies the staged PDF signature and `pdfinfo` metadata, then updates the profile and sitemap together. It refuses an unstable iCloud source and refuses to overwrite a different PDF with the same date. It does not commit, push, or change Cloudflare: inspect the diff, run the checks below, then release through the normal Git and Cloudflare steps.
+
+`--use-existing-pdf` is an explicit recovery mode for a PDF manually exported to the same CV directory on that date; it refuses a PDF older than the DOCX. It is not part of the normal workflow.
+
 Replace the PDF in `public/`. If the filename changes:
 
 1. Put the new PDF in `public/`.

@@ -4,6 +4,10 @@ import { join } from "node:path";
 const root = process.cwd();
 const dist = join(root, "dist");
 
+const profile = readFileSync(join(root, "src/content/site/profile.yaml"), "utf8");
+const cvFile = profile.match(/^cvFile: (KaiWU_CV_\d{8}\.pdf)$/m)?.[1];
+if (!cvFile) throw new Error("profile.yaml must contain a versioned KaiWU_CV_YYYYMMDD.pdf cvFile");
+
 const requiredFiles = [
   "index.html",
   "impressum.html",
@@ -11,7 +15,7 @@ const requiredFiles = [
   "cv/index.html",
   "api/site.json",
   "openapi.json",
-  "KaiWU_CV_20260915.pdf",
+  cvFile,
   "sitemap.xml",
   "robots.txt",
   "CNAME",
@@ -27,7 +31,7 @@ const sitemapUrls = [
   "https://about.wukai.work/",
   "https://about.wukai.work/api/site.json",
   "https://about.wukai.work/openapi.json",
-  "https://about.wukai.work/KaiWU_CV_20260915.pdf",
+  `https://about.wukai.work/${cvFile}`,
   "https://about.wukai.work/cv/",
   "https://about.wukai.work/impressum.html",
   "https://about.wukai.work/privacy.html"
@@ -99,7 +103,7 @@ if (!existsSync(dist)) {
     if (!sitemap.includes(`<loc>${url}</loc>`)) fail(`sitemap missing ${url}`);
   }
 
-  if (!cvPage.includes("KaiWU_CV_20260915.pdf")) fail("cv redirect page does not point to the PDF");
+  if (!cvPage.includes(cvFile)) fail("cv redirect page does not point to the PDF");
   if (!robots.includes("Sitemap: https://about.wukai.work/sitemap.xml")) {
     fail("robots.txt missing sitemap URL");
   }
