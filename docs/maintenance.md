@@ -67,50 +67,25 @@ The display order is controlled in `src/pages/index.astro` by `scienceOrder`.
 
 ## Updating The CV
 
-The only editable CV source is `/Users/wukai/Library/Mobile Documents/com~apple~CloudDocs/LOST.DEAR/Career/CV/KaiWU_CV.docx`. After saving it in Word, run the deliberate local release command:
+The only editable CV source is `/Users/wukai/Library/Mobile Documents/com~apple~CloudDocs/LOST.DEAR/Career/CV/KaiWU_CV.docx`. Save it in Word, then run the complete local release command:
 
 ```sh
-npm run publish:cv -- --publish
+npm run publish:cv
 ```
 
-It asks local Microsoft Word to open the only editable DOCX in place, never saves changes to it, and writes only a fixed hidden PDF staging file alongside it. This avoids triggering per-temporary-directory Word permissions. The script verifies the staged PDF signature and `pdfinfo` metadata, then updates the profile and sitemap together. It refuses an unstable iCloud source and refuses to overwrite a different PDF with the same date. It does not commit, push, or change Cloudflare: inspect the diff, run the checks below, then release through the normal Git and Cloudflare steps.
+The command checks that `main` is clean and current with `origin/main`, confirms the iCloud source is stable, and exports it read-only through Microsoft Word. Word is sandboxed on this Mac: writing a PDF to a new folder can show a grant-access dialog, while the iCloud CV directory and Word's container cannot be used. The script therefore always writes its transient export to `~/Library/Caches/kaiwu-cv-export/KaiWU_CV.pdf`, deleting the previous copy first. The first run may ask you to allow Terminal to control Microsoft Word; if it stops, check Word for that dialog.
 
-`--use-existing-pdf` is an explicit recovery mode for a PDF manually exported to the same CV directory on that date; it refuses a PDF older than the DOCX. It is not part of the normal workflow.
+It verifies the PDF signature, size, `pdfinfo`, name, and today's Berlin date from the Word `DATE` field. If its text, ignoring dates, matches the currently published CV, it exits without changing anything. Otherwise, it writes `public/KaiWU_CV_YYYYMMDD.pdf`, removes prior versioned CV PDFs, updates `cvFile` and both CV sitemap dates, runs `npm run check`, `npm run build`, and `npm run verify`, commits, pushes, waits for the GitHub Pages workflow, and verifies the live PDF and `/cv/` page. Use `npm run publish:cv -- --no-push` to stop after the local checks for testing.
 
-Replace the PDF in `public/`. If the filename changes:
+If a local check fails, the changed files are deliberately left for inspection. Because the release began from a clean tree, revert that attempt from the repository root with:
 
-1. Put the new PDF in `public/`.
-2. Update `cvFile` in `src/content/site/profile.yaml`.
-3. Update `public/sitemap.xml`.
-4. Update the Cloudflare redirect target (see below).
-5. Run the local commands above.
+```sh
+git reset --hard HEAD && git clean -fd public
+```
 
 ### Cloudflare CV Redirect
 
-The public CV aliases are served from two places, and the first one wins:
-
-- **Cloudflare Redirect Rule** — a zone rule in the `http_request_dynamic_redirect` phase sends `/cv` and `/cv/` to the versioned PDF. It runs at the edge, so it shadows the Astro page below.
-- **Astro `/cv/` fallback** — `src/pages/cv/index.astro` builds a meta-refresh page from `cvFile`. It only takes effect when the Cloudflare rule is missing or disabled.
-
-Because the edge rule shadows the fallback, changing `cvFile` alone is not enough. Until the Cloudflare target is updated, `/cv` and `/cv/` return a 302 to the previous, now-deleted PDF and resolve to a 404.
-
-The rule to edit:
-
-- Dashboard: `wukai.work` → Rules → Redirect Rules
-- Description: `Redirect stable CV aliases to the current versioned PDF`
-- `ref`: `redirect_about_cv_to_current_pdf`
-- Expression: `(http.host eq "about.wukai.work" and http.request.uri.path in {"/cv" "/cv/"})`
-- Action: 302 to the current versioned PDF
-
-Change only the target URL. Keep the expression, the status code, and `preserve_query_string` as they are. Leave the other rules in that ruleset alone.
-
-Editing through the API needs edit permission on zone rules (Zone → Config → Rules). A read-only grant can read the ruleset but fails the write with `request is not authorized`. Look the rule up by phase and `ref` rather than hardcoding ids:
-
-- `GET /zones?name=wukai.work` for the zone id
-- `GET /zones/{zone_id}/rulesets`, then take the entry whose `phase` is `http_request_dynamic_redirect`
-- `GET /zones/{zone_id}/rulesets/{ruleset_id}`, then take the rule whose `ref` is `redirect_about_cv_to_current_pdf`
-
-After updating, confirm that both `/cv` and `/cv/` end on the new PDF rather than on a 404.
+Since 2026-09-19, the Cloudflare rule `redirect_about_cv_to_current_pdf` is disabled. `/cv` and `/cv/` are served by the Astro `/cv/` fallback (`src/pages/cv/index.astro`); GitHub Pages redirects `/cv` to `/cv/`. CV updates therefore require no Cloudflare change. Keep the rule disabled unless this routing design is deliberately changed.
 
 ## Legal Pages
 

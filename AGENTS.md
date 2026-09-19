@@ -76,7 +76,8 @@ Astro、HTML、CSS、JavaScript 和 YAML 使用两个空格缩进。HTML 结构�
 - `public/` 中的 PDF 文件
 - `src/content/site/profile.yaml` 的 `cvFile`
 - `public/sitemap.xml`
-- Cloudflare `/cv` 和 `/cv/` redirect 目标
+
+自 2026-09-19 起，Cloudflare 规则 `redirect_about_cv_to_current_pdf` 已禁用。`/cv` 和 `/cv/` 由 Astro `/cv/` fallback 提供，GitHub Pages 会将 `/cv` 重定向到 `/cv/`，所以更新 CV 无需修改 Cloudflare。
 
 修改任何收录到 `public/sitemap.xml` 的公开页面、CV 文件或重要公开 URL 时，必须同步更新对应 `<lastmod>`。本迁移日期为 `2026-07-06`。
 
@@ -115,7 +116,7 @@ Pull Request 应包含简短说明、视觉改动截图、执行过的检查命�
 - SSL/TLS 使用 `Full (strict)`；如出现 525/526，立即回退 `Full` 并记录原因。
 - 启用 Always Use HTTPS、Automatic HTTPS Rewrites、Email Address Obfuscation 和 Brotli。
 - 禁用 Rocket Loader。
-- 配置 `/cv` 和 `/cv/` 到当前版本化 CV PDF 的 redirect，同时保留 Astro `/cv/` fallback。
+- 自 2026-09-19 起保持 Cloudflare 规则 `redirect_about_cv_to_current_pdf` 禁用；`/cv` 和 `/cv/` 由 Astro `/cv/` fallback 提供，GitHub Pages 将 `/cv` 重定向到 `/cv/`，更新 CV 无需 Cloudflare 改动。
 - `/assets/*` Browser Cache TTL 为 1 month。
 - HTML 页面 Browser Cache TTL 控制在 30 min。
 - 版本化 CV PDF Browser Cache TTL 为 1 month。
