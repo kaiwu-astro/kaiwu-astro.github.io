@@ -160,10 +160,11 @@ async function verifyLiveSite(targetName) {
   while (Date.now() <= deadline) {
     try {
       const [pdfResponse, cvResponse] = await Promise.all([
-        fetch(pdfUrl, { cache: "no-store" }),
-        fetch(cvUrl, { cache: "no-store" })
+        fetch(pdfUrl, { cache: "no-store", signal: AbortSignal.timeout(30000) }),
+        fetch(cvUrl, { cache: "no-store", signal: AbortSignal.timeout(30000) })
       ]);
-      const cvHtml = await cvResponse.text();
+      // Drain the PDF body too; an unread response keeps Node from exiting.
+      const [cvHtml] = await Promise.all([cvResponse.text(), pdfResponse.arrayBuffer()]);
       const pdfContentType = pdfResponse.headers.get("content-type")?.toLowerCase() ?? "";
       const pdfReady = pdfResponse.status === 200 && pdfContentType.includes("pdf");
       const cvReady = cvResponse.status === 200 && cvHtml.includes(targetName);
