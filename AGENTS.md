@@ -69,6 +69,8 @@ Astro、HTML、CSS、JavaScript 和 YAML 使用两个空格缩进。HTML 结构�
 - `unpkg.com`
 - Google Analytics
 
+GoatCounter 是经确认允许的统计方案：用于了解访客量和来源，无 cookie，并与 conference-calendar 共用账户。替代方案是仅提供请求量的 Cloudflare Zone Analytics 或 Cloudflare Web Analytics。风险是第三方会收到请求技术数据；`count.js` 必须以版本化文件名在本站托管，更新时换新文件名；线上 CSP 由 Cloudflare 响应头改写规则下发，`connect-src` 和 `img-src` 需放行 `https://wukai.goatcounter.com`。
+
 ## CV、Sitemap 与公开 URL
 
 替换 CV 时使用新的版本化文件名，并同步更新：
@@ -120,7 +122,7 @@ Pull Request 应包含简短说明、视觉改动截图、执行过的检查命�
 - `/assets/*` Browser Cache TTL 为 1 month。
 - HTML 页面 Browser Cache TTL 控制在 30 min。
 - 版本化 CV PDF Browser Cache TTL 为 1 month。
-- 安全响应头可使用 `X-Content-Type-Options: nosniff`、`Referrer-Policy: strict-origin-when-cross-origin`、`Permissions-Policy: camera=(), microphone=(), geolocation=()` 和与当前本地资源匹配的保守 CSP。
+- 安全响应头可使用 `X-Content-Type-Options: nosniff`、`Referrer-Policy: strict-origin-when-cross-origin`、`Permissions-Policy: camera=(), microphone=(), geolocation=()` 和与当前本地资源匹配的保守 CSP；Cloudflare 响应头改写规则下发的 CSP 须在 `connect-src` 和 `img-src` 放行 `https://wukai.goatcounter.com`。
 
 不要在没有明确验证的情况下启用 wildcard DNS、HSTS preload、`includeSubDomains` HSTS 或激进 Bot/WAF 挑战规则。
 

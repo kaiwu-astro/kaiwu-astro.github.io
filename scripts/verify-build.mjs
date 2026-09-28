@@ -22,6 +22,7 @@ const requiredFiles = [
   "get_config.sh",
   "assets/css/style-v20260718.css",
   "assets/js/script-v20260718.js",
+  "assets/goatcounter-count-v20260928.js",
   "assets/images/profile-photo.jpg",
   "assets/images/icons-v20260706.svg",
   "assets/images/avatar.svg"
@@ -104,6 +105,20 @@ if (!existsSync(dist)) {
   }
 
   if (!cvPage.includes(cvFile)) fail("cv redirect page does not point to the PDF");
+  for (const page of ["index.html", "privacy.html", "impressum.html", "cv/index.html"]) {
+    const html = readFileSync(join(dist, page), "utf8");
+    if (!/<script\b(?=[^>]*\bdata-goatcounter="https:\/\/wukai\.goatcounter\.com\/count")(?=[^>]*\basync(?:\s|=|>))(?=[^>]*\bsrc="\/assets\/goatcounter-count-v20260928\.js")[^>]*><\/script>/i.test(html)) {
+      fail(`${page} missing local GoatCounter script`);
+    }
+    if (/<script\b[^>]*\bsrc=["'](?:https?:)?\/\/gc\.zgo\.at\/count\.js["']/i.test(html)) {
+      fail(`${page} references remote GoatCounter script`);
+    }
+  }
+  for (const page of ["index.html", "cv/index.html"]) {
+    if (!readFileSync(join(dist, page), "utf8").includes('data-goatcounter-click="cv-pdf"')) {
+      fail(`${page} missing CV click event`);
+    }
+  }
   if (!robots.includes("Sitemap: https://about.wukai.work/sitemap.xml")) {
     fail("robots.txt missing sitemap URL");
   }
