@@ -67,21 +67,41 @@ The display order is controlled in `src/pages/index.astro` by `scienceOrder`.
 
 ## Updating The CV
 
-The only editable CV source is `/Users/wukai/Library/Mobile Documents/com~apple~CloudDocs/LOST.DEAR/Career/CV/KaiWU_CV.docx`. Save it in Word, then run the complete local release command:
+The CV is published automatically from the LaTeX source in the private KIT repo (`Career/job-application-context-kit`, branch `main`). Editing and committing the CV in KIT is all that is needed; there is no Word step any more.
+
+**Source and trigger.** The CV sources are `academic/cv/KaiWU_CV.tex`, `academic/cv/cv-inprep.bib` and `academic/sources/publications.bib`. Only committed content counts; the KIT working tree is never read. The KIT commit is the change marker.
+
+**Cutoff rule (Europe/Berlin).** At run time, if the local time is 23:30 or later, the cutoff is today 23:59:59; otherwise yesterday 23:59:59. The publisher takes the newest commit C on KIT `main`, at or before the cutoff, that touched a CV source file, and D = C's committer date (Berlin). If C is newer than the source commit recorded in `scripts/cv-publication.json`, it compiles C and publishes `public/KaiWU_CV_<D>.pdf`. So a commit made during the day goes out at 23:30 that night, or in the next run after midnight. If several days were skipped, only the last change day is published, at most one version per day (a second commit on an already-published day waits for a later day's change). The footer `Updated <D> | Page n` and the file name both use D.
+
+**Build.** `git archive C academic/cv academic/sources/publications.bib` is extracted into `~/Library/Caches/kaiwu-cv-build/` and compiled there with `latexmk -usepretex='\newcommand\cvupdated{<D>}'`. The PDF must be A4, contain `Kai Wu` and `Updated <D>`, and must not contain `Academic References` (the public base CV has no referee details). If its text, ignoring dates, equals the currently published CV, nothing is published; that verdict is cached in `~/Library/Caches/kaiwu-cv-publish/evaluated.json`.
+
+**Release steps.** Delete the previous versioned PDF, write `public/KaiWU_CV_<D>.pdf`, update `cvFile`, both CV sitemap dates and `scripts/cv-publication.json` (source commit, date, PDF name; committed with the release for traceability), run `npm run check`, `npm run build`, `npm run verify`, commit (`Update CV for <D>`, source SHA in the body), push, wait for the Pages workflow, and check the live PDF and `/cv/`. The preflight requires `main` clean, on `main`, not behind `origin/main`, and not ahead of it (unreviewed local commits are never pushed by the publisher).
+
+**Scheduling.** The launchd user agent `work.wukai.publish-cv` (template `scripts/work.wukai.publish-cv.plist`, installed at `~/Library/LaunchAgents/`) runs `scripts/publish-cv-launchd.sh` at 23:30 daily, at login/boot (`RunAtLoad`), and every hour (`StartInterval`), so missed runs are caught up. With nothing to publish a run is an instant no-op that logs a few lines. A lock in `~/Library/Caches/kaiwu-cv-publish/lock` prevents concurrent runs. Log: `~/Library/Logs/publish-cv.log`. On failure (dirty or behind `main`, compile or network error, ...) the run is skipped, a macOS notification appears, and the next trigger retries.
 
 ```sh
-npm run publish:cv
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/work.wukai.publish-cv.plist   # enable
+launchctl bootout gui/$(id -u)/work.wukai.publish-cv                                  # disable (then delete the plist to remove)
+launchctl kickstart gui/$(id -u)/work.wukai.publish-cv                                # run now
 ```
 
-The command checks that `main` is clean and current with `origin/main`, confirms the iCloud source is stable, and exports it read-only through Microsoft Word. Word is sandboxed on this Mac: writing a PDF to a new folder can show a grant-access dialog, while the iCloud CV directory and Word's container cannot be used. The script therefore always writes its transient export to `~/Library/Caches/kaiwu-cv-export/KaiWU_CV.pdf`, deleting the previous copy first. The first run may ask you to allow Terminal to control Microsoft Word; if it stops, check Word for that dialog.
-
-It verifies the PDF signature, size, `pdfinfo`, name, and today's Berlin date from the Word `DATE` field. If its text, ignoring dates, matches the currently published CV, it exits without changing anything. Otherwise, it writes `public/KaiWU_CV_YYYYMMDD.pdf`, removes prior versioned CV PDFs, updates `cvFile` and both CV sitemap dates, runs `npm run check`, `npm run build`, and `npm run verify`, commits, pushes, waits for the GitHub Pages workflow, and verifies the live PDF and `/cv/` page. Use `npm run publish:cv -- --no-push` to stop after the local checks for testing.
-
-If a local check fails, the changed files are deliberately left for inspection. Because the release began from a clean tree, revert that attempt from the repository root with:
+**Manual commands.**
 
 ```sh
-git reset --hard HEAD && git clean -fd public
+npm run publish:cv                              # same as the scheduled run
+npm run publish:cv -- --dry-run                 # print cutoff, C, D, and whether it would publish; changes nothing
+npm run publish:cv -- --include-today           # publish today's committed version immediately (cutoff = today)
+npm run publish:cv -- --no-push                 # stop after local checks; changes left unstaged
+npm run publish:cv -- --selftest                # check PATH tools, KIT access and gh auth
 ```
+
+**Troubleshooting.**
+
+- Read `~/Library/Logs/publish-cv.log`. `--dry-run` shows why nothing is published (e.g. the commit is not yet before the cutoff, or the day already has a version).
+- If a local check fails after files were prepared, they are left for inspection. Because the release began from a clean tree, revert with `git reset --hard HEAD && git clean -fd public` (this discards uncommitted work, so confirm the tree only holds the failed release).
+- launchd reads the KIT repo under iCloud (`~/Library/Mobile Documents`), which macOS privacy (TCC) may restrict for background processes; `--selftest` run through launchd verifies access. If blocked, grant `/bin/sh` and `/opt/homebrew/bin/node` Full Disk Access in System Settings > Privacy & Security.
+- To retry a cached "text unchanged" verdict, delete `~/Library/Caches/kaiwu-cv-publish/evaluated.json`.
+- Test hooks: `CV_KIT_REPO=<path>` points at another KIT clone; `CV_NOW=<ISO time>` overrides the clock.
 
 ### Cloudflare CV Redirect
 
