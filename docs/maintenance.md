@@ -77,6 +77,8 @@ The CV is published automatically from the LaTeX source in the private KIT repo 
 
 **Release steps.** Delete the previous versioned PDF, write `public/KaiWU_CV_<D>.pdf`, update `cvFile`, both CV sitemap dates and `scripts/cv-publication.json` (source commit, date, PDF name; committed with the release for traceability), run `npm run check`, `npm run build`, `npm run verify`, commit (`Update CV for <D>`, source SHA in the body), push, wait for the Pages workflow, and check the live PDF and `/cv/`. The preflight requires `main` clean, on `main`, not behind `origin/main`, and not ahead of it (unreviewed local commits are never pushed by the publisher).
 
+**Same-day re-release (`--force`).** `--force` skips the "a CV dated D is already published" rule, so a later KIT commit on an already-published day can go out the same evening (e.g. after fixing something in the first version). It still requires C to differ from the recorded source commit, still refuses when the text (ignoring dates) equals the published CV, and runs every PDF check (no referees, no phone number). Because Cloudflare may cache the PDF under its old URL, a same-day re-release gets a sequence suffix: `KaiWU_CV_<D>-2.pdf`, then `-3`, ...; the old file is deleted as usual. `cvFile`, the sitemap, `cv-publication.json`, `npm run verify` and the live check all accept `KaiWU_CV_YYYYMMDD[-N].pdf`. Use `--dry-run --force` to see the verdict and file name first.
+
 **Scheduling.** The launchd user agent `work.wukai.publish-cv` (template `scripts/work.wukai.publish-cv.plist`, installed at `~/Library/LaunchAgents/`) runs `scripts/publish-cv-launchd.sh` at 23:30 daily, at login/boot (`RunAtLoad`), and every hour (`StartInterval`), so missed runs are caught up. With nothing to publish a run is an instant no-op that logs a few lines. A lock in `~/Library/Caches/kaiwu-cv-publish/lock` prevents concurrent runs. Log: `~/Library/Logs/publish-cv.log`. On failure (dirty or behind `main`, compile or network error, ...) the run is skipped, a macOS notification appears, and the next trigger retries.
 
 ```sh
@@ -91,6 +93,7 @@ launchctl kickstart gui/$(id -u)/work.wukai.publish-cv                          
 npm run publish:cv                              # same as the scheduled run
 npm run publish:cv -- --dry-run                 # print cutoff, C, D, and whether it would publish; changes nothing
 npm run publish:cv -- --include-today           # publish today's committed version immediately (cutoff = today)
+npm run publish:cv -- --force                   # ignore the one-version-per-day rule (see below)
 npm run publish:cv -- --no-push                 # stop after local checks; changes left unstaged
 npm run publish:cv -- --selftest                # check PATH tools, KIT access and gh auth
 ```

@@ -5,8 +5,8 @@ const root = process.cwd();
 const dist = join(root, "dist");
 
 const profile = readFileSync(join(root, "src/content/site/profile.yaml"), "utf8");
-const cvFile = profile.match(/^cvFile: (KaiWU_CV_\d{8}\.pdf)$/m)?.[1];
-if (!cvFile) throw new Error("profile.yaml must contain a versioned KaiWU_CV_YYYYMMDD.pdf cvFile");
+const cvFile = profile.match(/^cvFile: (KaiWU_CV_\d{8}(?:-\d+)?\.pdf)$/m)?.[1];
+if (!cvFile) throw new Error("profile.yaml must contain a versioned KaiWU_CV_YYYYMMDD[-N].pdf cvFile");
 
 const requiredFiles = [
   "index.html",

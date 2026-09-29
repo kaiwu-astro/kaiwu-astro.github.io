@@ -1,7 +1,7 @@
 // Publishes the academic CV (LaTeX, private KIT repo) to this website.
 // Design and operations: docs/maintenance.md, "Updating The CV".
 //
-//   node scripts/publish-cv.mjs [--dry-run] [--no-push] [--include-today] [--selftest]
+//   node scripts/publish-cv.mjs [--dry-run] [--no-push] [--include-today] [--force] [--selftest]
 //
 // Test hooks (environment): CV_KIT_REPO (KIT path), CV_NOW (ISO timestamp replacing the clock).
 import { copyFile, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
@@ -35,11 +35,12 @@ const cutoffHour = 23;
 const cutoffMinute = 30;
 
 const args = process.argv.slice(2);
-const known = new Set(["--dry-run", "--no-push", "--include-today", "--selftest"]);
+const known = new Set(["--dry-run", "--no-push", "--include-today", "--force", "--selftest"]);
 const unknown = args.filter((arg) => !known.has(arg));
 const dryRun = args.includes("--dry-run");
 const noPush = args.includes("--no-push");
 const includeToday = args.includes("--include-today");
+const force = args.includes("--force");
 const selftest = args.includes("--selftest");
 let changesPrepared = false;
 let committed = false;
@@ -241,9 +242,20 @@ async function isAncestor(ancestor, descendant) {
 }
 
 function cvFileFromProfile(profile) {
-  const cvFile = profile.match(/^cvFile: (KaiWU_CV_\d{8}\.pdf)$/m)?.[1];
-  if (!cvFile) fail("profile.yaml must contain a versioned KaiWU_CV_YYYYMMDD.pdf cvFile");
+  const cvFile = profile.match(/^cvFile: (KaiWU_CV_\d{8}(?:-\d+)?\.pdf)$/m)?.[1];
+  if (!cvFile) fail("profile.yaml must contain a versioned KaiWU_CV_YYYYMMDD[-N].pdf cvFile");
   return cvFile;
+}
+
+// KaiWU_CV_YYYYMMDD.pdf, or KaiWU_CV_YYYYMMDD-N.pdf (N >= 2) when that day already has a version in public/.
+async function nextTargetName(compact) {
+  const existing = new RegExp(`^KaiWU_CV_${compact}(?:-(\\d+))?\\.pdf$`);
+  let highest = 0;
+  for (const name of await readdir(publicDirectory)) {
+    const match = name.match(existing);
+    if (match) highest = Math.max(highest, match[1] ? Number(match[1]) : 1);
+  }
+  return highest === 0 ? `KaiWU_CV_${compact}.pdf` : `KaiWU_CV_${compact}-${highest + 1}.pdf`;
 }
 
 // ---------- PDF ----------
@@ -414,7 +426,7 @@ async function main() {
     date = berlinDateOfEpoch(source.epoch);
     if (source.sha === published.kitCommit) decision = "already published (or baseline)";
     else if (await isAncestor(source.sha, published.kitCommit)) decision = "already published (older than the recorded source commit)";
-    else if (published.commitDate && date.iso <= published.commitDate) {
+    else if (!force && published.commitDate && date.iso <= published.commitDate) {
       decision = `a CV dated ${published.commitDate} is already published; at most one version per day`;
     } else {
       const cache = await readJson(evalCachePath);
@@ -424,14 +436,16 @@ async function main() {
     }
   }
   const pending = Boolean(source) && !decision;
+  // A same-day re-release (--force) gets a sequence suffix (-2, -3, ...): Cloudflare may still serve the
+  // cached PDF under the old name, so the URL must change.
+  const targetName = pending ? await nextTargetName(date.compact) : undefined;
 
   log(`现在: ${cutoff.nowText}`);
   log(`截止: ${cutoff.label}`);
   log(`源提交 C: ${source ? `${source.sha.slice(0, 12)} (${date.iso})` : "无"}; 已发布所用: ${published.kitCommit.slice(0, 12)}${published.commitDate ? ` (${published.commitDate})` : ""}`);
-  log(pending ? `待发布: KaiWU_CV_${date.compact}.pdf (页脚 ${date.display})` : `无事可发: ${decision}`);
+  log(pending ? `待发布: ${targetName} (页脚 ${date.display})${force ? " [--force]" : ""}` : `无事可发: ${decision}`);
   if (dryRun || !pending) return;
 
-  const targetName = `KaiWU_CV_${date.compact}.pdf`;
   const targetPath = join(publicDirectory, targetName);
 
   log("1. 检查 Git 状态、远程分支和所需命令");
@@ -471,7 +485,7 @@ async function main() {
   const nextProfile = replaceExactly(profile, /^cvFile: .+$/m, `cvFile: ${targetName}`, "profile cvFile");
   const nextSitemap = replaceExactly(
     sitemap,
-    /<loc>https:\/\/about\.wukai\.work\/KaiWU_CV_\d{8}\.pdf<\/loc>\n    <lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/,
+    /<loc>https:\/\/about\.wukai\.work\/KaiWU_CV_\d{8}(?:-\d+)?\.pdf<\/loc>\n    <lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/,
     `<loc>https://about.wukai.work/${targetName}</loc>\n    <lastmod>${date.iso}</lastmod>`,
     "CV sitemap entry"
   );
@@ -483,7 +497,7 @@ async function main() {
   );
   const nextState = { kitCommit: source.sha, commitDate: date.iso, pdf: targetName };
   const previousCvs = (await readdir(publicDirectory)).filter(
-    (name) => /^KaiWU_CV_\d{8}\.pdf$/.test(name) && name !== targetName
+    (name) => /^KaiWU_CV_\d{8}(?:-\d+)?\.pdf$/.test(name) && name !== targetName
   );
   changesPrepared = true;
   await copyFile(builtPdf, targetPath);
