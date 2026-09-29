@@ -1,6 +1,5 @@
 {
-  "kitCommit": "af854ca161e178f6682b2005deafbf9062c7c4b8",
-  "commitDate": "2026-09-19",
-  "pdf": "KaiWU_CV_20260919.pdf",
-  "note": "baseline: publication state before automatic LaTeX publishing (Word-era CV); updated by scripts/publish-cv.mjs"
+  "kitCommit": "96b34490c630170938915e1cfc5f2e400a7cb2f2",
+  "commitDate": "2026-09-29",
+  "pdf": "KaiWU_CV_20260929.pdf"
 }
