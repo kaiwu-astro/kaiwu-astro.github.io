@@ -257,6 +257,34 @@ function withoutDates(text) {
   return text.replace(/\b\d{1,2} (January|February|March|April|May|June|July|August|September|October|November|December) \d{4}\b/g, "");
 }
 
+// The public CV must not carry a phone number. The number is hidden in the LaTeX source by \cvpublic;
+// this is the safety net. The main check is a generic international-number pattern, so no number
+// lives in this public repo. Optional: strings listed (one per line) in a local file outside the repo
+// are also refused, compared with digits normalised.
+const phonePattern = /\+\s?\d{1,3}[ \-.]?(?:\(0\))?[ \-.]?\d[\d \-.]{5,}\d/;
+const forbiddenStringsPath = join(homedir(), "Library/Application Support/kaiwu-cv-publish/forbidden-strings.txt");
+
+async function checkNoPhone(text) {
+  if (phonePattern.test(text)) fail("PDF contains something that looks like a phone number; refusing to publish");
+  let listed;
+  try {
+    listed = await readFile(forbiddenStringsPath, "utf8");
+  } catch (error) {
+    if (error.code === "ENOENT") return;
+    throw error;
+  }
+  const digitsOnly = (value) => value.replace(/\D/g, "");
+  const textDigits = digitsOnly(text);
+  const lowerText = text.toLowerCase();
+  for (const raw of listed.split("\n")) {
+    const entry = raw.trim();
+    if (!entry || entry.startsWith("#")) continue;
+    const digits = digitsOnly(entry);
+    const hit = digits.length >= 7 ? textDigits.includes(digits) : lowerText.includes(entry.toLowerCase());
+    if (hit) fail("PDF contains a string from the local forbidden-strings list; refusing to publish");
+  }
+}
+
 async function validatePdf(path, dateText) {
   const content = await readFile(path);
   if (content.length <= 1024 || !content.subarray(0, 5).equals(Buffer.from("%PDF-"))) {
@@ -271,6 +299,7 @@ async function validatePdf(path, dateText) {
   if (!text.includes("Kai Wu")) fail("PDF does not contain 'Kai Wu'; wrong document?");
   if (!text.includes(`Updated ${dateText}`)) fail(`PDF footer does not contain 'Updated ${dateText}'`);
   if (/Academic References/i.test(text)) fail("PDF contains 'Academic References'; refusing to publish referee details");
+  await checkNoPhone(text);
   return text;
 }
 
@@ -290,7 +319,7 @@ async function compileCv(commit, date) {
     )
   );
   const cvDirectory = join(buildDirectory, "academic/cv");
-  await run("latexmk", [`-usepretex=\\newcommand\\cvupdated{${date.display}}`], {
+  await run("latexmk", [`-usepretex=\\newcommand\\cvupdated{${date.display}}\\def\\cvpublic{}`], {
     cwd: cvDirectory,
     timeoutMs: 10 * 60 * 1000
   });
@@ -425,7 +454,7 @@ async function main() {
   log(`2. 从 KIT 提交 ${source.sha.slice(0, 12)} 导出并编译（页脚日期 ${date.display}）`);
   const builtPdf = await compileCv(source.sha, date);
 
-  log("3. 验证 PDF：A4、姓名、页脚日期、不含推荐人");
+  log("3. 验证 PDF：A4、姓名、页脚日期、不含推荐人和电话号码");
   const generatedText = await validatePdf(builtPdf, date.display);
 
   log("4. 比较编译文本与当前发布的 CV");
