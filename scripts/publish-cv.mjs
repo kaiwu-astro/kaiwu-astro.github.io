@@ -12,6 +12,10 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 process.chdir(root);
+// TeX lives outside the default PATH (e.g. when started by double-click or launchd).
+for (const extra of ["/Library/TeX/texbin", "/opt/homebrew/bin"]) {
+  if (!(process.env.PATH ?? "").split(":").includes(extra)) process.env.PATH = `${process.env.PATH ?? ""}:${extra}`;
+}
 
 const kitRepo =
   process.env.CV_KIT_REPO ??
