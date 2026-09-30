@@ -6,7 +6,7 @@
 
 - `src/pages/` 定义公开页面：主页、`privacy.html`、`impressum.html` 和 `/cv/` fallback。
 - `src/layouts/` 和 `src/components/` 存放 Astro 布局和组件。
-- `src/content/` 是主要内容来源，包含 profile、about、timeline、science、services 和 legal 内容。
+- `src/content/` 是主要内容来源，包含 profile、about、services 和 legal 内容。
 - `public/` 存放构建时原样复制到 `dist/` 的公开文件，包括 `CNAME`、`robots.txt`、`sitemap.xml`、CV PDF 和静态资源。
 - `public/assets/` 存放 CSS、JavaScript、图片和 SVG。Cloudflare 会对 `/assets/*` 设置较长浏览器缓存，变更这些资源时必须使用版本化文件名。
 - `.pages.yml` 是 Pages CMS 配置。
@@ -47,15 +47,15 @@ npm run verify
 - 站点身份、邮箱、CV 文件名、SEO 描述和社交链接：`src/content/site/profile.yaml`
 - About：`src/content/about/main.md`
 - What I'm doing：`src/content/services/main.yaml`
-- Career：`src/content/timeline/*.yaml`
-- Scientific Work：`src/content/science/*.yaml`
+- 主页保留简短 About 叙述及少量研究与技术方向；不要重复 CV 中可能过时的履历、完整论文、讲座、会议、教学、技能和学术服务罗列。
+- CV PDF 文件名位于 profile 的 `cvFile`；主页的 `Updated` 日期从该版本化文件名自动生成。
 - Privacy 和 Impressum 正文：`src/content/legal/*.md`
 
 邮箱必须集中维护在 `src/content/site/profile.yaml`。Privacy/Impressum 若需要显示邮箱，应通过组件或共享 profile 数据渲染，不要在多个内容文件中手写重复邮箱。
 
 ## 代码风格与命名约定
 
-Astro、HTML、CSS、JavaScript 和 YAML 使用两个空格缩进。HTML 结构保持语义化，各主页区块使用稳定 `id`，例如 `about`、`career`、`scientific-work`、`contact`。
+Astro、HTML、CSS、JavaScript 和 YAML 使用两个空格缩进。HTML 结构保持语义化；主页导航锚点必须与实际区块一致，目前使用 `about` 和 `contact`。
 
 新增资源文件名使用小写和连字符风格，例如 `profile-photo-v2.jpg`、`style-v20260706.css`。变更 CSS、JavaScript、SVG、图片等受 `/assets/*` 长缓存影响的资源时，必须改用新的版本化文件名，并同步更新 Astro 引用和 `scripts/verify-build.mjs`。
 
@@ -93,7 +93,7 @@ npm run build
 npm run verify
 ```
 
-视觉或交互改动还需要本地打开页面检查桌面和移动端布局、导航、主题切换、科学工作筛选、外部链接、CV 链接和浏览器控制台。
+视觉或交互改动还需要本地打开页面检查桌面和移动端布局、导航、主题切换、CV 入口和自动日期、学术链接、法律链接及浏览器控制台。
 
 GitHub Actions 会重复运行 `npm ci`、`npm run check`、`npm run build` 和 `npm run verify`，但不能替代本地视觉检查。
 

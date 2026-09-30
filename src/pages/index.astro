@@ -1,11 +1,9 @@
 ---
-import { getCollection, getEntry, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Sidebar from "../components/Sidebar.astro";
 import AnchorNav from "../components/AnchorNav.astro";
 import AboutSection from "../components/AboutSection.astro";
-import CareerSection from "../components/CareerSection.astro";
-import ScienceSection from "../components/ScienceSection.astro";
 import ContactSection from "../components/ContactSection.astro";
 
 const profile = (await getEntry("site", "profile"))!.data;
@@ -13,15 +11,28 @@ const about = (await getEntry("about", "main"))!;
 const { Content: AboutContent } = await render(about);
 const services = (await getEntry("services", "main"))!.data.items;
 
-const timelineOrder = ["work", "education", "skills"];
-const timelineGroups = (await getCollection("timeline")).sort(
-  (a, b) => timelineOrder.indexOf(a.id) - timelineOrder.indexOf(b.id)
-);
+const cvFilenameMatch = profile.cvFile.match(/^KaiWU_CV_(\d{4})(\d{2})(\d{2})(?:-\d+)?\.pdf$/);
+if (!cvFilenameMatch) {
+  throw new Error("profile.cvFile must match KaiWU_CV_YYYYMMDD[-N].pdf");
+}
 
-const scienceOrder = ["papers", "teaching", "talks", "conferences", "activities"];
-const scienceGroups = (await getCollection("science")).sort(
-  (a, b) => scienceOrder.indexOf(a.id) - scienceOrder.indexOf(b.id)
-);
+const [, year, month, day] = cvFilenameMatch;
+const cvDate = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));
+if (
+  cvDate.getUTCFullYear() !== Number(year) ||
+  cvDate.getUTCMonth() !== Number(month) - 1 ||
+  cvDate.getUTCDate() !== Number(day)
+) {
+  throw new Error("profile.cvFile contains an invalid date");
+}
+
+const cvUpdatedIso = `${year}-${month}-${day}`;
+const cvUpdatedDate = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC"
+}).format(cvDate);
 
 const personSchema = {
   "@context": "https://schema.org",
@@ -50,11 +61,16 @@ const personSchema = {
 
     <div class="main-content">
       <AnchorNav />
-      <AboutSection about={about.data} services={services}>
+      <AboutSection
+        about={about.data}
+        services={services}
+        cvFile={profile.cvFile}
+        cvUpdatedDate={cvUpdatedDate}
+        cvUpdatedIso={cvUpdatedIso}
+        profileLinks={profile.socials}
+      >
         <AboutContent />
       </AboutSection>
-      <CareerSection groups={timelineGroups} />
-      <ScienceSection groups={scienceGroups} />
       <ContactSection emails={profile.emails} />
     </div>
   </main>

@@ -83,7 +83,7 @@ content:
         format: yaml
         fields:
           - name: items
-            label: Services
+            label: Research and technical directions
             type: object
             list:
               collapsible:
@@ -102,65 +102,6 @@ content:
                 label: Text
                 type: text
                 required: true
-
-  - name: career
-    label: Career
-    type: collection
-    path: src/content/timeline
-    format: yaml
-    fields:
-      - name: title
-        label: Group title
-        type: string
-        required: true
-      - name: icon
-        label: Icon
-        type: string
-        required: true
-      - name: items
-        label: Items
-        component: timeline_item
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{title}"
-
-  - name: scientific-work
-    label: Scientific Work
-    type: collection
-    path: src/content/science
-    format: yaml
-    fields:
-      - name: title
-        label: Group title
-        type: string
-        required: true
-      - name: icon
-        label: Icon
-        type: string
-        required: true
-      - name: category
-        label: Category
-        type: select
-        options:
-          values:
-            - papers
-            - teaching
-            - talks
-            - conferences
-            - activities
-        required: true
-      - name: filterLabel
-        label: Filter label
-        type: string
-        required: true
-      - name: items
-        label: Items
-        component: timeline_item
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{title}"
 
   - name: legal-pages
     label: Legal Pages
@@ -203,78 +144,3 @@ components:
       - name: icon
         label: Icon
         type: string
-
-  timeline_item:
-    type: object
-    label: Timeline item
-    fields:
-      - name: title
-        label: Title
-        type: string
-        required: true
-      - name: subtitle
-        label: Subtitle
-        type: string
-      - name: text
-        label: Text paragraphs
-        type: text
-        list: true
-        required: true
-      - name: href
-        label: Link
-        type: string
-
-  timeline_group:
-    type: object
-    label: Timeline group
-    fields:
-      - name: title
-        label: Group title
-        type: string
-        required: true
-      - name: icon
-        label: Icon
-        type: string
-        required: true
-      - name: items
-        label: Items
-        component: timeline_item
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{title}"
-
-  science_group:
-    type: object
-    label: Science group
-    fields:
-      - name: title
-        label: Group title
-        type: string
-        required: true
-      - name: icon
-        label: Icon
-        type: string
-        required: true
-      - name: category
-        label: Category
-        type: select
-        options:
-          values:
-            - papers
-            - teaching
-            - talks
-            - conferences
-            - activities
-        required: true
-      - name: filterLabel
-        label: Filter label
-        type: string
-        required: true
-      - name: items
-        label: Items
-        component: timeline_item
-        list:
-          collapsible:
-            collapsed: true
-            summary: "{title}"

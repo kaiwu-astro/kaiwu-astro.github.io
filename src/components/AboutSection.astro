@@ -7,14 +7,23 @@ interface Service {
   text: string;
 }
 
+interface SocialLink {
+  label: string;
+  href: string;
+}
+
 interface Props {
   about: {
     title: string;
   };
   services: Service[];
+  cvFile: string;
+  cvUpdatedDate: string;
+  cvUpdatedIso: string;
+  profileLinks: SocialLink[];
 }
 
-const { about, services } = Astro.props;
+const { about, services, cvFile, cvUpdatedDate, cvUpdatedIso, profileLinks } = Astro.props;
 ---
 
 <section class="about page-section" id="about" data-section>
@@ -22,9 +31,40 @@ const { about, services } = Astro.props;
     <h2 class="h2 article-title">{about.title}</h2>
   </header>
 
+  <div class="cv-entry" role="group" aria-labelledby="cv-entry-title">
+    <div class="cv-entry-copy">
+      <h3 class="h3 cv-entry-title" id="cv-entry-title">Curriculum Vitae</h3>
+      <p class="cv-entry-description">For a complete record of my appointments, publications, and academic activities.</p>
+      <p class="cv-entry-updated">Updated <time datetime={cvUpdatedIso} data-cv-updated={cvUpdatedIso}>{cvUpdatedDate}</time></p>
+    </div>
+    <a
+      href={`/${cvFile}`}
+      class="cv-download-link"
+      target="_blank"
+      rel="noopener noreferrer"
+      data-goatcounter-click="cv-pdf"
+      data-goatcounter-title="Download CV"
+      data-cv-entry
+    >
+      <Icon name="download" class="inline-icon-align" />
+      CV (PDF)
+    </a>
+  </div>
+
   <div class="about-text">
     <slot />
   </div>
+
+  <nav class="academic-profiles" aria-label="Academic profiles">
+    <span class="academic-profiles-label">Profiles</span>
+    <ul class="academic-profile-list">
+      {profileLinks.map((link) => (
+        <li>
+          <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
 
   <section class="service" aria-labelledby="service-title">
     <h3 class="h3 service-title" id="service-title">What I'm doing</h3>

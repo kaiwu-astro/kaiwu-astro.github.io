@@ -5,8 +5,26 @@ const root = process.cwd();
 const dist = join(root, "dist");
 
 const profile = readFileSync(join(root, "src/content/site/profile.yaml"), "utf8");
-const cvFile = profile.match(/^cvFile: (KaiWU_CV_\d{8}(?:-\d+)?\.pdf)$/m)?.[1];
-if (!cvFile) throw new Error("profile.yaml must contain a versioned KaiWU_CV_YYYYMMDD[-N].pdf cvFile");
+const cvFileMatch = profile.match(/^cvFile: (KaiWU_CV_(\d{4})(\d{2})(\d{2})(?:-\d+)?\.pdf)$/m);
+if (!cvFileMatch) throw new Error("profile.yaml must contain a versioned KaiWU_CV_YYYYMMDD[-N].pdf cvFile");
+
+const [, cvFile, year, month, day] = cvFileMatch;
+const cvDate = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day)));
+if (
+  cvDate.getUTCFullYear() !== Number(year) ||
+  cvDate.getUTCMonth() !== Number(month) - 1 ||
+  cvDate.getUTCDate() !== Number(day)
+) {
+  throw new Error("profile.yaml cvFile contains an invalid date");
+}
+
+const cvUpdatedIso = `${year}-${month}-${day}`;
+const cvUpdatedDate = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC"
+}).format(cvDate);
 
 const requiredFiles = [
   "index.html",
@@ -20,8 +38,8 @@ const requiredFiles = [
   "robots.txt",
   "CNAME",
   "get_config.sh",
-  "assets/css/style-v20260718.css",
-  "assets/js/script-v20260718.js",
+  "assets/css/style-v20260930.css",
+  "assets/js/script-v20260930.js",
   "assets/goatcounter-count-v20260928.js",
   "assets/images/profile-photo.jpg",
   "assets/images/icons-v20260706.svg",
@@ -63,8 +81,8 @@ if (!existsSync(dist)) {
   }
 
   const indexHtml = readFileSync(join(dist, "index.html"), "utf8");
-  const styleCss = readFileSync(join(dist, "assets/css/style-v20260718.css"), "utf8");
-  const scriptJs = readFileSync(join(dist, "assets/js/script-v20260718.js"), "utf8");
+  const styleCss = readFileSync(join(dist, "assets/css/style-v20260930.css"), "utf8");
+  const scriptJs = readFileSync(join(dist, "assets/js/script-v20260930.js"), "utf8");
   const getConfigScript = readFileSync(join(dist, "get_config.sh"), "utf8");
   const sitemap = readFileSync(join(dist, "sitemap.xml"), "utf8");
   const robots = readFileSync(join(dist, "robots.txt"), "utf8");
@@ -75,29 +93,54 @@ if (!existsSync(dist)) {
   const h1Count = indexHtml.match(/<h1(?:\s|>)/g)?.length ?? 0;
   if (h1Count !== 1) fail(`homepage must contain exactly one H1; found ${h1Count}`);
 
-  const mainHtml = indexHtml.match(/<main(?:\s[^>]*)?>([\s\S]*?)<\/main>/i)?.[1] ?? "";
-  const noScriptMain = mainHtml
-    .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style\b[\s\S]*?<\/style>/gi, " ");
-  const visibleText = noScriptMain
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&(?:[a-z]+|#\d+|#x[\da-f]+);/gi, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  const wordCount = visibleText.match(/[\p{L}\p{N}]+(?:['’+.-][\p{L}\p{N}]+)*/gu)?.length ?? 0;
-  if (wordCount < 500) fail(`homepage must expose at least 500 words without JavaScript; found ${wordCount}`);
-
-  for (const id of ["about", "career", "scientific-work", "contact"]) {
+  const sectionIds = ["about", "contact"];
+  for (const id of sectionIds) {
     if (!indexHtml.includes(`id="${id}"`)) fail(`homepage missing #${id}`);
     if (!indexHtml.includes(`href="#${id}"`)) fail(`homepage missing nav link for #${id}`);
+  }
+
+  for (const [, target] of indexHtml.matchAll(/<a\b[^>]*href="#([^\"]+)"[^>]*>/gi)) {
+    if (!indexHtml.includes(`id="${target}"`)) fail(`homepage has a link to missing #${target}`);
+  }
+
+  for (const marker of ['id="career"', 'id="scientific-work"', 'href="#career"', 'href="#scientific-work"', "data-filter-btn", "data-filter-item"]) {
+    if (indexHtml.includes(marker)) fail(`homepage contains removed-section marker ${marker}`);
   }
 
   if (!indexHtml.includes('<p class="chinese-name" lang="zh-Hans">吴开</p>')) {
     fail("homepage missing the Chinese name");
   }
 
-  for (const label of ["All", "Papers", "Teaching", "Talks", "Conferences", "Activities"]) {
-    if (!indexHtml.includes(`>${label}<`)) fail(`homepage missing science filter ${label}`);
+  const cvEntry = indexHtml.match(/<a\b(?=[^>]*\bdata-cv-entry(?:\s|=|>))(?=[^>]*\bhref="([^"]+)")[^>]*>([\s\S]*?)<\/a>/i);
+  if (!cvEntry || cvEntry[1] !== `/${cvFile}`) fail("homepage CV entry does not link to the current PDF");
+
+  const updatedElement = indexHtml.match(/<time\b(?=[^>]*\bdata-cv-updated="([^"]+)")[^>]*>([\s\S]*?)<\/time>/i);
+  const updatedText = updatedElement?.[2].replace(/<[^>]*>/g, "").trim();
+  if (
+    !updatedElement ||
+    updatedElement[1] !== cvUpdatedIso ||
+    updatedText !== cvUpdatedDate ||
+    !indexHtml.includes("Updated <time")
+  ) {
+    fail("homepage CV updated date does not match the current PDF filename");
+  }
+
+  for (const [label, href] of [
+    ["NASA ADS", "https://ui.adsabs.harvard.edu/user/libraries/r6M69CAYQUWEcOfqPQ74_g"],
+    ["ORCID", "https://orcid.org/0000-0003-0349-0079"],
+    ["Google Scholar", "https://scholar.google.com/citations?user=zspJ42IAAAAJ"],
+    ["GitHub", "https://github.com/kaiwu-astro"]
+  ]) {
+    if (!indexHtml.includes(`href="${href}"`) || !indexHtml.includes(`>${label}</a>`)) {
+      fail(`homepage missing the ${label} profile link`);
+    }
+  }
+
+  if (/\b(?:filterScience|data-filter-btn|data-filter-item)\b/.test(scriptJs)) {
+    fail("homepage script contains removed science filter logic");
+  }
+  if (/\.(?:timeline|timeline-list|timeline-item|skills-list|filter-list|filter-select|project-item)\b/.test(styleCss)) {
+    fail("homepage stylesheet contains removed career or science styles");
   }
 
   for (const url of sitemapUrls) {
@@ -146,6 +189,10 @@ if (!existsSync(dist)) {
   const problemRequired = openapi.components?.schemas?.Problem?.required ?? [];
   for (const field of ["code", "message", "hint"]) {
     if (!problemRequired.includes(field)) fail(`OpenAPI Problem schema does not require ${field}`);
+  }
+
+  for (const assetPath of ["/assets/css/style-v20260930.css", "/assets/js/script-v20260930.js"]) {
+    if (!indexHtml.includes(assetPath)) fail(`homepage does not reference ${assetPath}`);
   }
 
   if (!getConfigScript.startsWith("#!/bin/sh\n")) fail("get_config.sh is not a POSIX sh script");

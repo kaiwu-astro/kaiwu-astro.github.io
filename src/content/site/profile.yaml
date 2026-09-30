@@ -7,9 +7,12 @@ emails:
   - kai.wu@uni-heidelberg.de
 cvFile: KaiWU_CV_20260929-2.pdf
 canonical: https://about.wukai.work/
-description: Kai Wu is a computational astrophysicist studying star clusters, planetary systems, debris discs, and compact stellar systems with direct N-body simulations.
+description: Kai Wu is a computational astrophysicist using direct N-body simulations to study dense star clusters, planetary systems, and compact stellar systems.
 socialImage: https://about.wukai.work/assets/images/social-card.png
 socials:
+  - label: NASA ADS
+    href: https://ui.adsabs.harvard.edu/user/libraries/r6M69CAYQUWEcOfqPQ74_g
+    icon: document
   - label: ORCID
     href: https://orcid.org/0000-0003-0349-0079
     icon: orcid

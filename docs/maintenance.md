@@ -6,20 +6,18 @@ The canonical repository is `/Users/wukai/source_codes/personal_website`. The pr
 
 ## Editing Workflow
 
-Use Pages CMS for routine content edits. Pages CMS reads `.pages.yml` from the repository root and presents form editors for the profile, homepage, career, scientific work, and legal pages. When Pages CMS saves a change, it writes the edited Markdown/YAML file back to the repository as a Git commit.
+Use Pages CMS for routine content edits. Pages CMS reads `.pages.yml` from the repository root and presents form editors for the profile, homepage, and legal pages. When Pages CMS saves a change, it writes the edited Markdown/YAML file back to the repository as a Git commit.
 
 For local fallback edits, change only the Markdown or YAML files listed below. Do not edit generated HTML in `dist/`.
 
 ## Content Map
 
-- Site profile: `src/content/site/profile.yaml`
+- Site profile, CV filename, and academic profile links: `src/content/site/profile.yaml`
 - About text: `src/content/about/main.md`
-- Service cards: `src/content/services/main.yaml`
-- Career timeline: `src/content/timeline/work.yaml`, `education.yaml`, `skills.yaml`
-- Scientific work: `src/content/science/papers.yaml`, `teaching.yaml`, `talks.yaml`, `conferences.yaml`, `activities.yaml`
+- Research and technical focus areas: `src/content/services/main.yaml`
 - Legal pages: `src/content/legal/impressum.md`, `privacy.md`
 
-The About and legal page bodies are Markdown below the frontmatter. The profile, services, timeline, and science files are YAML.
+The About and legal page bodies are Markdown below the frontmatter. The profile and services files are YAML.
 
 ## Local Commands
 
@@ -34,36 +32,13 @@ npm run preview -- --host 127.0.0.1
 
 ## Profile And Homepage
 
-Edit `src/content/site/profile.yaml` for the name, title, emails, location, CV filename, SEO description, social links, and schema.org `Person` data.
+Edit `src/content/site/profile.yaml` for the name, title, emails, location, CV filename, SEO description, academic profile links, and schema.org `Person` data. Use the versioned `KaiWU_CV_YYYYMMDD[-N].pdf` filename; the homepage derives its `Updated` date from that filename, so do not maintain a separate date.
 
-Edit `src/content/about/main.md` for the About title and Markdown body. Edit `src/content/services/main.yaml` for the "What I'm doing" cards. Each service item needs a `title`, `icon`, and `text`. The `icon` value must match a symbol id in `public/assets/images/icons-v20260706.svg` without the `icon-` prefix.
+Edit `src/content/about/main.md` for the About title and Markdown narrative. Edit `src/content/services/main.yaml` for the "What I'm doing" research and technical focus-area cards. Each item needs a `title`, `icon`, and `text`; keep these focused on research and technical directions, without duplicating time-sensitive CV skills or achievements. The `icon` value must match a symbol id in `public/assets/images/icons-v20260706.svg` without the `icon-` prefix.
 
-## Career
+## Homepage Content Principle
 
-Edit the YAML files in `src/content/timeline/`. The display order is controlled in `src/pages/index.astro` by `timelineOrder`.
-
-Timeline entries support:
-
-- `title`
-- optional `subtitle`
-- `text`, as an array of paragraph strings
-- optional `href`
-
-Longer timeline groups get a Show all / Show less toggle automatically.
-
-## Scientific Work
-
-Edit the YAML files in `src/content/science/`. The homepage filter uses each file's `category` and `filterLabel`. Keep `category` lowercase and one of:
-
-```text
-papers
-teaching
-talks
-conferences
-activities
-```
-
-The display order is controlled in `src/pages/index.astro` by `scienceOrder`.
+The homepage keeps the About narrative and a small number of research and technical focus-area cards. Keep time-sensitive lists of appointments, education, skills, publications, talks, conferences, teaching, and academic service in the CV; do not duplicate these potentially outdated lists on the website. The CV download's displayed update date is generated from the versioned filename in `profile.yaml`.
 
 ## Updating The CV
 
@@ -211,4 +186,4 @@ After any Cloudflare or release change, verify:
 - `https://about.wukai.work/sitemap.xml`
 - cache headers for HTML, versioned assets, and the CV PDF
 - security headers
-- theme toggle and science filters
+- theme toggle, homepage anchor links, and CV/profile links
