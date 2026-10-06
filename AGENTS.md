@@ -30,7 +30,7 @@ npm ci
 npm run dev
 ```
 
-提交或发布前必须运行：
+提交或发布前必须依次运行：
 
 ```sh
 npm run check
@@ -53,24 +53,6 @@ npm run verify
 
 邮箱必须集中维护在 `src/content/site/profile.yaml`。Privacy/Impressum 若需要显示邮箱，应通过组件或共享 profile 数据渲染，不要在多个内容文件中手写重复邮箱。
 
-## 代码风格与命名约定
-
-Astro、HTML、CSS、JavaScript 和 YAML 使用两个空格缩进。HTML 结构保持语义化；主页导航锚点必须与实际区块一致，目前使用 `about` 和 `contact`。
-
-新增资源文件名使用小写和连字符风格，例如 `profile-photo-v2.jpg`、`style-v20260706.css`。变更 CSS、JavaScript、SVG、图片等受 `/assets/*` 长缓存影响的资源时，必须改用新的版本化文件名，并同步更新 Astro 引用和 `scripts/verify-build.mjs`。
-
-优先使用原生 CSS、原生 JavaScript 和本地资源。不要引入前端框架、远程字体、远程图标、地图 iframe 或统计脚本，除非先确认访问稳定性并记录原因、替代方案和风险。
-
-禁止引入或保留以下依赖：
-
-- `fonts.googleapis.com`
-- `fonts.gstatic.com`
-- `maps.google.com` / `www.google.com/maps` iframe
-- `unpkg.com`
-- Google Analytics
-
-GoatCounter 是经确认允许的统计方案：用于了解访客量和来源，无 cookie，并与 conference-calendar 共用账户。替代方案是仅提供请求量的 Cloudflare Zone Analytics 或 Cloudflare Web Analytics。风险是第三方会收到请求技术数据；`count.js` 必须以版本化文件名在本站托管，更新时换新文件名；线上 CSP 由 Cloudflare 响应头改写规则下发，`connect-src` 和 `img-src` 需放行 `https://wukai.goatcounter.com`。
-
 ## CV、Sitemap 与公开 URL
 
 替换 CV 时使用新的版本化文件名，并同步更新：
@@ -83,19 +65,9 @@ GoatCounter 是经确认允许的统计方案：用于了解访客量和来源�
 
 修改任何收录到 `public/sitemap.xml` 的公开页面、CV 文件或重要公开 URL 时，必须同步更新对应 `<lastmod>`。本迁移日期为 `2026-07-06`。
 
-## 测试指南
+## 编码与测试规范
 
-提交前至少运行：
-
-```sh
-npm run check
-npm run build
-npm run verify
-```
-
-视觉或交互改动还需要本地打开页面检查桌面和移动端布局、导航、主题切换、CV 入口和自动日期、学术链接、法律链接及浏览器控制台。
-
-GitHub Actions 会重复运行 `npm ci`、`npm run check`、`npm run build` 和 `npm run verify`，但不能替代本地视觉检查。
+修改 Astro、HTML、CSS、JavaScript、YAML 或 `public/assets/` 资源（缩进、资源命名与版本化、禁用依赖、GoatCounter 约束）以及需要视觉检查时，先读 `CODING_STANDARDS.md`。
 
 ## 提交与 Pull Request 规范
 
@@ -105,28 +77,13 @@ GitHub Actions 会重复运行 `npm ci`、`npm run check`、`npm run build` 和 
 Import Astro website source
 ```
 
-每次 agent 修改仓库后，必须先完成相关本地测试或手动检查。测试通过后，直接使用 `$commit` skill 创建提交；提交完成后，将当前分支推送到 `origin`。不要把未验证的改动提交或推送。
+每次 agent 修改仓库后，必须先完成相关本地测试或手动检查（见上文命令与 `CODING_STANDARDS.md`）。测试通过后，直接使用 `$commit` skill 创建提交；提交完成后，将当前分支推送到 `origin`。不要把未验证的改动提交或推送。
 
 Pull Request 应包含简短说明、视觉改动截图、执行过的检查命令和关联 issue。
 
-## Cloudflare 操作要求
+## Cloudflare
 
-处理 Cloudflare 配置前，先确认 `about.wukai.work` 是 proxied CNAME，目标为 `kaiwu-astro.github.io`，并确认 API token 具备 Zone Settings、Rulesets/Page Rules 和必要 DNS 权限。
-
-目标配置保持精简：
-
-- SSL/TLS 使用 `Full (strict)`；如出现 525/526，立即回退 `Full` 并记录原因。
-- 启用 Always Use HTTPS、Automatic HTTPS Rewrites、Email Address Obfuscation 和 Brotli。
-- 禁用 Rocket Loader。
-- 自 2026-09-19 起保持 Cloudflare 规则 `redirect_about_cv_to_current_pdf` 禁用；`/cv` 和 `/cv/` 由 Astro `/cv/` fallback 提供，GitHub Pages 将 `/cv` 重定向到 `/cv/`，更新 CV 无需 Cloudflare 改动。
-- `/assets/*` Browser Cache TTL 为 1 month。
-- HTML 页面 Browser Cache TTL 控制在 30 min。
-- 版本化 CV PDF Browser Cache TTL 为 1 month。
-- 安全响应头可使用 `X-Content-Type-Options: nosniff`、`Referrer-Policy: strict-origin-when-cross-origin`、`Permissions-Policy: camera=(), microphone=(), geolocation=()` 和与当前本地资源匹配的保守 CSP；Cloudflare 响应头改写规则下发的 CSP 须在 `connect-src` 和 `img-src` 放行 `https://wukai.goatcounter.com`。
-
-不要在没有明确验证的情况下启用 wildcard DNS、HSTS preload、`includeSubDomains` HSTS 或激进 Bot/WAF 挑战规则。
-
-应用 Cloudflare 改动后，必须验证 `https://about.wukai.work/`、`/privacy.html`、`/impressum.html`、`/cv`、`/cv/`、当前 CV PDF、`robots.txt`、`sitemap.xml`、缓存响应头、安全响应头，以及线上 HTML 是否经过 Cloudflare Email Obfuscation 且不暴露原始邮箱。
+修改或排查 Cloudflare 配置（DNS、SSL/TLS、缓存、规则、响应头/CSP）、或在 Cloudflare 改动后验证线上站点前，先读 `docs/cloudflare.md`。
 
 ## 安全与配置提示
 
