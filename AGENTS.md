@@ -5,7 +5,7 @@ Astro 静态个人学术网站，部署到 GitHub Pages，经 Cloudflare 服务 
 ## 结构
 
 - `src/pages/`、`src/layouts/`、`src/components/`：页面、布局、组件；`src/content/` 是主要内容来源。
-- `public/` 原样复制到 `dist/`（`CNAME`、`robots.txt`、`sitemap.xml`、CV PDF）；`public/assets/` 放 CSS、JS、图片、SVG，受 Cloudflare 长缓存。
+- `public/` 原样复制到 `dist/`（`CNAME`、`robots.txt`、`sitemap.xml`、CV PDF）；`public/assets/` 放 CSS、JS、图片、SVG，受 Cloudflare 长缓存，变更时必须改用版本化文件名（规则见 `CODING_STANDARDS.md`）。
 - `.pages.yml` 是 Pages CMS 配置；`scripts/verify-build.mjs` 检查构建产物；`.github/workflows/site-checks.yml` 跑 CI，`main` push 时发布 `dist/`。
 - 根目录旧版 `index.html`、`privacy.html`、`impressum.html`、`assets/`、`cv/`、`CNAME`、`.nojekyll`、`robots.txt`、`sitemap.xml` 和旧 CV 文件仅为迁移过渡保留，确认 Pages 已切到 Actions 后应删除。
 
@@ -17,7 +17,7 @@ Astro 静态个人学术网站，部署到 GitHub Pages，经 Cloudflare 服务 
 
 ## 提交
 
-提交或发布前依次运行 `npm run check`、`npm run build`、`npm run verify`（`verify` 依赖 `dist/`，须在 `build` 之后）；视觉改动另见 `CODING_STANDARDS.md`。每次 agent 修改仓库后，先完成这些检查，通过后直接用 `$commit` skill 提交，再把当前分支推送到 `origin`。不要提交或推送未验证的改动。
+依赖用 `npm ci` 安装，本地开发 `npm run dev`。提交或发布前依次运行 `npm run check`、`npm run build`、`npm run verify`（`verify` 依赖 `dist/`，须在 `build` 之后）；视觉改动另见 `CODING_STANDARDS.md`。每次 agent 修改仓库后，先完成这些检查，通过后直接用 `$commit` skill 提交，再把当前分支推送到 `origin`。不要提交或推送未验证的改动。
 
 提交信息简短、祈使式，例如 `Import Astro website source`。Pull Request 含简短说明、视觉改动截图、执行过的检查命令和关联 issue。
 
