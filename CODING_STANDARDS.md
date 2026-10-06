@@ -18,10 +18,6 @@ Astro、HTML、CSS、JavaScript 和 YAML 使用两个空格缩进。HTML 结构�
 
 GoatCounter 是经确认允许的统计方案：用于了解访客量和来源，无 cookie，并与 conference-calendar 共用账户。替代方案是仅提供请求量的 Cloudflare Zone Analytics 或 Cloudflare Web Analytics。风险是第三方会收到请求技术数据；`count.js` 必须以版本化文件名在本站托管，更新时换新文件名；线上 CSP 由 Cloudflare 响应头改写规则下发，`connect-src` 和 `img-src` 需放行 `https://wukai.goatcounter.com`。
 
-## 测试与检查
+## 视觉检查
 
-提交前至少运行 `npm run check`、`npm run build`、`npm run verify`（`verify` 依赖 `dist/`，须在 `build` 之后）。
-
-视觉或交互改动还需要本地打开页面检查桌面和移动端布局、导航、主题切换、CV 入口和自动日期、学术链接、法律链接及浏览器控制台。
-
-GitHub Actions 会重复运行 `npm ci`、`npm run check`、`npm run build` 和 `npm run verify`，但不能替代本地视觉检查。
+视觉或交互改动，除 AGENTS.md 的提交前检查外，还需本地打开页面检查桌面和移动端布局、导航、主题切换、CV 入口和自动日期、学术链接、法律链接及浏览器控制台。CI 不能替代本地视觉检查。

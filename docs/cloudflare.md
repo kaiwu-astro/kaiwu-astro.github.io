@@ -7,7 +7,7 @@
 - SSL/TLS 使用 `Full (strict)`；如出现 525/526，立即回退 `Full` 并记录原因。
 - 启用 Always Use HTTPS、Automatic HTTPS Rewrites、Email Address Obfuscation 和 Brotli。
 - 禁用 Rocket Loader。
-- 保持 Cloudflare 规则 `redirect_about_cv_to_current_pdf` 禁用（原因见 AGENTS.md 的 CV 一节）。
+- 保持 Cloudflare 规则 `redirect_about_cv_to_current_pdf` 禁用（原因见 `docs/content.md` 的“替换 CV”）。
 - `/assets/*` Browser Cache TTL 为 1 month。
 - HTML 页面 Browser Cache TTL 控制在 30 min。
 - 版本化 CV PDF Browser Cache TTL 为 1 month。
