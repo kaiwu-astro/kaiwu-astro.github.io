@@ -161,6 +161,25 @@ if (!existsSync(dist)) {
       fail(`${page} references remote GoatCounter script`);
     }
   }
+  const oldHost = "about.wukai.work";
+  for (const page of ["index.html", "cv/index.html", "privacy.html", "impressum.html"]) {
+    const html = readFileSync(join(dist, page), "utf8");
+    const canonical = html.match(/<link\b(?=[^>]*\brel="canonical")[^>]*\bhref="([^"]*)"/i)?.[1];
+    const metaContent = (attr, name) =>
+      html.match(new RegExp(`<meta\\b(?=[^>]*\\b${attr}="${name}")[^>]*\\bcontent="([^"]*)"`, "i"))?.[1];
+    if (!canonical) fail(`${page} missing canonical link`);
+    else if (!canonical.startsWith("https://wukai.work/")) fail(`${page} canonical must start with https://wukai.work/: ${canonical}`);
+    for (const [label, value] of [
+      ["og:url", metaContent("property", "og:url")],
+      ["og:image", metaContent("property", "og:image")],
+      ["twitter:image", metaContent("name", "twitter:image")]
+    ]) {
+      if (value !== undefined && !value.startsWith("https://wukai.work/")) {
+        fail(`${page} ${label} must start with https://wukai.work/: ${value}`);
+      }
+    }
+    if (html.includes(oldHost)) fail(`${page} contains legacy host ${oldHost}`);
+  }
   for (const page of ["index.html", "cv/index.html"]) {
     if (!readFileSync(join(dist, page), "utf8").includes('data-goatcounter-click="cv-pdf"')) {
       fail(`${page} missing CV click event`);

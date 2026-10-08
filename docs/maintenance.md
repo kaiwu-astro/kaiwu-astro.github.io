@@ -83,7 +83,7 @@ npm run publish:cv -- --selftest                # check PATH tools, KIT access a
 
 ### Cloudflare CV Redirect
 
-Since 2026-09-19, the Cloudflare rule `redirect_about_cv_to_current_pdf` is disabled. `/cv` and `/cv/` are served by the Astro `/cv/` fallback (`src/pages/cv/index.astro`); GitHub Pages redirects `/cv` to `/cv/`. CV updates therefore require no Cloudflare change. Keep the rule disabled unless this routing design is deliberately changed.
+Since 2026-09-19, the Cloudflare rule `redirect_about_cv_to_current_pdf` is disabled. `/cv` and `/cv/` are served by the Astro `/cv/` fallback (`src/pages/cv/index.astro`); GitHub Pages redirects `/cv` to `/cv/`. CV updates therefore require no Cloudflare change. Keep the rule disabled unless this routing design is deliberately changed; before re-enabling it, change its target to the current CV PDF file name.
 
 ## Legal Pages
 
@@ -126,7 +126,7 @@ Check Security Analytics before changing rules so the blocking service is known.
 
 Use the **Skip** action for all remaining custom rules, Super Bot Fight Mode, managed rules, Browser Integrity Check, and User Agent Blocking. Keep rate limiting active. Cloudflare Bot Fight Mode cannot be bypassed by a Skip rule; if Security Analytics identifies it as the blocker, turn Bot Fight Mode off and rely on scoped WAF/rate-limit rules instead.
 
-The source for structured API errors is `cloudflare/api-errors-worker.mjs`. Deploy it as a Cloudflare Worker route limited to `wukai.work/api/*`. The handler passes successful static API responses through and converts upstream HTML errors to `application/problem+json` with `code`, `message`, and `hint`. It deliberately does not run on normal HTML or asset routes.
+The source for structured API errors is `cloudflare/api-errors-worker.mjs`. Deploy it as a Cloudflare Worker route limited to `wukai.work/api/*`. The handler passes successful static API responses through and converts upstream HTML errors to `application/problem+json` with `code`, `message`, and `hint`. It deliberately does not run on normal HTML or asset routes. **Status: the Worker source lives in `cloudflare/` but is not currently deployed (no Workers route exists; `/api/nonexist` returns an HTML 404). The checks below apply only after it is deployed.**
 
 After the Worker and bot rules are deployed, run the user-agent checks in the release checklist for every listed crawler. Each homepage request must return HTTP 200 without `cf-mitigated: challenge`; `/api/site.json` must return JSON; and an unknown `/api/...` path must return a non-2xx `application/problem+json` response.
 
@@ -167,12 +167,12 @@ Expected baseline:
 - `about.wukai.work` and `www.wukai.work` are redirected by Cloudflare redirect rules with 301 to `https://wukai.work/<original path>`, preserving the query string.
 - Rule refs: `about_ssl_full_github_pages_cert`, `about_wukai_work_assets_browser_ttl_1_month`, `about_wukai_work_html_browser_ttl_30_min`, `about_wukai_work_cv_pdf_browser_ttl_1_month`, `set_about_security_headers`, `set_about_html_csp`.
   - These refs are historical names left over from before the migration; Cloudflare does not support changing a rule ref. The rules' host condition is already `wukai.work`.
-- SSL/TLS is `Full (strict)`. If 525/526 appears, temporarily roll back to `Full` and record the reason.
+- SSL/TLS: the zone default is `Full (strict)`, but the site host `wukai.work` is set to `Full` (not strict) by the configuration rule `about_ssl_full_github_pages_cert`, because GitHub Pages cannot issue an origin certificate behind the Cloudflare proxy. Before restoring strict, confirm that a Pages certificate is available. If 525/526 appears, first check that this rule is still active and the Pages certificate status, then decide on a change and record the reason.
 - Always Use HTTPS, Automatic HTTPS Rewrites, Brotli, and Email Address Obfuscation are enabled.
 - Rocket Loader is disabled.
 - HTML cache is 1800 seconds.
 - `/assets/*` and versioned `KaiWu_CV*.pdf` / `KaiWU_CV*.pdf` cache is 2592000 seconds.
-- `/cv` and `/cv/` redirect to the current versioned CV PDF, with Astro `/cv/` kept as a fallback.
+- The Cloudflare `/cv` redirect rule (`redirect_about_cv_to_current_pdf`) is disabled. Live `/cv` gets a 301 from GitHub Pages to `/cv/`, and `/cv/` returns 200 (the Astro page, which points to the current CV PDF). If that Cloudflare rule is ever re-enabled, first change its target to the current CV PDF file name.
 - Response headers include `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, and `Permissions-Policy: camera=(), microphone=(), geolocation=()`.
 
 Do not enable wildcard DNS, HSTS preload, `includeSubDomains` HSTS, or aggressive Bot/WAF challenges unless explicitly reviewed.

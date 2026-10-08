@@ -10,7 +10,7 @@
 - WAF 质询规则的豁免 host 为 `wukai.work`、`about.wukai.work`、`www.wukai.work`。
 - GitHub Pages 使用 Actions 部署（build_type=workflow）时 `public/CNAME` 会被忽略，自定义域名需通过 API 设置：`gh api -X PUT repos/kaiwu-astro/kaiwu-astro.github.io/pages -f cname=wukai.work`。
 
-- SSL/TLS 使用 `Full (strict)`；如出现 525/526，立即回退 `Full` 并记录原因。
+- SSL/TLS：zone 默认 `Full (strict)`；网站主机 `wukai.work` 由配置规则 `about_ssl_full_github_pages_cert` 设为 `Full`（非 strict），因为 GitHub Pages 在 Cloudflare 代理后签不出源站证书。恢复 strict 前须先确认 Pages 证书可用；若出现 525/526，先检查该规则是否仍生效、Pages 证书状态，再决定是否调整，并记录原因。
 - 启用 Always Use HTTPS、Automatic HTTPS Rewrites、Email Address Obfuscation 和 Brotli。
 - 禁用 Rocket Loader。
 - 保持 Cloudflare 规则 `redirect_about_cv_to_current_pdf` 禁用（原因见 `docs/content.md` 的“替换 CV”）。
