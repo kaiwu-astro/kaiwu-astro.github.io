@@ -5,7 +5,8 @@
 目标配置保持精简：
 
 - `about.wukai.work` 和 `www.wukai.work` 通过 Cloudflare 重定向规则 301 到 `https://wukai.work/<原路径>`，保留 query。
-- 所有缓存、响应头规则的 host 条件均为 `wukai.work`。规则 ref：`site_ssl_full_github_pages_cert`、`site_assets_browser_ttl_1_month`、`site_html_browser_ttl_30_min`、`site_cv_pdf_browser_ttl_1_month`、`set_site_security_headers`、`set_site_html_csp`。
+- 所有缓存、响应头规则的 host 条件均为 `wukai.work`。规则 ref：`about_ssl_full_github_pages_cert`、`about_wukai_work_assets_browser_ttl_1_month`、`about_wukai_work_html_browser_ttl_30_min`、`about_wukai_work_cv_pdf_browser_ttl_1_month`、`set_about_security_headers`、`set_about_html_csp`。
+  这些 ref 是迁移前留下的历史名称（Cloudflare 不支持修改 ref），不代表规则仍作用于旧域名。
 - WAF 质询规则的豁免 host 为 `wukai.work`、`about.wukai.work`、`www.wukai.work`。
 - GitHub Pages 使用 Actions 部署（build_type=workflow）时 `public/CNAME` 会被忽略，自定义域名需通过 API 设置：`gh api -X PUT repos/kaiwu-astro/kaiwu-astro.github.io/pages -f cname=wukai.work`。
 

@@ -165,7 +165,8 @@ Expected baseline:
 
 - `wukai.work` is a proxied CNAME (flattened at the apex) to `kaiwu-astro.github.io`. The GitHub Pages custom domain is set via `gh api -X PUT repos/kaiwu-astro/kaiwu-astro.github.io/pages -f cname=wukai.work`, because `public/CNAME` is ignored with Actions deployment (build_type=workflow).
 - `about.wukai.work` and `www.wukai.work` are redirected by Cloudflare redirect rules with 301 to `https://wukai.work/<original path>`, preserving the query string.
-- Rule refs: `site_ssl_full_github_pages_cert`, `site_assets_browser_ttl_1_month`, `site_html_browser_ttl_30_min`, `site_cv_pdf_browser_ttl_1_month`, `set_site_security_headers`, `set_site_html_csp`.
+- Rule refs: `about_ssl_full_github_pages_cert`, `about_wukai_work_assets_browser_ttl_1_month`, `about_wukai_work_html_browser_ttl_30_min`, `about_wukai_work_cv_pdf_browser_ttl_1_month`, `set_about_security_headers`, `set_about_html_csp`.
+  - These refs are historical names left over from before the migration; Cloudflare does not support changing a rule ref. The rules' host condition is already `wukai.work`.
 - SSL/TLS is `Full (strict)`. If 525/526 appears, temporarily roll back to `Full` and record the reason.
 - Always Use HTTPS, Automatic HTTPS Rewrites, Brotli, and Email Address Obfuscation are enabled.
 - Rocket Loader is disabled.
