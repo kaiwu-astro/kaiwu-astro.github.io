@@ -49,13 +49,13 @@ const requiredFiles = [
 ];
 
 const sitemapUrls = [
-  "https://about.wukai.work/",
-  "https://about.wukai.work/api/site.json",
-  "https://about.wukai.work/openapi.json",
-  `https://about.wukai.work/${cvFile}`,
-  "https://about.wukai.work/cv/",
-  "https://about.wukai.work/impressum.html",
-  "https://about.wukai.work/privacy.html"
+  "https://wukai.work/",
+  "https://wukai.work/api/site.json",
+  "https://wukai.work/openapi.json",
+  `https://wukai.work/${cvFile}`,
+  "https://wukai.work/cv/",
+  "https://wukai.work/impressum.html",
+  "https://wukai.work/privacy.html"
 ];
 
 const forbiddenPatterns = [
@@ -166,7 +166,7 @@ if (!existsSync(dist)) {
       fail(`${page} missing CV click event`);
     }
   }
-  if (!robots.includes("Sitemap: https://about.wukai.work/sitemap.xml")) {
+  if (!robots.includes("Sitemap: https://wukai.work/sitemap.xml")) {
     fail("robots.txt missing sitemap URL");
   }
 
@@ -184,7 +184,7 @@ if (!existsSync(dist)) {
   }
 
   if (siteProfile.schemaVersion !== "1.0.0") fail("site API has an unexpected schemaVersion");
-  if (siteProfile.url !== "https://about.wukai.work/") fail("site API has an unexpected canonical URL");
+  if (siteProfile.url !== "https://wukai.work/") fail("site API has an unexpected canonical URL");
   if (!Array.isArray(siteProfile.topics) || siteProfile.topics.length === 0) fail("site API has no topics");
   if (openapi.openapi !== "3.1.0") fail("OpenAPI document must use OpenAPI 3.1.0");
   if (!openapi.paths?.["/api/site.json"]?.get?.responses?.["200"]) {

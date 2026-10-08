@@ -25,4 +25,4 @@ Allow: /
 User-agent: ora-agent
 Allow: /
 
-Sitemap: https://about.wukai.work/sitemap.xml
+Sitemap: https://wukai.work/sitemap.xml

@@ -6,12 +6,12 @@
     "description": "Machine-readable metadata for Kai Wu's public academic profile.",
     "license": {
       "name": "Copyright Kai Wu; all rights reserved",
-      "url": "https://about.wukai.work/impressum.html"
+      "url": "https://wukai.work/impressum.html"
     }
   },
   "servers": [
     {
-      "url": "https://about.wukai.work"
+      "url": "https://wukai.work"
     }
   ],
   "security": [],
@@ -157,6 +157,6 @@
   },
   "externalDocs": {
     "description": "Public academic profile",
-    "url": "https://about.wukai.work/"
+    "url": "https://wukai.work/"
   }
 }

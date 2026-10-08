@@ -1,6 +1,6 @@
 # Repository Guidelines
 
-Astro 静态个人学术网站，部署到 GitHub Pages，经 Cloudflare 服务 `about.wukai.work`。
+Astro 静态个人学术网站，部署到 GitHub Pages，经 Cloudflare 服务 `wukai.work`（`about.wukai.work` 与 `www.wukai.work` 经 301 重定向到根域）。
 
 ## 结构
 

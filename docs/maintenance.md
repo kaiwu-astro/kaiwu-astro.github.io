@@ -112,7 +112,7 @@ The generated `/api/site.json` endpoint reads from `src/content/site/profile.yam
 Check Security Analytics before changing rules so the blocking service is known. If Super Bot Fight Mode, managed WAF rules, Browser Integrity Check, or a custom rule caused the challenge, add the following zone-level custom rule before blocking/challenge rules:
 
 ```text
-(http.host eq "about.wukai.work" and (
+(http.host in {"wukai.work" "about.wukai.work" "www.wukai.work"} and (
   http.user_agent contains "GPTBot" or
   http.user_agent contains "ClaudeBot" or
   http.user_agent contains "ChatGPT-User" or
@@ -126,7 +126,7 @@ Check Security Analytics before changing rules so the blocking service is known.
 
 Use the **Skip** action for all remaining custom rules, Super Bot Fight Mode, managed rules, Browser Integrity Check, and User Agent Blocking. Keep rate limiting active. Cloudflare Bot Fight Mode cannot be bypassed by a Skip rule; if Security Analytics identifies it as the blocker, turn Bot Fight Mode off and rely on scoped WAF/rate-limit rules instead.
 
-The source for structured API errors is `cloudflare/api-errors-worker.mjs`. Deploy it as a Cloudflare Worker route limited to `about.wukai.work/api/*`. The handler passes successful static API responses through and converts upstream HTML errors to `application/problem+json` with `code`, `message`, and `hint`. It deliberately does not run on normal HTML or asset routes.
+The source for structured API errors is `cloudflare/api-errors-worker.mjs`. Deploy it as a Cloudflare Worker route limited to `wukai.work/api/*`. The handler passes successful static API responses through and converts upstream HTML errors to `application/problem+json` with `code`, `message`, and `hint`. It deliberately does not run on normal HTML or asset routes.
 
 After the Worker and bot rules are deployed, run the user-agent checks in the release checklist for every listed crawler. Each homepage request must return HTTP 200 without `cf-mitigated: challenge`; `/api/site.json` must return JSON; and an unknown `/api/...` path must return a non-2xx `application/problem+json` response.
 
@@ -163,7 +163,9 @@ The deployed site relies on Cloudflare Email Address Obfuscation. After publishi
 
 Expected baseline:
 
-- `about.wukai.work` is a proxied CNAME to `kaiwu-astro.github.io`.
+- `wukai.work` is a proxied CNAME (flattened at the apex) to `kaiwu-astro.github.io`. The GitHub Pages custom domain is set via `gh api -X PUT repos/kaiwu-astro/kaiwu-astro.github.io/pages -f cname=wukai.work`, because `public/CNAME` is ignored with Actions deployment (build_type=workflow).
+- `about.wukai.work` and `www.wukai.work` are redirected by Cloudflare redirect rules with 301 to `https://wukai.work/<original path>`, preserving the query string.
+- Rule refs: `site_ssl_full_github_pages_cert`, `site_assets_browser_ttl_1_month`, `site_html_browser_ttl_30_min`, `site_cv_pdf_browser_ttl_1_month`, `set_site_security_headers`, `set_site_html_csp`.
 - SSL/TLS is `Full (strict)`. If 525/526 appears, temporarily roll back to `Full` and record the reason.
 - Always Use HTTPS, Automatic HTTPS Rewrites, Brotli, and Email Address Obfuscation are enabled.
 - Rocket Loader is disabled.
@@ -176,14 +178,15 @@ Do not enable wildcard DNS, HSTS preload, `includeSubDomains` HSTS, or aggressiv
 
 After any Cloudflare or release change, verify:
 
-- `https://about.wukai.work/`
-- `https://about.wukai.work/privacy.html`
-- `https://about.wukai.work/impressum.html`
-- `https://about.wukai.work/cv`
-- `https://about.wukai.work/cv/`
+- `https://wukai.work/`
+- `https://wukai.work/privacy.html`
+- `https://wukai.work/impressum.html`
+- `https://wukai.work/cv`
+- `https://wukai.work/cv/`
 - the current CV PDF
-- `https://about.wukai.work/robots.txt`
-- `https://about.wukai.work/sitemap.xml`
+- `https://wukai.work/robots.txt`
+- `https://wukai.work/sitemap.xml`
 - cache headers for HTML, versioned assets, and the CV PDF
 - security headers
+- `https://about.wukai.work/` and `https://www.wukai.work/` return 301 to `https://wukai.work/`, preserving path and query
 - theme toggle, homepage anchor links, and CV/profile links

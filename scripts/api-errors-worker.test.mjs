@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { handleRequest } from "../cloudflare/api-errors-worker.mjs";
 
-const request = (path, init) => new Request(`https://about.wukai.work${path}`, init);
+const request = (path, init) => new Request(`https://wukai.work${path}`, init);
 
 test("passes non-API requests through unchanged", async () => {
   const response = await handleRequest(request("/"), async () => new Response("homepage"));

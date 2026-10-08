@@ -351,8 +351,8 @@ async function waitForPagesRun(sha) {
 }
 
 async function verifyLiveSite(targetName) {
-  const pdfUrl = `https://about.wukai.work/${targetName}`;
-  const cvUrl = "https://about.wukai.work/cv/";
+  const pdfUrl = `https://wukai.work/${targetName}`;
+  const cvUrl = "https://wukai.work/cv/";
   const deadline = Date.now() + 5 * 60 * 1000;
   let lastFailure = "no response received";
 
@@ -486,7 +486,7 @@ async function main() {
   const nextSitemap = replaceExactly(
     sitemap,
     /<loc>https:\/\/about\.wukai\.work\/KaiWU_CV_\d{8}(?:-\d+)?\.pdf<\/loc>\n    <lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/,
-    `<loc>https://about.wukai.work/${targetName}</loc>\n    <lastmod>${date.iso}</lastmod>`,
+    `<loc>https://wukai.work/${targetName}</loc>\n    <lastmod>${date.iso}</lastmod>`,
     "CV sitemap entry"
   );
   const nextCvSitemap = replaceExactly(

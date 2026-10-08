@@ -1,4 +1,4 @@
-const OPENAPI_URL = "https://about.wukai.work/openapi.json";
+const OPENAPI_URL = "https://wukai.work/openapi.json";
 
 const problemDetails = (request, status, overrides = {}) => {
   const url = new URL(request.url);
@@ -19,7 +19,7 @@ const problemDetails = (request, status, overrides = {}) => {
   const detail = overrides.detail ?? defaults.detail;
 
   const body = {
-    type: `https://about.wukai.work/problems/${code.toLowerCase().replaceAll("_", "-")}`,
+    type: `https://wukai.work/problems/${code.toLowerCase().replaceAll("_", "-")}`,
     title: overrides.title ?? defaults.title,
     status,
     detail,

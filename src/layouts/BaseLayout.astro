@@ -12,12 +12,12 @@ const {
   title,
   description,
   canonicalPath = "/",
-  image = "https://about.wukai.work/assets/images/social-card.png",
+  image = "https://wukai.work/assets/images/social-card.png",
   personSchema,
   bodyClass = ""
 } = Astro.props;
 
-const canonical = new URL(canonicalPath, Astro.site ?? "https://about.wukai.work").toString();
+const canonical = new URL(canonicalPath, Astro.site ?? "https://wukai.work").toString();
 ---
 
 <!doctype html>
