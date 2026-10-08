@@ -11,4 +11,5 @@ items:
       do far more as an agent than in a web chat? How do you brief one, and where does the human check belong?
       The slides include two recorded demos: checking references against NASA ADS, and analysing an N-body run on JUPITER.
     slides: /talks/20261008-ai-agents/deck/
+    slides_label: View slides (with videos)
     pdf: /talks/20261008-ai-agents/ai-agents-astro-2026-10-08.pdf

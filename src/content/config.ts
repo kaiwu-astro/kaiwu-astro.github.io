@@ -48,7 +48,8 @@ export const collections = {
         date: z.coerce.date(),
         venue: z.string(),
         summary: z.string(),
-        slides: z.string(),
+        slides: z.string().optional(),
+        slides_label: z.string().optional(),
         pdf: z.string().optional()
       }))
     })

@@ -7,7 +7,8 @@ interface Talk {
   date: Date;
   venue: string;
   summary: string;
-  slides: string;
+  slides?: string;
+  slides_label?: string;
   pdf?: string;
 }
 
@@ -30,13 +31,13 @@ const formatDate = (date: Date) =>
       <li class="service-item" id={`talks-${talk.id}`}>
         <a class="service-icon-box" href={`#talks-${talk.id}`} tabindex="-1" aria-hidden="true"><Icon name="mic" /></a>
         <div class="service-content-box">
-          <h3 class="h4 service-item-title"><a href={`#talks-${talk.id}`}>{talk.title}</a></h3>
+          <h3 class="h4 service-item-title"><a href={talk.slides ?? `#talks-${talk.id}`}>{talk.title}</a></h3>
           <p class="service-item-text">
             <time datetime={talk.date.toISOString().slice(0, 10)}>{formatDate(talk.date)}</time> · {talk.venue}
           </p>
           <p class="service-item-text">{talk.summary}</p>
           <div class="talk-actions">
-            <a class="cv-download-link" href={talk.slides}>View slides</a>
+            {talk.slides && <a class="cv-download-link" href={talk.slides}>{talk.slides_label ?? "View slides"}</a>}
             {talk.pdf && (
               <a class="talk-pdf-link" href={talk.pdf}>
                 <Icon name="download" class="inline-icon-align" />
