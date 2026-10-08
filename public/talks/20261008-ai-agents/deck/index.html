@@ -644,6 +644,40 @@ body.presenter #notes .nt p{margin:0 0 14px}
 .slide[data-id="S19"] .s19.pub{grid-template-columns:1fr}
 .slide[data-id="S19"] .s19.pub .qcards .card{font-size:52px;line-height:1.3;padding:40px 48px}
 .slide[data-id="S19"] .s19.pub .qcards h3{font-size:56px}
+
+/* ---------- public build: touch devices ---------- */
+#touchnav{display:none}
+@media (hover:none) and (pointer:coarse){
+  :root{--caph:0px}
+  body.notes-on{--caph:22vh}
+  #notes{height:var(--caph);padding:8px calc(14px + env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left))}
+  #notes .nt{font-size:14px;line-height:1.35}
+  #touchnav{display:block}
+  #touchnav button{position:fixed;z-index:20;width:44px;height:44px;margin:0;padding:10px;border:0;border-radius:22px;
+    background:rgba(20,23,27,.5);color:#fff;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  #touchnav button:active{background:rgba(20,23,27,.8)}
+  #touchnav svg{display:block;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  #touchnav .cc{font:700 13px/24px var(--sans);letter-spacing:.04em}
+  body:not(.notes-on) #tn-cc{opacity:.6}
+  /* landscape: prev / next in the side letterbox, centred on the slide; captions and fullscreen top right */
+  #tn-prev,#tn-next{top:calc(50% - var(--caph)/2 - 22px)}
+  #tn-prev{left:calc(6px + env(safe-area-inset-left))}
+  #tn-next{right:calc(6px + env(safe-area-inset-right))}
+  #tn-cc,#tn-fs{top:calc(6px + env(safe-area-inset-top));right:calc(6px + env(safe-area-inset-right))}
+  #tn-fs{right:calc(56px + env(safe-area-inset-right))}
+}
+@media (hover:none) and (pointer:coarse) and (orientation:portrait){
+  body.notes-on{--caph:34vh}
+  #notes .nt{font-size:16px}
+  /* portrait: one row of buttons just below the slide (slide height = 9/16 of the width) */
+  #tn-prev,#tn-next,#tn-cc,#tn-fs{top:calc(50% - var(--caph)/2 + 28.125vw + 12px)}
+  #tn-prev{left:calc(25% - 22px)}
+  #tn-next{right:calc(25% - 22px)}
+  #tn-cc{right:calc(50% - 22px)}
+  #tn-fs{right:calc(50% - 50px)}
+  #tn-fs:not([hidden]) ~ #tn-cc{right:calc(50% + 6px)}
+}
+@media print{#touchnav{display:none!important}}
 </style>
 </head>
 <body>
@@ -664,7 +698,7 @@ body.presenter #notes .nt p{margin:0 0 14px}
     <circle cx="438" cy="216" r="12" fill="var(--accent)"/><circle cx="122" cy="344" r="12" fill="var(--accent)"/>
     <circle cx="456" cy="456" r="10" fill="var(--faint)"/><circle cx="70" cy="200" r="10" fill="var(--faint)"/>
   </svg>
-  <aside class="notes">Talk at a group meeting at the Astronomisches Rechen-Institut, Heidelberg, 8 October 2026. Demos were recorded beforehand. Use ← → to move, n to hide these captions.</aside>
+  <aside class="notes">Talk at a group meeting at the Astronomisches Rechen-Institut, Heidelberg, 8 October 2026. Demos were recorded beforehand. Use ← → or swipe to move; n (CC on a phone) hides these captions.</aside>
 </section>
 
 <section class="slide" data-id="S2" data-time="2" data-title="After this workshop, you will be able to…">
@@ -1003,7 +1037,7 @@ body.presenter #notes .nt p{margin:0 0 14px}
     </div>
   </div>
   <p class="ref">Anthropic 2025 · LangChain 2026 · my framing</p>
-  <aside class="notes">Agent = Model + Harness (the app that lets the model read files and run commands) + Context (what you hand it). As in Liebig's barrel, the shortest stave sets the result, and context is the stave you control. Press c to grow it.</aside>
+  <aside class="notes">Agent = Model + Harness (the app that lets the model read files and run commands) + Context (what you hand it). As in Liebig's barrel, the shortest stave sets the result, and context is the stave you control. Press c or tap the barrel to grow it.</aside>
 </section>
 
 <section class="slide" data-id="S11a" data-time="16" data-title="Intelligence vs cost per task (Artificial Analysis)">
@@ -1795,6 +1829,48 @@ body.presenter #notes .nt p{margin:0 0 14px}
     document.getElementById('checkout').textContent=JSON.stringify(out);
   }
   if(false) (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>setTimeout(check,50));
+})();
+</script>
+<div id="touchnav">
+<button id="tn-prev" type="button" aria-label="Previous slide"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+<button id="tn-next" type="button" aria-label="Next slide"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+<button id="tn-fs" type="button" aria-label="Full screen" hidden><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+<button id="tn-cc" type="button" aria-label="Show or hide captions"><span class="cc">CC</span></button>
+</div>
+<script>
+(function(){
+  if(!matchMedia('(hover:none) and (pointer:coarse)').matches) return;
+  var d=window.deck, body=document.body;
+  function refit(){window.dispatchEvent(new Event('resize'));}
+  function on(id,f){document.getElementById(id).addEventListener('click',function(e){e.preventDefault();f();});}
+  on('tn-prev',function(){d.prev();});
+  on('tn-next',function(){d.next();});
+  on('tn-cc',function(){body.classList.toggle('notes-on');refit();});
+  var root=document.documentElement;
+  if(document.fullscreenEnabled&&root.requestFullscreen){
+    document.getElementById('tn-fs').hidden=false;
+    on('tn-fs',function(){document.fullscreenElement?document.exitFullscreen():root.requestFullscreen().catch(function(){});});
+  }
+  // the caption bar height comes from CSS (vh); refit after the browser toolbars or the orientation change it
+  window.addEventListener('orientationchange',function(){setTimeout(refit,300);});
+  if(window.visualViewport) visualViewport.addEventListener('resize',refit);
+  document.getElementById('help').textContent='Swipe or ‹ › to move · CC captions · pinch to zoom · rotate for a larger slide';
+  // swipe: one finger, mostly horizontal, not on a video (its own scrubbing) and not while zoomed in (that is panning)
+  var x0=null,y0=0,t0=0;
+  document.addEventListener('touchstart',function(e){
+    x0=null;
+    if(e.touches.length!==1) return;
+    if(window.visualViewport&&visualViewport.scale>1.05) return;
+    if(e.target.closest&&e.target.closest('video,button')) return;
+    x0=e.touches[0].clientX; y0=e.touches[0].clientY; t0=Date.now();
+  },{passive:true});
+  document.addEventListener('touchcancel',function(){x0=null;},{passive:true});
+  document.addEventListener('touchend',function(e){
+    if(x0===null) return;
+    var t=e.changedTouches[0], dx=t.clientX-x0, dy=t.clientY-y0; x0=null;
+    if(Date.now()-t0>800||Math.abs(dx)<50||Math.abs(dx)<1.5*Math.abs(dy)) return;
+    if(dx<0) d.next(); else d.prev();
+  },{passive:true});
 })();
 </script>
 <script data-goatcounter="https://wukai.goatcounter.com/count" async src="/assets/goatcounter-count-v20260928.js"></script>
