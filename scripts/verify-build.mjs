@@ -32,6 +32,7 @@ const requiredFiles = [
   "privacy.html",
   "cv/index.html",
   "talks/20261008-ai-agents/deck/index.html",
+  "talks/20261008-ai-agents/deck/handout/handout.pdf",
   "talks/20261008-ai-agents/ai-agents-astro-2026-10-08.pdf",
   "api/site.json",
   "openapi.json",
