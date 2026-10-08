@@ -2,7 +2,7 @@
 
 ## 代码风格与命名约定
 
-Astro、HTML、CSS、JavaScript 和 YAML 使用两个空格缩进。HTML 结构保持语义化；主页导航锚点必须与实际区块一致，目前使用 `about` 和 `contact`。
+Astro、HTML、CSS、JavaScript 和 YAML 使用两个空格缩进。HTML 结构保持语义化；主页导航锚点必须与实际区块一致，目前使用 `about`、`talks` 和 `contact`。
 
 新增资源文件名使用小写和连字符风格，例如 `profile-photo-v2.jpg`、`style-v20260706.css`。变更 CSS、JavaScript、SVG、图片等受 `/assets/*` 长缓存影响的资源时，必须改用新的版本化文件名，并同步更新 Astro 引用和 `scripts/verify-build.mjs`。
 

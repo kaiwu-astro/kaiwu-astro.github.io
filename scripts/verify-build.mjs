@@ -31,6 +31,8 @@ const requiredFiles = [
   "impressum.html",
   "privacy.html",
   "cv/index.html",
+  "talks/20261008-ai-agents/deck/index.html",
+  "talks/20261008-ai-agents/ai-agents-astro-2026-10-08.pdf",
   "api/site.json",
   "openapi.json",
   cvFile,
@@ -93,7 +95,9 @@ if (!existsSync(dist)) {
   const h1Count = indexHtml.match(/<h1(?:\s|>)/g)?.length ?? 0;
   if (h1Count !== 1) fail(`homepage must contain exactly one H1; found ${h1Count}`);
 
-  const sectionIds = ["about", "contact"];
+  const sectionIds = ["about", "talks", "contact"];
+  if (!indexHtml.includes('id="talks-20261008-ai-agents"')) fail("homepage missing talk card #talks-20261008-ai-agents");
+
   for (const id of sectionIds) {
     if (!indexHtml.includes(`id="${id}"`)) fail(`homepage missing #${id}`);
     if (!indexHtml.includes(`href="#${id}"`)) fail(`homepage missing nav link for #${id}`);
@@ -148,7 +152,7 @@ if (!existsSync(dist)) {
   }
 
   if (!cvPage.includes(cvFile)) fail("cv redirect page does not point to the PDF");
-  for (const page of ["index.html", "privacy.html", "impressum.html", "cv/index.html"]) {
+  for (const page of ["index.html", "privacy.html", "impressum.html", "cv/index.html", "talks/20261008-ai-agents/deck/index.html"]) {
     const html = readFileSync(join(dist, page), "utf8");
     if (!/<script\b(?=[^>]*\bdata-goatcounter="https:\/\/wukai\.goatcounter\.com\/count")(?=[^>]*\basync(?:\s|=|>))(?=[^>]*\bsrc="\/assets\/goatcounter-count-v20260928\.js")[^>]*><\/script>/i.test(html)) {
       fail(`${page} missing local GoatCounter script`);

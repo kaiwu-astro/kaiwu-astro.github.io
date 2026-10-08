@@ -1,0 +1,98 @@
+---
+import Icon from "./Icon.astro";
+
+interface Talk {
+  id: string;
+  title: string;
+  date: Date;
+  venue: string;
+  summary: string;
+  slides: string;
+  pdf?: string;
+}
+
+interface Props {
+  talks: Talk[];
+}
+
+const { talks } = Astro.props;
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
+---
+
+<section class="talks page-section" id="talks" data-section>
+  <header>
+    <h2 class="h2 article-title">Talks</h2>
+  </header>
+
+  <ul class="service-list">
+    {talks.map((talk) => (
+      <li class="service-item" id={`talks-${talk.id}`}>
+        <a class="service-icon-box" href={`#talks-${talk.id}`} tabindex="-1" aria-hidden="true"><Icon name="mic" /></a>
+        <div class="service-content-box">
+          <h3 class="h4 service-item-title"><a href={`#talks-${talk.id}`}>{talk.title}</a></h3>
+          <p class="service-item-text">
+            <time datetime={talk.date.toISOString().slice(0, 10)}>{formatDate(talk.date)}</time> · {talk.venue}
+          </p>
+          <p class="service-item-text">{talk.summary}</p>
+          <div class="talk-actions">
+            <a class="cv-download-link" href={talk.slides}>View slides</a>
+            {talk.pdf && (
+              <a class="talk-pdf-link" href={talk.pdf}>
+                <Icon name="download" class="inline-icon-align" />
+                PDF
+              </a>
+            )}
+          </div>
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .talks .service-list {
+    grid-template-columns: 1fr;
+  }
+
+  .talks .service-item-title a {
+    color: inherit;
+    text-underline-offset: 3px;
+  }
+
+  .talks .service-item-title a:hover,
+  .talks .service-item-title a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .talks .service-item {
+    scroll-margin-top: 90px;
+  }
+
+  .talks time {
+    display: inline;
+  }
+
+  .talks .service-item-text + .service-item-text {
+    margin-top: 6px;
+  }
+
+  .talk-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 22px;
+    margin-top: 14px;
+  }
+
+  .talk-pdf-link {
+    color: var(--light-gray);
+    text-underline-offset: 3px;
+  }
+
+  .talk-pdf-link:hover,
+  .talk-pdf-link:focus-visible {
+    color: var(--orange-yellow-crayola);
+    text-decoration: underline;
+  }
+</style>

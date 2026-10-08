@@ -4,12 +4,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Sidebar from "../components/Sidebar.astro";
 import AnchorNav from "../components/AnchorNav.astro";
 import AboutSection from "../components/AboutSection.astro";
+import TalksSection from "../components/TalksSection.astro";
 import ContactSection from "../components/ContactSection.astro";
 
 const profile = (await getEntry("site", "profile"))!.data;
 const about = (await getEntry("about", "main"))!;
 const { Content: AboutContent } = await render(about);
 const services = (await getEntry("services", "main"))!.data.items;
+const talks = (await getEntry("talks", "main"))!.data.items;
 
 const cvFilenameMatch = profile.cvFile.match(/^KaiWU_CV_(\d{4})(\d{2})(\d{2})(?:-\d+)?\.pdf$/);
 if (!cvFilenameMatch) {
@@ -71,6 +73,7 @@ const personSchema = {
       >
         <AboutContent />
       </AboutSection>
+      <TalksSection talks={talks} />
       <ContactSection emails={profile.emails} />
     </div>
   </main>

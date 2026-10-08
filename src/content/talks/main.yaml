@@ -1,0 +1,14 @@
+# Only talks with public materials (slides, videos) under public/talks/<id>/. Everything else stays in the CV.
+# Each item renders as the homepage card #talks-<id>; newest first.
+items:
+  - id: 20261008-ai-agents
+    title: AI Agents for Astronomical Research
+    date: 2026-10-08
+    venue: Group meeting, Astronomisches Rechen-Institut, Heidelberg
+    summary: >-
+      AI agents are language models that can read files, run code and query archives on their own.
+      Where do they already do real research work, and where do they still fail? Why does the same model
+      do far more as an agent than in a web chat? How do you brief one, and where does the human check belong?
+      The slides include two recorded demos: checking references against NASA ADS, and analysing an N-body run on JUPITER.
+    slides: /talks/20261008-ai-agents/deck/
+    pdf: /talks/20261008-ai-agents/ai-agents-astro-2026-10-08.pdf

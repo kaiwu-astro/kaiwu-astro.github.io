@@ -39,6 +39,20 @@ export const collections = {
       }))
     })
   }),
+  talks: defineCollection({
+    type: "data",
+    schema: z.object({
+      items: z.array(z.object({
+        id: z.string().regex(/^\d{8}-[a-z0-9-]+$/),
+        title: z.string(),
+        date: z.coerce.date(),
+        venue: z.string(),
+        summary: z.string(),
+        slides: z.string(),
+        pdf: z.string().optional()
+      }))
+    })
+  }),
   legal: defineCollection({
     type: "content",
     schema: z.object({
