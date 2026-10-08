@@ -9,6 +9,7 @@ import { spawn } from "node:child_process";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { cvAliasEntryPattern, cvFileEntryPattern } from "./cv-sitemap-patterns.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 process.chdir(root);
@@ -485,13 +486,13 @@ async function main() {
   const nextProfile = replaceExactly(profile, /^cvFile: .+$/m, `cvFile: ${targetName}`, "profile cvFile");
   const nextSitemap = replaceExactly(
     sitemap,
-    /<loc>https:\/\/about\.wukai\.work\/KaiWU_CV_\d{8}(?:-\d+)?\.pdf<\/loc>\n    <lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/,
+    cvFileEntryPattern,
     `<loc>https://wukai.work/${targetName}</loc>\n    <lastmod>${date.iso}</lastmod>`,
     "CV sitemap entry"
   );
   const nextCvSitemap = replaceExactly(
     nextSitemap,
-    /(<loc>https:\/\/about\.wukai\.work\/cv\/<\/loc>\n    <lastmod>)\d{4}-\d{2}-\d{2}(<\/lastmod>)/,
+    cvAliasEntryPattern,
     `$1${date.iso}$2`,
     "CV alias sitemap lastmod"
   );
