@@ -21,6 +21,10 @@ Astro 静态个人学术网站，部署到 GitHub Pages，经 Cloudflare 服务 
 
 提交信息简短、祈使式，例如 `Import Astro website source`。Pull Request 含简短说明、视觉改动截图、执行过的检查命令和关联 issue。
 
+## 手机兼容
+
+网站及其发布的资源（页面、talk deck、PDF 等 `public/` 下的内容）都要兼容手机：触屏可操作、文字可读、无横向滚动。视觉或交互改动发布前，在手机宽度（如 390×844 竖屏、844×390 横屏，headless Chrome 开触屏模拟）检查；通用检查项见 `CODING_STANDARDS.md`。
+
 ## 安全
 
 这是公开 GitHub Repo：不提交私人草稿、未公开文档、凭据、本地配置文件或维护日志，也不提交 `dist/`、`node_modules/`、`.astro/`、`implementation-notes.html`、`comments.md` 或本地缓存。仓库只放用于公开展示和部署的资源。
