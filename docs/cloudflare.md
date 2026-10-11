@@ -14,6 +14,7 @@
 - 启用 Always Use HTTPS、Automatic HTTPS Rewrites、Email Address Obfuscation 和 Brotli。
 - 禁用 Rocket Loader。
 - Bot 设置（`/zones/{zone}/bot_management`，2026-10-11 起）：Bot Fight Mode、JS 检测（`enable_js`）、AI Labyrinth（`crawler_protection`）和 AI 爬虫拦截全部关闭，`ai_training`/`ai_search`/`ai_user` 均为 `disabled`，AI 爬虫策略只由仓库的 `public/robots.txt` 决定。原因：本站欢迎 AI 爬虫和 agent（robots.txt、`api/site.json`、`openapi.json`），这些开关会往 HTML 注入隐藏迷宫链接和检测脚本，并对未认证 bot 返回 403。改这些设置需要 token 带 Bot Management Write。
+- Crawler Hints 开启（2026-10-11 起，控制台“缓存 → 配置”；内容变化时经 IndexNow 通知 Bing 等搜索引擎）。API token 改不了这个开关（`POST /zones/{zone}/flags/products/cache/changes` 报 10000），只能读 `GET /zones/{zone}/flags` 的 `cache.crawlhints_enabled`。
 - 保持 Cloudflare 规则 `redirect_about_cv_to_current_pdf` 禁用（原因见 `docs/content.md` 的“替换 CV”）。
 - `/assets/*` Browser Cache TTL 为 1 month。
 - HTML 页面 Browser Cache TTL 控制在 30 min。
