@@ -23,7 +23,7 @@
 ADS_API_TOKEN=... npm run update:publications
 ```
 
-脚本用 `identifier:` 查询，arXiv 预印本正式发表后会自动换成期刊信息；列表没变时保留原 `updated` 日期。有变化时同步更新 sitemap 里 `/publications/` 的 `<lastmod>`。ADS token 不入库；本机 agent 可从 scix MCP 配置的 `SCIX_API_TOKEN` 读取，不要打印。
+脚本用 `identifier:` 查询，arXiv 预印本正式发表后会自动换成期刊信息；列表没变时保留原 `updated` 日期。有变化时同步更新 sitemap 里 `/publications/` 的 `<lastmod>`。ADS token 不入库，也不要打印。
 
 ## 面向 AI 与搜索引擎的元数据
 
