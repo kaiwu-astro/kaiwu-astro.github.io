@@ -54,7 +54,8 @@ const sitemapUrls = [
   "https://wukai.work/api/site.json",
   "https://wukai.work/openapi.json",
   `https://wukai.work/${cvFile}`,
-  "https://wukai.work/cv/",
+  "https://wukai.work/talks/20261008-ai-agents/deck/",
+  "https://wukai.work/talks/20261008-ai-agents/ai-agents-astro-2026-10-08.pdf",
   "https://wukai.work/impressum.html",
   "https://wukai.work/privacy.html"
 ];
@@ -151,6 +152,7 @@ if (!existsSync(dist)) {
   for (const url of sitemapUrls) {
     if (!sitemap.includes(`<loc>${url}</loc>`)) fail(`sitemap missing ${url}`);
   }
+  if (sitemap.includes("<loc>https://wukai.work/cv/</loc>")) fail("sitemap must not list the noindex /cv/ redirect");
 
   if (!cvPage.includes(cvFile)) fail("cv redirect page does not point to the PDF");
   for (const page of ["index.html", "privacy.html", "impressum.html", "cv/index.html", "talks/20261008-ai-agents/deck/index.html"]) {
