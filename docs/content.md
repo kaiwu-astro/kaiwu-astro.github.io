@@ -45,4 +45,4 @@ ADS_API_TOKEN=... npm run update:publications
 
 修改 `public/sitemap.xml` 收录的公开页面、CV 文件或重要公开 URL 时，同步更新对应 `<lastmod>`。本迁移日期为 `2026-07-06`。
 
-Sitemap 只列可编入索引的最终 URL：`/cv/` 是 `noindex` 跳转页，不要列入（列 CV PDF 本身）；`about.wukai.work`、`www.wukai.work` 等 301 来源也不列。sitemap 已在 Google Search Console（域名资源 `wukai.work`）提交，Google 会定期重读，改动后无需重新提交。
+Sitemap 只列可编入索引的最终 URL：`/cv/` 是 `noindex` 跳转页，不要列入（列 CV PDF 本身）；`about.wukai.work`、`www.wukai.work` 等 301 来源也不列。sitemap 已在 Google Search Console（域名资源 `wukai.work`）和 Bing Webmaster Tools（2026-10-11 从 GSC 导入站点，sitemap 手动提交）提交，两边都会定期重读，改动后无需重新提交；Cloudflare Crawler Hints 另会经 IndexNow 通知 Bing。
