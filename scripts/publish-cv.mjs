@@ -503,10 +503,8 @@ async function main() {
     writeFile(publicationStatePath, `${JSON.stringify(nextState, null, 2)}\n`)
   ]);
 
-  log("6. 运行 Astro 检查、构建和构建产物验证");
-  await run("npm", ["run", "check"]);
-  await run("npm", ["run", "build"]);
-  await run("npm", ["run", "verify"]);
+  log("6. 运行 npm run checks（Astro 检查、测试、构建和构建产物验证）");
+  await run("npm", ["run", "checks"]);
 
   if (noPush) {
     log("7. 已按 --no-push 在本地检查后停止；改动尚未暂存、提交或推送");

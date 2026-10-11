@@ -22,13 +22,11 @@ The About and legal page bodies are Markdown below the frontmatter. The profile 
 ## Local Commands
 
 ```bash
-npm run check
-npm run build
-npm run verify
+npm run checks
 npm run preview -- --host 127.0.0.1
 ```
 
-`npm run verify` expects `dist/` to exist, so run `npm run build` first.
+`npm run checks` runs `check`, `test`, `build` and `verify` in that order (`verify` needs the `dist/` from `build`). CI and `publish-cv.mjs` call the same script.
 
 ## Profile And Homepage
 
@@ -50,7 +48,7 @@ The CV is published automatically from the LaTeX source in the private KIT repo 
 
 **Build.** `git archive C academic/cv academic/sources/publications.bib` is extracted into `~/Library/Caches/kaiwu-cv-build/` and compiled there with `latexmk -usepretex='\newcommand\cvupdated{<D>}'`. The PDF must be A4, contain `Kai Wu` and `Updated <D>`, and must not contain `Academic References` (the public base CV has no referee details). The pretex also defines `\cvpublic`, which hides the phone number in the header (`\ifdefined\cvpublic` in `KaiWU_CV.tex`), and the PDF must not contain anything that looks like an international phone number (generic `+<country code> ...` pattern, so no number is stored in this public repo). Optionally, if `~/Library/Application Support/kaiwu-cv-publish/forbidden-strings.txt` exists (one string per line, `#` comments; digits are normalised when comparing), any listed string in the PDF text is refused too; the file is skipped when absent. If its text, ignoring dates, equals the currently published CV, nothing is published; that verdict is cached in `~/Library/Caches/kaiwu-cv-publish/evaluated.json`.
 
-**Release steps.** Delete the previous versioned PDF, write `public/KaiWU_CV_<D>.pdf`, update `cvFile`, both CV sitemap dates and `scripts/cv-publication.json` (source commit, date, PDF name; committed with the release for traceability), run `npm run check`, `npm run build`, `npm run verify`, commit (`Update CV for <D>`, source SHA in the body), push, wait for the Pages workflow, and check the live PDF and `/cv/`. The preflight requires `main` clean, on `main`, not behind `origin/main`, and not ahead of it (unreviewed local commits are never pushed by the publisher).
+**Release steps.** Delete the previous versioned PDF, write `public/KaiWU_CV_<D>.pdf`, update `cvFile`, the CV PDF sitemap entry and `scripts/cv-publication.json` (source commit, date, PDF name; committed with the release for traceability), run `npm run checks`, commit (`Update CV for <D>`, source SHA in the body), push, wait for the Pages workflow, and check the live PDF and `/cv/`. The preflight requires `main` clean, on `main`, not behind `origin/main`, and not ahead of it (unreviewed local commits are never pushed by the publisher).
 
 **Same-day re-release (`--force`).** `--force` skips the "a CV dated D is already published" rule, so a later KIT commit on an already-published day can go out the same evening (e.g. after fixing something in the first version). It still requires C to differ from the recorded source commit, still refuses when the text (ignoring dates) equals the published CV, and runs every PDF check (no referees, no phone number). Because Cloudflare may cache the PDF under its old URL, a same-day re-release gets a sequence suffix: `KaiWU_CV_<D>-2.pdf`, then `-3`, ...; the old file is deleted as usual. `cvFile`, the sitemap, `cv-publication.json`, `npm run verify` and the live check all accept `KaiWU_CV_YYYYMMDD[-N].pdf`. Use `--dry-run --force` to see the verdict and file name first.
 
@@ -138,9 +136,7 @@ GitHub Pages should publish through GitHub Actions, not from the branch root. Th
 
 ```bash
 npm ci
-npm run check
-npm run build
-npm run verify
+npm run checks
 ```
 
 On `main` pushes, the workflow uploads `dist/` with `actions/upload-pages-artifact` and deploys it with `actions/deploy-pages`.

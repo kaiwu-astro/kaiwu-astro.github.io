@@ -17,7 +17,7 @@ Astro 静态个人学术网站，部署到 GitHub Pages，经 Cloudflare 服务 
 
 ## 提交
 
-依赖用 `npm ci` 安装，本地开发 `npm run dev`。提交或发布前依次运行 `npm run check`、`npm test`、`npm run build`、`npm run verify`（与 CI 相同）（`verify` 依赖 `dist/`，须在 `build` 之后）；视觉改动另见 `CODING_STANDARDS.md`。每次 agent 修改仓库后，先完成这些检查，通过后直接用 `$commit` skill 提交，再把当前分支推送到 `origin`。不要提交或推送未验证的改动。
+依赖用 `npm ci` 安装，本地开发 `npm run dev`。提交或发布前运行 `npm run checks`（依次执行 check、test、build、verify；CI 和 `publish-cv.mjs` 调用的是同一条命令，增删检查步骤只改 `package.json`）；视觉改动另见 `CODING_STANDARDS.md`。每次 agent 修改仓库后，先完成这些检查，通过后直接用 `$commit` skill 提交，再把当前分支推送到 `origin`。不要提交或推送未验证的改动。
 
 提交信息简短、祈使式，例如 `Import Astro website source`。Pull Request 含简短说明、视觉改动截图、执行过的检查命令和关联 issue。
 
