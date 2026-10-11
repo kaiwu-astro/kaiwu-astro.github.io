@@ -6,6 +6,7 @@ import AnchorNav from "../components/AnchorNav.astro";
 import AboutSection from "../components/AboutSection.astro";
 import TalksSection from "../components/TalksSection.astro";
 import ContactSection from "../components/ContactSection.astro";
+import { personId, personNode } from "../lib/schema";
 
 const profile = (await getEntry("site", "profile"))!.data;
 const about = (await getEntry("about", "main"))!;
@@ -36,18 +37,37 @@ const cvUpdatedDate = new Intl.DateTimeFormat("en-GB", {
   timeZone: "UTC"
 }).format(cvDate);
 
-const personSchema = {
+const siteUrl = profile.canonical;
+const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: profile.name,
-  jobTitle: "Postdoctoral Researcher",
-  affiliation: {
-    "@type": "CollegeOrUniversity",
-    name: "Heidelberg University"
-  },
-  url: profile.canonical,
-  sameAs: profile.socials.map((social) => social.href),
-  knowsAbout: profile.schemaKnowsAbout
+  "@graph": [
+    personNode(profile),
+    {
+      "@type": "ProfilePage",
+      "@id": `${siteUrl}#profile-page`,
+      url: siteUrl,
+      name: "Kai Wu | Computational Astrophysicist",
+      mainEntity: { "@id": personId }
+    },
+    ...talks.map((talk) => ({
+      "@type": "PresentationDigitalDocument",
+      "@id": new URL(talk.slides ?? `#talks-${talk.id}`, siteUrl).toString(),
+      name: talk.title,
+      description: talk.summary,
+      url: new URL(talk.slides ?? `#talks-${talk.id}`, siteUrl).toString(),
+      datePublished: talk.date.toISOString().slice(0, 10),
+      inLanguage: "en",
+      author: { "@id": personId },
+      contentLocation: { "@type": "Place", name: talk.venue },
+      ...(talk.pdf && {
+        encoding: {
+          "@type": "MediaObject",
+          encodingFormat: "application/pdf",
+          contentUrl: new URL(talk.pdf, siteUrl).toString()
+        }
+      })
+    }))
+  ]
 };
 ---
 
@@ -56,7 +76,8 @@ const personSchema = {
   description={profile.description}
   canonicalPath="/"
   image={profile.socialImage}
-  personSchema={personSchema}
+  ogType="profile"
+  jsonLd={jsonLd}
 >
   <main>
     <Sidebar profile={profile} />

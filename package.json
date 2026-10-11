@@ -11,7 +11,8 @@
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
     "verify": "node scripts/verify-build.mjs",
     "checks": "npm run check && npm test && npm run build && npm run verify",
-    "publish:cv": "node scripts/publish-cv.mjs"
+    "publish:cv": "node scripts/publish-cv.mjs",
+    "update:publications": "node scripts/update-publications.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

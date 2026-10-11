@@ -86,6 +86,16 @@
                 "type": "string",
                 "format": "uri"
               },
+              "publications": {
+                "type": "string",
+                "format": "uri",
+                "description": "HTML list of papers and preprints."
+              },
+              "llms": {
+                "type": "string",
+                "format": "uri",
+                "description": "Plain-text site summary for language models (llms.txt)."
+              },
               "openapi": {
                 "type": "string",
                 "format": "uri"

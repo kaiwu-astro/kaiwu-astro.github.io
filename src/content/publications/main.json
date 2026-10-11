@@ -1,0 +1,204 @@
+{
+  "source": "https://ui.adsabs.harvard.edu/user/libraries/r6M69CAYQUWEcOfqPQ74_g",
+  "updated": "2026-10-11",
+  "items": [
+    {
+      "bibcode": "2026A&A...709A.142W",
+      "title": "Direct N-body simulations of rotating and extremely massive Population III star clusters",
+      "authors": [
+        "Wu, Kai",
+        "Tanikawa, Ataru",
+        "Flammini Dotti, Francesco",
+        "Vergara, Marcelo C.",
+        "Liu, Boyuan",
+        "Kamlah, Albrecht W. H.",
+        "Arca Sedda, Manuel",
+        "Neumayer, Nadine"
+      ],
+      "authorCount": 9,
+      "authorPosition": 1,
+      "venue": "Astronomy and Astrophysics, 709, A142",
+      "year": 2026,
+      "published": true,
+      "doi": "10.1051/0004-6361/202558659",
+      "arxiv": "2603.29657",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A%26A...709A.142W/abstract"
+    },
+    {
+      "bibcode": "2026arXiv260208574C",
+      "title": "Modeling Tidal Disruption Events and Compact Object Plunges in Nuclear Star Clusters",
+      "authors": [
+        "Cho, Philip",
+        "Wu, Kai",
+        "Flammini Dotti, Francesco",
+        "Panamarev, Taras",
+        "Spurzem, Rainer"
+      ],
+      "authorCount": 5,
+      "authorPosition": 2,
+      "venue": "arXiv preprint",
+      "year": 2026,
+      "published": false,
+      "arxiv": "2602.08574",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026arXiv260208574C/abstract"
+    },
+    {
+      "bibcode": "2026A&A...706A.219F",
+      "title": "Dynamical evolution of massless particles in star clusters with NBODY6++GPU-MASSLESS: II. The long-term evolution of free-floating comets",
+      "authors": [
+        "Flammini Dotti, Francesco",
+        "Kouwenhoven, Mattheus Bartholomeus Nicolaas",
+        "Wu, Kai",
+        "Askar, Abbas",
+        "Berczik, Peter",
+        "Giersz, Mirek",
+        "Spurzem, Rainer",
+        "Dobbs-Dixon, Ian"
+      ],
+      "authorCount": 8,
+      "authorPosition": 3,
+      "venue": "Astronomy and Astrophysics, 706, A219",
+      "year": 2026,
+      "published": true,
+      "doi": "10.1051/0004-6361/202557334",
+      "arxiv": "2512.11501",
+      "url": "https://ui.adsabs.harvard.edu/abs/2026A%26A...706A.219F/abstract"
+    },
+    {
+      "bibcode": "2025arXiv251108850S",
+      "title": "Modelling Millisecond Pulsar Populations in Globular Clusters with NBODY6++GPU",
+      "authors": [
+        "Song, Yuzhe",
+        "Chattopadhyay, Debatri",
+        "Hurley, Jarrod",
+        "Spurzem, Rainer",
+        "Flammini Dotti, Francesco",
+        "Wu, Kai"
+      ],
+      "authorCount": 6,
+      "authorPosition": 6,
+      "venue": "arXiv preprint",
+      "year": 2025,
+      "published": false,
+      "arxiv": "2511.08850",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025arXiv251108850S/abstract"
+    },
+    {
+      "bibcode": "2025arXiv251003933W",
+      "title": "DRAGON-III simulation: modelling million-body globular and nuclear star clusters",
+      "authors": [
+        "Wu, Kai",
+        "Cho, Philip",
+        "Spurzem, Rainer",
+        "Wang, Long",
+        "Flammini Dotti, Francesco",
+        "Amiri, Vahid"
+      ],
+      "authorCount": 6,
+      "authorPosition": 1,
+      "venue": "arXiv preprint",
+      "year": 2025,
+      "published": false,
+      "arxiv": "2510.03933",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025arXiv251003933W/abstract"
+    },
+    {
+      "bibcode": "2025A&A...696A.117L",
+      "title": "Formation and evolution of new primordial open cluster groups: Feedback-driven star formation",
+      "authors": [
+        "Liu, Guimei",
+        "Zhang, Yu",
+        "Zhong, Jing",
+        "Chen, Li",
+        "Meng, Xiangcun",
+        "Wu, Kai"
+      ],
+      "authorCount": 6,
+      "authorPosition": 6,
+      "venue": "Astronomy and Astrophysics, 696, A117",
+      "year": 2025,
+      "published": true,
+      "doi": "10.1051/0004-6361/202452774",
+      "arxiv": "2503.13892",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025A%26A...696A.117L/abstract"
+    },
+    {
+      "bibcode": "2025A&A...693A.317Q",
+      "title": "Unveiling the binary nature of NGC 2323",
+      "authors": [
+        "Qin, Songmei",
+        "Zhong, Jing",
+        "Tang, Tong",
+        "Jiang, Yueyue",
+        "Wang, Long",
+        "Wu, Kai",
+        "Anders, Friedrich",
+        "Balaguer-Núñez, Lola"
+      ],
+      "authorCount": 12,
+      "authorPosition": 6,
+      "venue": "Astronomy and Astrophysics, 693, A317",
+      "year": 2025,
+      "published": true,
+      "doi": "10.1051/0004-6361/202452962",
+      "arxiv": "2411.03787",
+      "url": "https://ui.adsabs.harvard.edu/abs/2025A%26A...693A.317Q/abstract"
+    },
+    {
+      "bibcode": "2024MNRAS.533.4485W",
+      "title": "Influence of planets on debris discs in star clusters - II. The impact of stellar density",
+      "authors": [
+        "Wu, Kai",
+        "Kouwenhoven, M. B. N.",
+        "Flammini Dotti, Francesco",
+        "Spurzem, Rainer"
+      ],
+      "authorCount": 4,
+      "authorPosition": 1,
+      "venue": "Monthly Notices of the Royal Astronomical Society, 533, 4485",
+      "year": 2024,
+      "published": true,
+      "doi": "10.1093/mnras/stae2067",
+      "arxiv": "2409.00996",
+      "url": "https://ui.adsabs.harvard.edu/abs/2024MNRAS.533.4485W/abstract"
+    },
+    {
+      "bibcode": "2023MNRAS.523.4801W",
+      "title": "Influence of planets on debris discs in star clusters - I. The 50 au Jupiter",
+      "authors": [
+        "Wu, Kai",
+        "Kouwenhoven, M. B. N.",
+        "Spurzem, Rainer",
+        "Pang, Xiaoying"
+      ],
+      "authorCount": 4,
+      "authorPosition": 1,
+      "venue": "Monthly Notices of the Royal Astronomical Society, 523, 4801",
+      "year": 2023,
+      "published": true,
+      "doi": "10.1093/mnras/stad1673",
+      "arxiv": "2306.01283",
+      "url": "https://ui.adsabs.harvard.edu/abs/2023MNRAS.523.4801W/abstract"
+    },
+    {
+      "bibcode": "2020JPhCS1523a2011K",
+      "title": "Planetary systems in dense stellar environments",
+      "authors": [
+        "Kouwenhoven, M. B. N.",
+        "Flammini Dotti, Francesco",
+        "Shu, Qi",
+        "Xu, Xiuming",
+        "Wu, Kai",
+        "Pang, Xiaoying",
+        "Hao, Wei"
+      ],
+      "authorCount": 7,
+      "authorPosition": 5,
+      "venue": "Journal of Physics Conference Series, 1523, 012011",
+      "year": 2020,
+      "published": true,
+      "doi": "10.1088/1742-6596/1523/1/012011",
+      "url": "https://ui.adsabs.harvard.edu/abs/2020JPhCS1523a2011K/abstract"
+    }
+  ]
+}

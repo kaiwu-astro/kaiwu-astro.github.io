@@ -1,0 +1,130 @@
+---
+import { getEntry } from "astro:content";
+import LegalLayout from "../../layouts/LegalLayout.astro";
+import { isKaiWu } from "../../../scripts/ads-publications.mjs";
+import { personId, personNode } from "../../lib/schema";
+
+const profile = (await getEntry("site", "profile"))!.data;
+const publications = (await getEntry("publications", "main"))!.data;
+const pageUrl = new URL("publications/", profile.canonical).toString();
+const updatedIso = publications.updated.toISOString().slice(0, 10);
+const updatedDate = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC"
+}).format(publications.updated);
+
+const title = "Publications";
+const description = `Papers and preprints by ${profile.name} on direct N-body simulations, star clusters and planetary systems, with links to NASA ADS, DOI and arXiv.`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    personNode(profile),
+    {
+      "@type": "CollectionPage",
+      "@id": pageUrl,
+      url: pageUrl,
+      name: `${title} | ${profile.name}`,
+      description,
+      dateModified: updatedIso,
+      about: { "@id": personId },
+      mainEntity: {
+        "@type": "ItemList",
+        numberOfItems: publications.items.length,
+        itemListElement: publications.items.map((paper, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "ScholarlyArticle",
+            "@id": paper.url,
+            headline: paper.title,
+            name: paper.title,
+            url: paper.url,
+            datePublished: String(paper.year),
+            author: paper.authors.map((author) => isKaiWu(author) ? { "@id": personId } : { "@type": "Person", name: author }),
+            ...(paper.published && { isPartOf: { "@type": "Periodical", name: paper.venue.split(", ")[0] } }),
+            ...(paper.doi && { identifier: `doi:${paper.doi}` }),
+            sameAs: [
+              ...(paper.doi ? [`https://doi.org/${paper.doi}`] : []),
+              ...(paper.arxiv ? [`https://arxiv.org/abs/${paper.arxiv}`] : [])
+            ]
+          }
+        }))
+      }
+    }
+  ]
+};
+---
+
+<LegalLayout title={title} description={description} canonicalPath="/publications/" jsonLd={jsonLd}>
+  <section class="about-text legal-text publications">
+    <p>
+      Papers and preprints from my <a href={publications.source}>NASA ADS library</a>, newest first.
+      List updated <time datetime={updatedIso}>{updatedDate}</time>; NASA ADS has the current version.
+    </p>
+    <ol class="publication-list">
+      {publications.items.map((paper) => (
+        <li class="publication-item">
+          <h2 class="h4 publication-title"><a href={paper.url}>{paper.title}</a></h2>
+          <p class="publication-authors">
+            {paper.authors.map((author, index) => (
+              <>{index > 0 && "; "}{isKaiWu(author) ? <strong>{author}</strong> : author}</>
+            ))}
+            {paper.authorCount > paper.authors.length && ` et al. (${paper.authorCount} authors)`}
+          </p>
+          <p class="publication-venue">{paper.year} · {paper.venue}</p>
+          <p class="publication-links">
+            {paper.doi && <a href={`https://doi.org/${paper.doi}`}>DOI</a>}
+            {paper.arxiv && <a href={`https://arxiv.org/abs/${paper.arxiv}`}>arXiv:{paper.arxiv}</a>}
+            <a href={paper.url}>ADS</a>
+          </p>
+        </li>
+      ))}
+    </ol>
+  </section>
+</LegalLayout>
+
+<style>
+  .publications time {
+    display: inline;
+  }
+
+  .publication-list {
+    list-style: none;
+    margin-top: 20px;
+    display: grid;
+    gap: 22px;
+  }
+
+  .publication-title {
+    margin-bottom: 6px;
+    overflow-wrap: anywhere;
+  }
+
+  .publication-title a {
+    color: inherit;
+    text-underline-offset: 3px;
+  }
+
+  .publication-title a:hover,
+  .publication-title a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .publication-authors,
+  .publication-venue {
+    margin-bottom: 4px;
+  }
+
+  .publication-authors strong {
+    color: var(--white-2);
+  }
+
+  .publication-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+</style>

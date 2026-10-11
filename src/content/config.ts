@@ -20,7 +20,10 @@ export const collections = {
       description: z.string(),
       socialImage: z.string(),
       socials: z.array(linkSchema),
-      schemaKnowsAbout: z.array(z.string())
+      schemaKnowsAbout: z.array(z.string()),
+      schemaAlternateNames: z.array(z.string()),
+      schemaAlumniOf: z.array(z.string()),
+      orcid: z.string().regex(/^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/)
     })
   }),
   about: defineCollection({
@@ -51,6 +54,26 @@ export const collections = {
         slides: z.string().optional(),
         slides_label: z.string().optional(),
         pdf: z.string().optional()
+      }))
+    })
+  }),
+  publications: defineCollection({
+    type: "data",
+    schema: z.object({
+      source: z.string().url(),
+      updated: z.coerce.date(),
+      items: z.array(z.object({
+        bibcode: z.string(),
+        title: z.string(),
+        authors: z.array(z.string()),
+        authorCount: z.number().int().positive(),
+        authorPosition: z.number().int().positive().nullable(),
+        venue: z.string(),
+        year: z.number().int(),
+        published: z.boolean(),
+        doi: z.string().optional(),
+        arxiv: z.string().optional(),
+        url: z.string().url()
       }))
     })
   }),

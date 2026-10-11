@@ -31,6 +31,8 @@ const requiredFiles = [
   "impressum.html",
   "privacy.html",
   "cv/index.html",
+  "publications/index.html",
+  "llms.txt",
   "talks/20261008-ai-agents/deck/index.html",
   "talks/20261008-ai-agents/deck/handout/handout.pdf",
   "talks/20261008-ai-agents/ai-agents-astro-2026-10-08.pdf",
@@ -51,6 +53,7 @@ const requiredFiles = [
 
 const sitemapUrls = [
   "https://wukai.work/",
+  "https://wukai.work/publications/",
   "https://wukai.work/api/site.json",
   "https://wukai.work/openapi.json",
   `https://wukai.work/${cvFile}`,
@@ -93,6 +96,24 @@ if (!existsSync(dist)) {
   const cvPage = readFileSync(join(dist, "cv/index.html"), "utf8");
   const siteProfile = JSON.parse(readFileSync(join(dist, "api/site.json"), "utf8"));
   const openapi = JSON.parse(readFileSync(join(dist, "openapi.json"), "utf8"));
+  const publicationsHtml = readFileSync(join(dist, "publications/index.html"), "utf8");
+  const deckHtml = readFileSync(join(dist, "talks/20261008-ai-agents/deck/index.html"), "utf8");
+  const llms = readFileSync(join(dist, "llms.txt"), "utf8");
+  const publications = JSON.parse(readFileSync(join(root, "src/content/publications/main.json"), "utf8"));
+  const jsonLd = (html, page) => {
+    const blocks = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+    if (blocks.length !== 1) {
+      fail(`${page} must contain exactly one JSON-LD block; found ${blocks.length}`);
+      return [];
+    }
+    try {
+      const data = JSON.parse(blocks[0][1]);
+      return data["@graph"] ?? [data];
+    } catch {
+      fail(`${page} JSON-LD is not valid JSON`);
+      return [];
+    }
+  };
 
   const h1Count = indexHtml.match(/<h1(?:\s|>)/g)?.length ?? 0;
   if (h1Count !== 1) fail(`homepage must contain exactly one H1; found ${h1Count}`);
@@ -155,7 +176,7 @@ if (!existsSync(dist)) {
   if (sitemap.includes("<loc>https://wukai.work/cv/</loc>")) fail("sitemap must not list the noindex /cv/ redirect");
 
   if (!cvPage.includes(cvFile)) fail("cv redirect page does not point to the PDF");
-  for (const page of ["index.html", "privacy.html", "impressum.html", "cv/index.html", "talks/20261008-ai-agents/deck/index.html"]) {
+  for (const page of ["index.html", "privacy.html", "impressum.html", "cv/index.html", "publications/index.html", "talks/20261008-ai-agents/deck/index.html"]) {
     const html = readFileSync(join(dist, page), "utf8");
     if (!/<script\b(?=[^>]*\bdata-goatcounter="https:\/\/wukai\.goatcounter\.com\/count")(?=[^>]*\basync(?:\s|=|>))(?=[^>]*\bsrc="\/assets\/goatcounter-count-v20260928\.js")[^>]*><\/script>/i.test(html)) {
       fail(`${page} missing local GoatCounter script`);
@@ -165,7 +186,7 @@ if (!existsSync(dist)) {
     }
   }
   const oldHost = "about.wukai.work";
-  for (const page of ["index.html", "cv/index.html", "privacy.html", "impressum.html"]) {
+  for (const page of ["index.html", "cv/index.html", "privacy.html", "impressum.html", "publications/index.html", "talks/20261008-ai-agents/deck/index.html"]) {
     const html = readFileSync(join(dist, page), "utf8");
     const canonical = html.match(/<link\b(?=[^>]*\brel="canonical")[^>]*\bhref="([^"]*)"/i)?.[1];
     const metaContent = (attr, name) =>
@@ -205,6 +226,38 @@ if (!existsSync(dist)) {
     if (!robots.includes(`User-agent: ${agent}\nAllow: /`)) fail(`robots.txt does not explicitly allow ${agent}`);
   }
 
+  const homeGraph = jsonLd(indexHtml, "index.html");
+  const person = homeGraph.find((node) => node["@type"] === "Person");
+  if (person?.["@id"] !== "https://wukai.work/#person") fail("homepage JSON-LD has no Person with @id https://wukai.work/#person");
+  if (!person?.alternateName?.includes("吴开")) fail("homepage JSON-LD Person is missing alternateName 吴开");
+  if (person?.identifier?.propertyID !== "ORCID") fail("homepage JSON-LD Person is missing its ORCID identifier");
+  if (!homeGraph.some((node) => node["@type"] === "PresentationDigitalDocument" && node.url === "https://wukai.work/talks/20261008-ai-agents/deck/")) {
+    fail("homepage JSON-LD is missing the talk deck");
+  }
+  if (!indexHtml.includes('href="/publications/"')) fail("homepage does not link to /publications/");
+
+  const paperCount = publications.items.length;
+  if (paperCount === 0) fail("src/content/publications/main.json has no items");
+  const listedPapers = publicationsHtml.match(/<li\b[^>]*class="publication-item/g)?.length ?? 0;
+  if (listedPapers !== paperCount) fail(`publications page lists ${listedPapers} papers, expected ${paperCount}`);
+  const paperList = jsonLd(publicationsHtml, "publications/index.html").find((node) => node["@type"] === "CollectionPage")?.mainEntity;
+  if (paperList?.numberOfItems !== paperCount || paperList.itemListElement?.length !== paperCount) {
+    fail("publications page JSON-LD ItemList does not match the publication data");
+  }
+  const deckNode = jsonLd(deckHtml, "talks/20261008-ai-agents/deck/index.html")[0];
+  if (deckNode?.author?.["@id"] !== "https://wukai.work/#person") fail("talk deck JSON-LD does not name Kai Wu as author");
+
+  if (!llms.startsWith("# Kai Wu")) fail("llms.txt must start with '# Kai Wu'");
+  for (const url of ["https://wukai.work/publications/", `https://wukai.work/${cvFile}`, "https://wukai.work/talks/20261008-ai-agents/deck/"]) {
+    if (!llms.includes(url)) fail(`llms.txt does not link ${url}`);
+  }
+  if (llms.split("\n").filter((line) => line.startsWith("- [") && line.includes("ui.adsabs.harvard.edu/abs/")).length !== paperCount) {
+    fail("llms.txt does not list every publication");
+  }
+  if (/[\w.+-]+@[\w-]+\.[\w.]+/.test(llms)) fail("llms.txt must not contain email addresses");
+
+  if (siteProfile.links?.publications !== "https://wukai.work/publications/") fail("site API is missing the publications link");
+  if (siteProfile.links?.llms !== "https://wukai.work/llms.txt") fail("site API is missing the llms.txt link");
   if (siteProfile.schemaVersion !== "1.0.0") fail("site API has an unexpected schemaVersion");
   if (siteProfile.url !== "https://wukai.work/") fail("site API has an unexpected canonical URL");
   if (!Array.isArray(siteProfile.topics) || siteProfile.topics.length === 0) fail("site API has no topics");

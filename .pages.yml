@@ -58,6 +58,18 @@ content:
         label: Schema knows about
         type: string
         list: true
+      - name: schemaAlternateNames
+        label: Schema alternate names
+        type: string
+        list: true
+      - name: schemaAlumniOf
+        label: Schema alumni of
+        type: string
+        list: true
+      - name: orcid
+        label: ORCID iD
+        type: string
+        required: true
 
   - name: homepage
     label: Homepage

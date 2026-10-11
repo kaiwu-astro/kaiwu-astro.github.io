@@ -29,3 +29,11 @@ schemaKnowsAbout:
   - Planetary systems
   - Free-floating planets
   - NBODY6++GPU
+# Structured data only (JSON-LD), not shown on the page.
+schemaAlternateNames:
+  - 吴开
+  - Wu, Kai
+schemaAlumniOf:
+  - University of Liverpool
+  - Nankai University
+orcid: "0000-0003-0349-0079"

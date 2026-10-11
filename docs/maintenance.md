@@ -24,9 +24,10 @@ The About and legal page bodies are Markdown below the frontmatter. The profile 
 ```bash
 npm run checks
 npm run preview -- --host 127.0.0.1
+ADS_API_TOKEN=... npm run update:publications   # refresh /publications/ from the NASA ADS library
 ```
 
-`npm run checks` runs `check`, `test`, `build` and `verify` in that order (`verify` needs the `dist/` from `build`). CI and `publish-cv.mjs` call the same script.
+`npm run checks` runs `check`, `test`, `build` and `verify` in that order (`verify` needs the `dist/` from `build`). CI and `publish-cv.mjs` call the same script. `update:publications` is manual (see `docs/content.md`, "论文列表"); commit the regenerated `src/content/publications/main.json`.
 
 ## Profile And Homepage
 

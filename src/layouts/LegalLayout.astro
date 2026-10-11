@@ -5,15 +5,17 @@ interface Props {
   title: string;
   description: string;
   canonicalPath: string;
+  jsonLd?: Record<string, unknown>;
 }
 
-const { title, description, canonicalPath } = Astro.props;
+const { title, description, canonicalPath, jsonLd } = Astro.props;
 ---
 
 <BaseLayout
   title={`${title} | Kai Wu`}
   description={description}
   canonicalPath={canonicalPath}
+  jsonLd={jsonLd}
   bodyClass="legal-page"
 >
   <main>

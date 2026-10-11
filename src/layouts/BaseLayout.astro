@@ -4,7 +4,8 @@ interface Props {
   description: string;
   canonicalPath?: string;
   image?: string;
-  personSchema?: Record<string, unknown>;
+  ogType?: "website" | "profile";
+  jsonLd?: Record<string, unknown>;
   bodyClass?: string;
 }
 
@@ -13,7 +14,8 @@ const {
   description,
   canonicalPath = "/",
   image = "https://wukai.work/assets/images/social-card.png",
-  personSchema,
+  ogType = "website",
+  jsonLd,
   bodyClass = ""
 } = Astro.props;
 
@@ -29,7 +31,7 @@ const canonical = new URL(canonicalPath, Astro.site ?? "https://wukai.work").toS
     <title>{title}</title>
     <meta name="description" content={description}>
     <link rel="canonical" href={canonical}>
-    <meta property="og:type" content={personSchema ? "profile" : "website"}>
+    <meta property="og:type" content={ogType}>
     <meta property="og:title" content={title}>
     <meta property="og:description" content={description}>
     <meta property="og:url" content={canonical}>
@@ -50,7 +52,7 @@ const canonical = new URL(canonicalPath, Astro.site ?? "https://wukai.work").toS
       }
     </script>
     <link rel="stylesheet" href="/assets/css/style-v20260930.css">
-    {personSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />}
+    {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")} />}
   </head>
   <body class={bodyClass}>
     <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" aria-live="polite">

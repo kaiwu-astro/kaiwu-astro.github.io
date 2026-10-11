@@ -15,6 +15,8 @@ export const GET: APIRoute = async () => {
     topics: profile.schemaKnowsAbout,
     links: {
       curriculumVitae: new URL(profile.cvFile, profile.canonical).toString(),
+      publications: new URL("publications/", profile.canonical).toString(),
+      llms: new URL("llms.txt", profile.canonical).toString(),
       openapi: new URL("openapi.json", profile.canonical).toString(),
       sitemap: new URL("sitemap.xml", profile.canonical).toString()
     }
