@@ -9,7 +9,7 @@ import { spawn } from "node:child_process";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { cvAliasEntryPattern, cvFileEntryPattern } from "./cv-sitemap-patterns.mjs";
+import { cvFileEntryPattern } from "./cv-sitemap-patterns.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 process.chdir(root);
@@ -490,12 +490,6 @@ async function main() {
     `<loc>https://wukai.work/${targetName}</loc>\n    <lastmod>${date.iso}</lastmod>`,
     "CV sitemap entry"
   );
-  const nextCvSitemap = replaceExactly(
-    nextSitemap,
-    cvAliasEntryPattern,
-    `$1${date.iso}$2`,
-    "CV alias sitemap lastmod"
-  );
   const nextState = { kitCommit: source.sha, commitDate: date.iso, pdf: targetName };
   const previousCvs = (await readdir(publicDirectory)).filter(
     (name) => /^KaiWU_CV_\d{8}(?:-\d+)?\.pdf$/.test(name) && name !== targetName
@@ -505,7 +499,7 @@ async function main() {
   if (previousCvs.length > 0) await run("git", ["rm", "--", ...previousCvs.map((name) => join("public", name))]);
   await Promise.all([
     writeFile(profilePath, nextProfile),
-    writeFile(sitemapPath, nextCvSitemap),
+    writeFile(sitemapPath, nextSitemap),
     writeFile(publicationStatePath, `${JSON.stringify(nextState, null, 2)}\n`)
   ]);
 
