@@ -14,6 +14,7 @@ Astro 静态个人学术网站，部署到 GitHub Pages，经 Cloudflare 服务 
 - 修改站点文字、邮箱、CV、`public/sitemap.xml` 或任何公开 URL 前：读 `docs/content.md`。
 - 修改 Astro/HTML/CSS/JS/YAML、`public/assets/` 资源（命名与版本化、禁用依赖、GoatCounter），或需要视觉检查前：读 `CODING_STANDARDS.md`。
 - 修改或排查 Cloudflare（DNS、SSL/TLS、缓存、规则、响应头/CSP），或 Cloudflare 改动后验证线上站点前：读 `docs/cloudflare.md`。
+- 处理搜索引擎收录（Google Search Console、Bing Webmaster Tools）或 AI 爬虫相关事务时：若根目录有 `indexing-followup.md`（本地跟进清单，经 `.git/info/exclude` 排除，不入库），先读，查完把结果写回该文件。
 
 ## 提交
 
