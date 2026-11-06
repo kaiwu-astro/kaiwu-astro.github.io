@@ -53,7 +53,9 @@ export const collections = {
         summary: z.string(),
         slides: z.string().optional(),
         slides_label: z.string().optional(),
-        pdf: z.string().optional()
+        pdf: z.string().optional(),
+        earlier_slides: z.string().optional(),
+        earlier_label: z.string().optional()
       }))
     })
   }),

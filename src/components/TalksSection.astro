@@ -10,6 +10,8 @@ interface Talk {
   slides?: string;
   slides_label?: string;
   pdf?: string;
+  earlier_slides?: string;
+  earlier_label?: string;
 }
 
 interface Props {
@@ -44,6 +46,7 @@ const formatDate = (date: Date) =>
                 PDF
               </a>
             )}
+            {talk.earlier_slides && <a class="talk-pdf-link" href={talk.earlier_slides}>{talk.earlier_label ?? "Earlier version"}</a>}
           </div>
         </div>
       </li>
